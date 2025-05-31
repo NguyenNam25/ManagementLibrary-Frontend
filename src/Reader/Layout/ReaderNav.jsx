@@ -33,8 +33,7 @@ export default function ReaderNav() {
   const handleLogout = async () => {
     // Clear user info from localStorage
     await userApi.logout();
-    window.location.reload();
-    navigate("/reader/home");
+    navigate("/reader/login");
   };
 
   // Account dropdown menu items

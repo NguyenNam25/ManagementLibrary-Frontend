@@ -41,7 +41,6 @@ export default function Login() {
         email: values.username,
         password: values.password
       });
-
       if (response.status === 200) {
         // Store user info and token in localStorage
         const userInfo = {

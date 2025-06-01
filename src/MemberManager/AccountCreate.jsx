@@ -11,6 +11,7 @@ import {
   Card,
   DatePicker,
   message,
+  Typography,
 } from "antd";
 import { UserOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
@@ -22,6 +23,8 @@ import roleApi from "../../api/role/index";
 import axios from "axios";
 
 const { Content } = Layout;
+const { Title, Text } = Typography;
+
 
 const generatePassword = (length = 8) => {
   const chars =
@@ -107,23 +110,27 @@ export default function AccountCreate() {
   };
 
   return (
-    <Layout style={{ minHeight: "100vh", width: "100vw" }}>
+    <Layout style={{ minHeight: "100vh", width: "100%" }}>
       <SideNav />
       <Layout style={{ background: "#f0f4f7", width: "100%" }}>
-        <HeaderComponent />
+        <HeaderComponent title="Quản lý người dùng"/>
         <Content
           style={{
             margin: 0,
             padding: "24px",
-            minHeight: "calc(100vh - 64px)",
             width: "100%",
           }}
         >
+          <div style={{ marginBottom: "24px" }}>
+            <Title level={2} style={{ margin: 0 }}>
+              Tạo tài khoản quản lý
+            </Title>
+            <Text type="secondary">Tạo tài khoản quản lý</Text>
+          </div>
           <Card
             title="Tạo tài khoản quản lý"
             bordered={false}
             style={{
-              height: "100%",
               width: "100%",
             }}
           >
@@ -132,13 +139,12 @@ export default function AccountCreate() {
               layout="vertical"
               onFinish={onFinish}
               style={{
-                height: "100%",
                 width: "100%",
                 maxWidth: "100%",
               }}
             >
-              <Row gutter={24} style={{ height: "100%" }}>
-                <Col span={12} style={{ height: "100%" }}>
+              <Row gutter={24} style={{}}>
+                <Col span={12} style={{}}>
                   <Form.Item
                     label="Ảnh đại diện"
                     name="image"

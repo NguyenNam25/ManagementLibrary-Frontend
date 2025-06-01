@@ -5,18 +5,18 @@ const { Paragraph } = Typography;
 
 const BorrowInfo = () => {
   return (
-    <Card title="Borrowing Information">
+    <Card title="Thông tin mượn sách">
       <Paragraph>
-        <strong>Loan Period:</strong> Books can be borrowed for 14 days.
+        <strong>Thời hạn mượn:</strong> Sách có thể được mượn trong 14 ngày.
       </Paragraph>
       <Paragraph>
-        <strong>Limit:</strong> You can borrow up to 5 items at a time.
+        <strong>Giới hạn:</strong> Bạn có thể mượn tối đa 5 cuốn sách cùng lúc.
       </Paragraph>
       <Paragraph>
-        <strong>Renewals:</strong> Books can be renewed twice if not reserved by another reader.
+        <strong>Gia hạn:</strong> Sách có thể được gia hạn hai lần nếu không có người đọc khác đặt trước.
       </Paragraph>
       <Paragraph>
-        <strong>Overdue Fine:</strong> $0.25 per day for each overdue item.
+        <strong>Phí quá hạn:</strong> 0.25$ mỗi ngày cho mỗi cuốn sách quá hạn.
       </Paragraph>
     </Card>
   );

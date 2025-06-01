@@ -13,7 +13,7 @@ const LoadingState = () => {
       <Content style={{ padding: "24px", minHeight: "calc(100vh - 64px)" }}>
         <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100%" }}>
           <Spin size="large" />
-          <span style={{ marginLeft: 12 }}>Loading book details...</span>
+          <span style={{ marginLeft: 12 }}>Đang tải thông tin sách...</span>
         </div>
       </Content>
     </Layout>

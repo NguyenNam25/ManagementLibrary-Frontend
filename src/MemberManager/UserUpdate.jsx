@@ -11,6 +11,7 @@ import {
   Card,
   DatePicker,
   message,
+  Typography,
 } from "antd";
 import { UserOutlined } from "@ant-design/icons";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -22,6 +23,7 @@ import roleApi from "../../api/role/index";
 import dayjs from "dayjs";
 
 const { Content } = Layout;
+const { Title, Text } = Typography;
 
 const generatePassword = (length = 8) => {
   const chars =
@@ -46,26 +48,29 @@ export default function UserUpdate() {
   const [user, setUser] = useState(null);
 
   useEffect(() => {
-    const fetchUser = async () => {
-      const response = await userApi.getUserById(state?.id);
-      const convertData = {
-        ...response.data,
-        dateOfBirth: dayjs(response.data.dateOfBirth),
-      };
-
-      setUser(convertData);
-      form.setFieldsValue(convertData);
-    };
-    fetchUser();
-  }, [state]);
-
-  useEffect(() => {
     const fetchRoles = async () => {
       const response = await roleApi.getAllRoles();
       setRoles(response.data);
     };
     fetchRoles();
   }, []);
+
+  
+  useEffect(() => {
+    const fetchUser = async () => {
+      console.log(roles);
+      const response = await userApi.getUserById(state?.id);
+      const convertData = {
+        ...response.data,
+        dateOfBirth: dayjs(response.data.dateOfBirth),
+        role: roles?.find(role => role._id === response.data.role)?.name || null,
+      };
+
+      setUser(convertData);
+      form.setFieldsValue(convertData);
+    };
+    fetchUser();
+  }, [state, roles]);
 
   const selectRole = roles.map((role) => {
     if (role.name === "manager" || role.name === "Mod") {
@@ -112,23 +117,27 @@ export default function UserUpdate() {
   };
 
   return (
-    <Layout style={{ minHeight: "100vh", width: "100vw" }}>
+    <Layout style={{ minHeight: "100vh", width: "100%" }}>
       <SideNav />
       <Layout style={{ background: "#f0f4f7", width: "100%" }}>
-        <HeaderComponent />
+        <HeaderComponent title="Quản lý người dùng"/>
         <Content
           style={{
             margin: 0,
             padding: "24px",
-            minHeight: "calc(100vh - 64px)",
             width: "100%",
           }}
         >
+          <div style={{ marginBottom: "24px" }}>
+            <Title level={2} style={{ margin: 0 }}>
+              Cập nhật tài khoản
+            </Title>
+            <Text type="secondary">Cập nhật tài khoản</Text>
+          </div>
           <Card
-            title="Tạo tài khoản quản lý"
+            title="Cập nhật tài khoản"
             bordered={false}
             style={{
-              height: "100%",
               width: "100%",
             }}
           >
@@ -137,13 +146,12 @@ export default function UserUpdate() {
               layout="vertical"
               onFinish={onFinish}
               style={{
-                height: "100%",
                 width: "100%",
                 maxWidth: "100%",
               }}
             >
-              <Row gutter={24} style={{ height: "100%" }}>
-                <Col span={12} style={{ height: "100%" }}>
+              <Row gutter={24} style={{}}>
+                <Col span={12} style={{}}>
                   <Form.Item
                     label="Ảnh đại diện"
                     name="image"
@@ -157,10 +165,10 @@ export default function UserUpdate() {
                     <ImageDragger />
                   </Form.Item>
                 </Col>
-                <Col span={12} style={{ height: "100%" }}>
+                <Col span={12} style={{}}>
                   <Space
                     direction="vertical"
-                    style={{ width: "100%", height: "100%" }}
+                    style={{ width: "100%"}}
                   >
                     <Form.Item
                       label="Họ và tên"

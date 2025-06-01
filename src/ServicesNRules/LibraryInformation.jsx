@@ -256,26 +256,17 @@ export default function LibraryInformation() {
   };
 
   return (
-    <Layout style={{ minHeight: "100vh", width: "100vw" }}>
+    <Layout style={{ minHeight: "100vh", width: "100%" }}>
       <SideNav />
       <Layout style={{ background: "#f0f4f7", width: "100%" }}>
-        <HeaderComponent />
+        <HeaderComponent title="Quản lý thông tin thư viện"/>
         <Content
           style={{
             margin: 0,
             padding: "24px",
-            minHeight: "calc(100vh - 64px)",
             width: "100%",
           }}
         >
-          <Breadcrumb style={{ marginBottom: "16px" }}>
-            <Breadcrumb.Item href="/home">
-              <HomeOutlined />
-              <span>Home</span>
-            </Breadcrumb.Item>
-            <Breadcrumb.Item>Library Information</Breadcrumb.Item>
-          </Breadcrumb>
-
           <div
             style={{
               display: "flex",
@@ -286,12 +277,13 @@ export default function LibraryInformation() {
           >
             <div>
               <Title level={2} style={{ margin: 0 }}>
-                Library Information
+                Thông tin thư viện
               </Title>
               <Text type="secondary">
-                View and update the library's information
+                Xem và cập nhật thông tin thư viện
               </Text>
             </div>
+            
             <div>
               {editMode ? (
                 <div>
@@ -302,14 +294,14 @@ export default function LibraryInformation() {
                     style={{ marginRight: "10px" }}
                     onClick={() => handleCancel()}
                   >
-                    Cancel
+                    Hủy bỏ
                   </Button>
                   <Button
                     type="primary"
                     icon={<SaveOutlined />}
                     onClick={() => form.submit()}
                   >
-                    Save Changes
+                    Lưu thay đổi
                   </Button>
                 </div>
               ) : (
@@ -318,7 +310,7 @@ export default function LibraryInformation() {
                   icon={<EditOutlined />}
                   onClick={handleEditMode}
                 >
-                  Edit Information
+                  Chỉnh sửa thông tin
                 </Button>
               )}
             </div>
@@ -370,25 +362,25 @@ export default function LibraryInformation() {
                       </Col>
                       <Col xs={24} md={18}>
                         <Form.Item
-                          label="Library Name"
+                          label="Tên thư viện"
                           name="libraryName"
                           rules={[
                             {
                               required: true,
-                              message: "Please enter the library name",
+                              message: "Vui lòng nhập tên thư viện",
                             },
                           ]}
                         >
                           <Input />
                         </Form.Item>
                         <Form.Item
-                          label="About"
+                          label="Giới thiệu"
                           name="abouts"
                           rules={[
                             {
                               required: true,
                               message:
-                                "Please enter information about the library",
+                                "Vui lòng nhập thông tin về thư viện",
                             },
                           ]}
                         >
@@ -401,7 +393,7 @@ export default function LibraryInformation() {
 
                 <Col xs={24} md={12}>
                   <Card
-                    title="Contact Information"
+                    title="Thông tin liên hệ"
                     style={{
                       height: "100%",
                       borderRadius: "12px",
@@ -409,12 +401,12 @@ export default function LibraryInformation() {
                     }}
                   >
                     <Form.Item
-                      label="Phone"
+                      label="Số điện thoại"
                       name="phone"
                       rules={[
                         {
                           required: true,
-                          message: "Please enter the phone number",
+                          message: "Vui lòng nhập số điện thoại",
                         },
                       ]}
                     >
@@ -426,32 +418,32 @@ export default function LibraryInformation() {
                       rules={[
                         {
                           required: true,
-                          message: "Please enter the email address",
+                          message: "Vui lòng nhập địa chỉ email",
                         },
                         {
                           type: "email",
-                          message: "Please enter a valid email address",
+                          message: "Vui lòng nhập địa chỉ email hợp lệ",
                         },
                       ]}
                     >
                       <Input prefix={<MailOutlined />} />
                     </Form.Item>
                     <Form.Item
-                      label="Address"
+                      label="Địa chỉ"
                       name="address"
                       rules={[
-                        { required: true, message: "Please enter the address" },
+                        { required: true, message: "Vui lòng nhập địa chỉ" },
                       ]}
                     >
                       <TextArea rows={3} prefix={<EnvironmentOutlined />} />
                     </Form.Item>
                     <Form.Item
-                      label="Website"
+                      label="Trang web"
                       name="website"
                       rules={[
                         {
                           required: true,
-                          message: "Please enter the website URL",
+                          message: "Vui lòng nhập URL trang web",
                         },
                       ]}
                     >
@@ -470,14 +462,14 @@ export default function LibraryInformation() {
                           alignItems: "center",
                         }}
                       >
-                        <span>Library Hours</span>
+                        <span>Giờ làm việc</span>
                         <Button
                           type="primary"
                           size="small"
                           icon={<PlusOutlined />}
                           onClick={handleAddHours}
                         >
-                          Add Hours
+                          Thêm giờ
                         </Button>
                       </div>
                     }
@@ -569,7 +561,7 @@ export default function LibraryInformation() {
                 <Card
                   title={
                     <>
-                      <PhoneOutlined /> Contact Information
+                      <PhoneOutlined /> Thông tin liên hệ
                     </>
                   }
                   style={{
@@ -579,7 +571,7 @@ export default function LibraryInformation() {
                   }}
                 >
                   <div style={{ marginBottom: "16px" }}>
-                    <Text strong>Phone:</Text>
+                    <Text strong>Số điện thoại:</Text>
                     <Paragraph>{libraryPhone}</Paragraph>
                   </div>
                   <div style={{ marginBottom: "16px" }}>
@@ -587,11 +579,11 @@ export default function LibraryInformation() {
                     <Paragraph>{libraryEmail}</Paragraph>
                   </div>
                   <div style={{ marginBottom: "16px" }}>
-                    <Text strong>Address:</Text>
+                    <Text strong>Địa chỉ:</Text>
                     <Paragraph>{libraryAddress}</Paragraph>
                   </div>
                   <div>
-                    <Text strong>Website:</Text>
+                    <Text strong>Trang web:</Text>
                     <Paragraph>{libraryWebsite}</Paragraph>
                   </div>
                 </Card>
@@ -601,7 +593,7 @@ export default function LibraryInformation() {
                 <Card
                   title={
                     <>
-                      <ClockCircleOutlined /> Library Hours
+                      <ClockCircleOutlined /> Giờ làm việc
                     </>
                   }
                   style={{
@@ -625,7 +617,7 @@ export default function LibraryInformation() {
 
       {/* Modal for editing library hours */}
       <Modal
-        title={currentHourIndex !== null ? "Edit Hours" : "Add Hours"}
+        title={currentHourIndex !== null ? "Chỉnh sửa giờ" : "Thêm giờ"}
         open={isHoursModalVisible}
         onOk={handleHoursOk}
         onCancel={() => setIsHoursModalVisible(false)}
@@ -633,19 +625,19 @@ export default function LibraryInformation() {
         <Form form={hourForm} layout="vertical">
           <Form.Item
             name="day"
-            label="Day/Days"
+            label="Ngày"
             rules={[
-              { required: true, message: "Please enter the day or days" },
+              { required: true, message: "Vui lòng nhập ngày hoặc ngày" },
             ]}
           >
-            <Input placeholder="e.g., Monday - Thursday, Sunday" />
+            <Input placeholder="e.g., Thứ 2 - Thứ 5, Chủ nhật" />
           </Form.Item>
           <Form.Item
             name="hours"
-            label="Hours"
-            rules={[{ required: true, message: "Please enter the hours" }]}
+            label="Giờ"
+            rules={[{ required: true, message: "Vui lòng nhập giờ" }]}
           >
-            <Input placeholder="e.g., 9:00 AM - 6:00 PM, Closed" />
+            <Input placeholder="e.g., 9:00 AM - 6:00 PM, Đóng cửa" />
           </Form.Item>
         </Form>
       </Modal>

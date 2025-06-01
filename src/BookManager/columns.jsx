@@ -8,13 +8,13 @@ export default [
     width: "8%",
   },
   {
-    title: "Tieu de",
+    title: "Tên sách",
     dataIndex: "name",
     key: "name",
     width: "25%",
   },
   {
-    title: "Anh",
+    title: "Ảnh bìa",
     dataIndex: "image",
     key: "image",
     width: "8%",
@@ -26,7 +26,7 @@ export default [
       ),
   },
   {
-    title: "So luong",
+    title: "Số lượng",
     dataIndex: "quantity",
     key: "quantity",
     width: "8%",
@@ -35,13 +35,13 @@ export default [
     defaultSortOrder: null,
   },
   {
-    title: "Chi tiet",
+    title: "Chi tiết",
     dataIndex: "detail",
     key: "detail",
     width: "8%",
   },
   {
-    title: "",
+    title: "Hành động",
     dataIndex: "UD",
     key: "UD",
     width: "8%",

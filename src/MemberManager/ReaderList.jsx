@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Breadcrumb, Layout, Button, Table, Modal, message, Tag, Space, Input } from "antd";
+import { Breadcrumb, Layout, Button, Table, Modal, message, Tag, Space, Input, Typography } from "antd";
 import { Link, useNavigate } from "react-router-dom";
 import { 
   EditOutlined, 
@@ -20,6 +20,7 @@ import userApi from "../../api/user";
 import roleApi from "../../api/role";
 
 const { Content } = Layout;
+const { Title, Text } = Typography;
 
 export default function ReaderList() {
   const navigate = useNavigate();
@@ -32,7 +33,7 @@ export default function ReaderList() {
   // Define columns for the member list table
   const memberColumns = [
     {
-      title: "Name",
+      title: "Họ và tên",
       dataIndex: "fullName",
       key: "fullName",
       render: (text) => (
@@ -54,7 +55,7 @@ export default function ReaderList() {
       ),
     },
     {
-      title: "Phone",
+      title: "Số điện thoại",
       dataIndex: "phoneNumber",
       key: "phoneNumber",
       render: (text) => (
@@ -65,7 +66,7 @@ export default function ReaderList() {
       ),
     },
     {
-      title: "Card Number",
+      title: "Thẻ thư viện",
       dataIndex: "cardNumber",
       key: "cardNumber",
       render: (text) => (
@@ -76,28 +77,26 @@ export default function ReaderList() {
       ),
     },
     {
-      title: "Status",
+      title: "Trạng thái",
       dataIndex: "status",
       key: "status",
       render: (status) => {
         let color = 'green';
-        if (status === 'inactive') {
+        if (status === 'blocked') {
           color = 'volcano';
-        } else if (status === 'suspended') {
-          color = 'red';
         } else if (status === 'pending') {
           color = 'orange';
         }
-        return <Tag color={color}>{status?.toUpperCase() || 'ACTIVE'}</Tag>;
+        return <Tag color={color}>{status?.toUpperCase() === 'ACTIVE' ? 'Hoạt động' : 'Bị chặn'}</Tag>;
       },
     },
     {
-      title: "Detail",
+      title: "Chi tiết",
       dataIndex: "detail",
       key: "detail",
     },
     {
-      title: "Actions",
+      title: "Hành động",
       dataIndex: "UD",
       key: "actions",
     },
@@ -180,14 +179,14 @@ export default function ReaderList() {
         icon={<EditOutlined />}
         onClick={() => handleUpdate(id)}
       >
-        Edit
+        Sửa
       </Button>
       <Button
         danger
         icon={<DeleteOutlined />}
         onClick={() => handleDelete(id)}
       >
-        Delete
+        Xóa
       </Button>
     </Space>
   );
@@ -203,23 +202,23 @@ export default function ReaderList() {
   const handleDelete = async (id) => {
     try {
       Modal.confirm({
-        title: 'Delete Member',
-        content: 'Are you sure you want to delete this member? This action cannot be undone.',
-        okText: 'Delete',
+        title: 'Xóa thành viên',
+        content: 'Bạn có chắc chắn muốn xóa thành viên này? Hành động này không thể hoàn tác.',
+        okText: 'Xóa',
         okType: 'danger',
         onOk: async () => {
           try {
             await userApi.deleteUser(id);
-            message.success("User deleted successfully");
+            message.success("Thành viên đã được xóa thành công");
             fetchUsers();
           } catch (error) {
-            message.error("Failed to delete user");
+            message.error("Không thể xóa thành viên");
             console.error("Error deleting user:", error);
           }
         }
       });
     } catch (error) {
-      message.error("Failed to delete user");
+      message.error("Không thể xóa thành viên");
       console.error("Error deleting user:", error);
     }
   };
@@ -241,7 +240,7 @@ export default function ReaderList() {
     <Layout style={{ minHeight: "100vh", width: "100vw" }}>
       <SideNav />
       <Layout style={{ background: "#f0f4f7", width: "100%" }}>
-        <HeaderComponent />
+        <HeaderComponent title="Quản lý người dùng"/>
         <Content
           style={{
             margin: 0,
@@ -250,24 +249,13 @@ export default function ReaderList() {
             width: "100%",
           }}
         >
-          <Breadcrumb style={{ marginBottom: "16px" }}>
-            <Breadcrumb.Item>
-              <Link to="/home">Dashboard</Link>
-            </Breadcrumb.Item>
-            <Breadcrumb.Item>Member Management</Breadcrumb.Item>
-            <Breadcrumb.Item>Member List</Breadcrumb.Item>
-          </Breadcrumb>
-
-          <div style={{ marginBottom: 16 }}>
-            <Input
-              placeholder="Search by name, email, or phone..."
-              prefix={<SearchOutlined />}
-              onChange={(e) => handleSearch(e.target.value)}
-              style={{ width: 300 }}
-              allowClear
-            />
+          <div style={{ marginBottom: "24px" }}>
+            <Title level={2} style={{ margin: 0 }}>
+              Danh sách người dùng
+            </Title>
+            <Text type="secondary">Danh sách người dùng</Text>
           </div>
-          
+
           <Table
             columns={memberColumns}
             dataSource={filteredUsers}
@@ -283,13 +271,21 @@ export default function ReaderList() {
                 justifyContent: "space-between",
                 alignItems: "center",
               }}>
-                <span style={{ fontSize: "18px", fontWeight: "500" }}>Reader List</span>
+                <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
+                  <Input
+                    placeholder="Tìm kiếm theo tên, email hoặc số điện thoại..."
+                    prefix={<SearchOutlined />}
+                    onChange={(e) => handleSearch(e.target.value)}
+                    style={{ width: 300 }}
+                    allowClear
+                  />
+                </div>
                 <Button 
                   type="primary" 
                   onClick={() => navigate("/waiting-member")}
                   icon={<ClockCircleOutlined />}
                 >
-                  Pending List
+                  Danh sách chờ duyệt
                 </Button>
               </div>
             )}

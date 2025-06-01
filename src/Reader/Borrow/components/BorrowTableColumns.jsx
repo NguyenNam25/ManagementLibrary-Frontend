@@ -13,17 +13,17 @@ const { Text } = Typography;
 
 export const getBorrowTableColumns = (handleConfirmPickup, handleCancelRequest, isLocalStorageRequest) => [
   {
-    title: "Ticket ID",
+    title: "Mã phiếu mượn",
     dataIndex: "ticketId",
     key: "ticketId",
     render: (text, record) => (
       <strong>
-        {isLocalStorageRequest && isLocalStorageRequest(record) ? "Pending Confirmation" : text}
+        {isLocalStorageRequest && isLocalStorageRequest(record) ? "Đang chờ xác nhận" : text}
       </strong>
     )
   },
   {
-    title: "Books",
+    title: "Sách",
     dataIndex: "books",
     key: "books",
     render: (books) => (
@@ -35,19 +35,19 @@ export const getBorrowTableColumns = (handleConfirmPickup, handleCancelRequest, 
             ))}
           </ul>
         ) : (
-          <Text type="secondary">No books in this request</Text>
+          <Text type="secondary">Không có sách trong yêu cầu này</Text>
         )}
       </>
     )
   },
   {
-    title: "Request Date",
+    title: "Ngày yêu cầu",
     dataIndex: "borrowDate",
     key: "borrowDate",
     render: (date) => new Date(date).toLocaleDateString()
   },
   {
-    title: "Status",
+    title: "Trạng thái",
     dataIndex: "status",
     key: "status",
     render: (status, record) => {
@@ -58,24 +58,28 @@ export const getBorrowTableColumns = (handleConfirmPickup, handleCancelRequest, 
       if (isLocalStorageRequest && isLocalStorageRequest(record)) {
         color = "warning";
         icon = <ClockCircleOutlined />;
-        text = "PENDING CONFIRMATION";
+        text = "ĐANG CHỜ XÁC NHẬN";
       } else {
         switch (status) {
           case "pending":
             color = "warning";
             icon = <ClockCircleOutlined />;
+            text = "ĐANG CHỜ";
             break;
           case "borrowed":
             color = "processing";
             icon = <BookOutlined />;
+            text = "ĐANG MƯỢN";
             break;
           case "returned":
             color = "success";
             icon = <CheckCircleOutlined />;
+            text = "ĐÃ TRẢ";
             break;
           case "expired":
             color = "error";
             icon = <ExclamationCircleOutlined />;
+            text = "HẾT HẠN";
             break;
           default:
             color = "default";
@@ -84,13 +88,13 @@ export const getBorrowTableColumns = (handleConfirmPickup, handleCancelRequest, 
       
       return (
         <Tag color={color} icon={icon}>
-          {text.toUpperCase()}
+          {text}
         </Tag>
       );
     }
   },
   {
-    title: "Actions",
+    title: "Thao tác",
     key: "actions",
     render: (_, record) => {
       if (isLocalStorageRequest && isLocalStorageRequest(record)) {
@@ -102,7 +106,7 @@ export const getBorrowTableColumns = (handleConfirmPickup, handleCancelRequest, 
               icon={<CheckCircleOutlined />}
               onClick={() => handleConfirmPickup(record._id)}
             >
-              Confirm Request
+              Xác nhận yêu cầu
             </Button>
             <Button
               danger
@@ -110,7 +114,7 @@ export const getBorrowTableColumns = (handleConfirmPickup, handleCancelRequest, 
               icon={<CloseCircleOutlined />}
               onClick={() => handleCancelRequest(record._id)}
             >
-              Cancel
+              Hủy
             </Button>
           </Space>
         );
@@ -125,7 +129,7 @@ export const getBorrowTableColumns = (handleConfirmPickup, handleCancelRequest, 
               icon={<CloseCircleOutlined />}
               onClick={() => handleCancelRequest(record._id)}
             >
-              Cancel
+              Hủy
             </Button>
           )}
           {record.status === "borrowed" && (
@@ -134,11 +138,11 @@ export const getBorrowTableColumns = (handleConfirmPickup, handleCancelRequest, 
               size="small"
               icon={<InfoCircleOutlined />}
               onClick={() => notification.info({
-                message: "Return Information",
-                description: `Please return by ${new Date(record.borrowDate).getDate() + record.allowedDays} days from borrow date. You can return this book at the library information desk.`
+                message: "Thông tin trả sách",
+                description: `Vui lòng trả sách trong vòng ${new Date(record.borrowDate).getDate() + record.allowedDays} ngày kể từ ngày mượn. Bạn có thể trả sách tại quầy thông tin thư viện.`
               })}
             >
-              Return Info
+              Thông tin trả sách
             </Button>
           )}
         </Space>

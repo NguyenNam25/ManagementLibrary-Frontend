@@ -19,7 +19,7 @@ import {
 } from "@ant-design/icons";
 import userApi from "../../api/user";
 
-export default function HeaderComponent() {
+export default function HeaderComponent(props) {
   const { Header } = Layout;
   const navigate = useNavigate();
   const [currentUser, setCurrentUser] = useState(null);
@@ -55,10 +55,10 @@ export default function HeaderComponent() {
   const menu = (
     <Menu>
       <Menu.Item key="profile" icon={<UserOutlined />} onClick={handleProfile}>
-        Profile
+        Tài khoản của tôi
       </Menu.Item>
       <Menu.Item key="logout" icon={<LogoutOutlined />} onClick={handleLogout}>
-        Logout
+        Đăng xuất
       </Menu.Item>
     </Menu>
   );
@@ -75,9 +75,9 @@ export default function HeaderComponent() {
         background: "#f0f4f7",
       }}
     >
-      <h1 className="text-2xl ">DashBoard</h1>
+      <h1 className="text-2xl ">{props.title}</h1>
       <div className="flex gap-3 justify-center">
-        <Input.Search size="large"></Input.Search>
+        
         <Button
           ghost
           size="large"

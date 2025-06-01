@@ -15,7 +15,7 @@ const BorrowTable = ({
     return (
       <div style={{ textAlign: "center", padding: "50px 0" }}>
         <Spin size="large" />
-        <div style={{ marginTop: 16 }}>Loading your borrow requests...</div>
+        <div style={{ marginTop: 16 }}>Đang tải yêu cầu mượn sách của bạn...</div>
       </div>
     );
   }
@@ -24,13 +24,13 @@ const BorrowTable = ({
     return (
       <Card>
         <Empty 
-          description={`You don't have any ${activeTab} requests`}
+          description={`Bạn không có yêu cầu ${activeTab} nào`}
           image={Empty.PRESENTED_IMAGE_SIMPLE}
         />
         {activeTab === "pending" && (
           <div style={{ textAlign: "center", marginTop: 16 }}>
             <Link to="/reader/search">
-              <Button type="primary">Browse Books</Button>
+              <Button type="primary">Tìm sách</Button>
             </Link>
           </div>
         )}

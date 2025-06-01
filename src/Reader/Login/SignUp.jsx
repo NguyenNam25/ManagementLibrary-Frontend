@@ -63,14 +63,14 @@ export default function SignUp() {
       const isImage = file.type.startsWith('image/');
       if (!isImage) {
         notification.error({
-          message: 'You can only upload image files!',
+          message: 'Bạn chỉ có thể tải lên file hình ảnh!',
         });
         return false;
       }
       const isLt2M = file.size / 1024 / 1024 < 2;
       if (!isLt2M) {
         notification.error({
-          message: 'Image must be smaller than 2MB!',
+          message: 'Hình ảnh phải nhỏ hơn 2MB!',
         });
         return false;
       }
@@ -81,19 +81,18 @@ export default function SignUp() {
 
   const steps = [
     {
-      title: 'Account Information',
+      title: 'Thông tin tài khoản',
       content: (
         <div>
           <Text type="secondary" style={{ display: 'block', marginBottom: 24 }}>
-            Please provide your email and password to create your account
+            Vui lòng cung cấp email và mật khẩu để tạo tài khoản
           </Text>
 
           <Form.Item
             name="email"
             label="Email"
             rules={[
-              // { required: true, message: "Please enter your email" },
-              { type: "email", message: "Please enter a valid email" }
+              { type: "email", message: "Vui lòng nhập địa chỉ email hợp lệ" }
             ]}
           >
             <Input 
@@ -105,42 +104,39 @@ export default function SignUp() {
 
           <Form.Item
             name="password"
-            label="Password"
+            label="Mật khẩu"
             rules={[
-              // { required: true, message: "Please enter your password" },
-              { min: 8, message: "Password must be at least 8 characters" },
+              { min: 8, message: "Mật khẩu phải có ít nhất 8 ký tự" },
               { 
-                // pattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
-                message: "Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character"
+                message: "Mật khẩu phải chứa ít nhất một chữ hoa, một chữ thường, một số và một ký tự đặc biệt"
               }
             ]}
           >
             <Input.Password 
               prefix={<LockOutlined />}
-              placeholder="Enter your password"
+              placeholder="Nhập mật khẩu của bạn"
               size="large"
             />
           </Form.Item>
 
           <Form.Item
             name="confirmPassword"
-            label="Confirm Password"
+            label="Xác nhận mật khẩu"
             dependencies={['password']}
             rules={[
-              // { required: true, message: "Please confirm your password" },
               ({ getFieldValue }) => ({
                 validator(_, value) {
                   if (!value || getFieldValue('password') === value) {
                     return Promise.resolve();
                   }
-                  return Promise.reject(new Error('The two passwords do not match!'));
+                  return Promise.reject(new Error('Hai mật khẩu không khớp!'));
                 },
               }),
             ]}
           >
             <Input.Password 
               prefix={<LockOutlined />}
-              placeholder="Confirm your password"
+              placeholder="Xác nhận mật khẩu của bạn"
               size="large"
             />
           </Form.Item>
@@ -148,16 +144,16 @@ export default function SignUp() {
       ),
     },
     {
-      title: 'Personal Information',
+      title: 'Thông tin cá nhân',
       content: (
         <div>
           <Text type="secondary" style={{ display: 'block', marginBottom: 24 }}>
-            Please provide your personal details to complete the registration
+            Vui lòng cung cấp thông tin cá nhân để hoàn tất đăng ký
           </Text>
 
           <Form.Item
             name="image"
-            label="Profile Picture"
+            label="Ảnh đại diện"
             valuePropName="fileList"
             getValueFromEvent={(e) => {
               if (Array.isArray(e)) {
@@ -215,7 +211,7 @@ export default function SignUp() {
                     icon={<UploadOutlined />}
                     style={{ marginRight: 8 }}
                   >
-                    Choose Image
+                    Chọn ảnh
                   </Button>
                 </Upload>
                 <div style={{ 
@@ -223,7 +219,7 @@ export default function SignUp() {
                   color: '#8c8c8c',
                   fontSize: '12px'
                 }}>
-                  JPG, PNG or GIF (max. 2MB)
+                  JPG, PNG hoặc GIF (tối đa 2MB)
                 </div>
               </div>
             </div>
@@ -231,44 +227,44 @@ export default function SignUp() {
 
           <Form.Item
             name="fullName"
-            label="Full Name"
+            label="Họ và tên"
             rules={[
-              { required: true, message: "Please enter your full name" }
+              { required: true, message: "Vui lòng nhập họ và tên" }
             ]}
           >
             <Input 
               prefix={<UserOutlined />}
-              placeholder="Full Name"
+              placeholder="Họ và tên"
               size="large"
             />
           </Form.Item>
 
           <Form.Item
             name="citizenId"
-            label="Citizen ID"
+            label="CMND/CCCD"
             rules={[
-              { required: true, message: "Please enter your citizen ID" },
-              { pattern: /^[0-9]{9,12}$/, message: "Please enter a valid citizen ID" }
+              { required: true, message: "Vui lòng nhập CMND/CCCD" },
+              { pattern: /^[0-9]{9,12}$/, message: "Vui lòng nhập CMND/CCCD hợp lệ" }
             ]}
           >
             <Input 
               prefix={<IdcardOutlined />}
-              placeholder="Citizen ID"
+              placeholder="CMND/CCCD"
               size="large"
             />
           </Form.Item>
           
           <Form.Item
             name="dateOfBirth"
-            label="Date of Birth"
+            label="Ngày sinh"
             rules={[
-              { required: true, message: "Please select your date of birth" }
+              { required: true, message: "Vui lòng chọn ngày sinh" }
             ]}
           >
             <DatePicker 
               style={{ width: '100%' }}
               size="large"
-              placeholder="Select date of birth"
+              placeholder="Chọn ngày sinh"
               disabledDate={(current) => {
                 return current && current > dayjs().endOf('day');
               }}
@@ -277,80 +273,80 @@ export default function SignUp() {
           
           <Form.Item
             name="gender"
-            label="Gender"
+            label="Giới tính"
             rules={[
-              { required: true, message: "Please select your gender" }
+              { required: true, message: "Vui lòng chọn giới tính" }
             ]}
           >
             <Radio.Group>
-              <Radio value="male">Male</Radio>
-              <Radio value="female">Female</Radio>
-              <Radio value="other">Other</Radio>
+              <Radio value="male">Nam</Radio>
+              <Radio value="female">Nữ</Radio>
+              <Radio value="other">Khác</Radio>
             </Radio.Group>
           </Form.Item>
 
           <Form.Item
             name="phoneNumber"
-            label="Phone Number"
+            label="Số điện thoại"
             rules={[
-              { required: true, message: "Please enter your phone number" },
-              { pattern: /^[0-9\-\+\s\(\)]{8,15}$/, message: "Please enter a valid phone number" }
+              { required: true, message: "Vui lòng nhập số điện thoại" },
+              { pattern: /^[0-9\-\+\s\(\)]{8,15}$/, message: "Vui lòng nhập số điện thoại hợp lệ" }
             ]}
           >
             <Input 
               prefix={<PhoneOutlined />}
-              placeholder="Phone Number"
+              placeholder="Số điện thoại"
               size="large"
             />
           </Form.Item>
 
           <Form.Item
             name="address"
-            label="Address"
+            label="Địa chỉ"
             rules={[
-              { required: true, message: "Please enter your address" }
+              { required: true, message: "Vui lòng nhập địa chỉ" }
             ]}
           >
             <Input.TextArea 
-              placeholder="Address"
+              placeholder="Địa chỉ"
               rows={3}
             />
           </Form.Item>
 
           <Form.Item
             name="occupation"
-            label="Occupation"
+            label="Nghề nghiệp"
             rules={[
-              { required: true, message: "Please select a reader type" }
+              { required: true, message: "Vui lòng chọn loại độc giả" }
             ]}
           >
-            <Select placeholder="Select Reader Type" size="large">
-              <Option value="student">Student</Option>
-              <Option value="teacher">Teacher/Professor</Option>
-              <Option value="researcher">Researcher</Option>
-              <Option value="general">General Public</Option>
+            <Select placeholder="Chọn loại độc giả" size="large">
+              <Option value="student">Sinh viên</Option>
+              <Option value="teacher">Giáo viên/Giảng viên</Option>
+              <Option value="researcher">Nhà nghiên cứu</Option>
+              <Option value="general">Công chúng</Option>
             </Select>
           </Form.Item>
 
           <Form.Item name="newsSubscription" valuePropName="checked">
-            <Checkbox>Subscribe to library newsletter and updates</Checkbox>
+            <Checkbox>Đăng ký nhận bản tin và cập nhật từ thư viện</Checkbox>
           </Form.Item>
           
           <Form.Item 
             name="termsAgreement"
             valuePropName="checked"
             rules={[
-              { validator: (_, value) => value ? Promise.resolve() : Promise.reject(new Error('You must agree to the terms and conditions')) }
+              { validator: (_, value) => value ? Promise.resolve() : Promise.reject(new Error('Bạn phải đồng ý với điều khoản và điều kiện')) }
             ]}
           >
             <Checkbox>
-              I agree to the <Link to="/reader/service">Terms and Conditions</Link> and <Link to="/reader/service">Privacy Policy</Link>
+              Tôi đồng ý với <Link to="/reader/service">Điều khoản và Điều kiện</Link> và <Link to="/reader/service">Chính sách Bảo mật</Link>
             </Checkbox>
           </Form.Item>
 
           <Alert
-            message="Note"
-            description="Upon approval, you will receive a library card that can be used to borrow books and access all library services."
+            message="Lưu ý"
+            description="Sau khi được phê duyệt, bạn sẽ nhận được thẻ thư viện có thể sử dụng để mượn sách và truy cập tất cả dịch vụ thư viện."
             type="info"
             showIcon
             style={{ marginBottom: 24 }}
@@ -425,8 +421,8 @@ export default function SignUp() {
 
       if (response.status === 201) {
         notification.success({
-          message: "Registration Successful",
-          description: "Your account has been created successfully! You can now log in.",
+          message: "Đăng ký thành công",
+          description: "Tài khoản của bạn đã được tạo thành công! Bạn có thể đăng nhập ngay bây giờ.",
         });
         form.resetFields();
         setStep1Values(null);
@@ -437,13 +433,13 @@ export default function SignUp() {
     } catch (error) {
       if (error.response?.data?.message) {
         notification.error({
-          message: "Registration Failed",
+          message: "Đăng ký thất bại",
           description: error.response.data.message,
         });
       } else {
         notification.error({
-          message: "Registration Failed",
-          description: "Failed to create account. Please try again later.",
+          message: "Đăng ký thất bại",
+          description: "Không thể tạo tài khoản. Vui lòng thử lại sau.",
         });
       }
       console.error("Error creating account:", error);

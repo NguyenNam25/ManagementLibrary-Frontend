@@ -281,7 +281,7 @@ export default function Searching() {
                     handleInterested(book);
                   }}
                 >
-                  {isInterested ? "Remove" : "Add"}
+                  {isInterested ? "Xóa" : "Thêm"}
                 </Button>
               ]}
             >
@@ -292,9 +292,9 @@ export default function Searching() {
                     <Text>{book.author} ({book.yearOfPublication})</Text>
                     <div style={{ marginTop: 8 }}>
                       {book.status === "available" ? (
-                        <Tag color="success">Available</Tag>
+                        <Tag color="success">Có sẵn</Tag>
                       ) : (
-                        <Tag color="error">Borrowed</Tag>
+                        <Tag color="error">Đã mượn</Tag>
                       )}
                     </div>
                   </>
@@ -329,11 +329,11 @@ export default function Searching() {
                         handleInterested(book);
                       }}
                     >
-                      {isInterested ? "Remove" : "Add"}
+                      {isInterested ? "Xóa" : "Thêm"}
                     </Button>
                   </div>
                   <div style={{ marginBottom: 10 }}>
-                    <Text strong>Author:</Text> {book.author} | <Text strong>Year:</Text> {book.yearOfPublication}
+                    <Text strong>Tác giả:</Text> {book.author} | <Text strong>Năm:</Text> {book.yearOfPublication}
                   </div>
                   <div style={{ marginBottom: 10 }}>
                     {category && <Tag>{category.name}</Tag>}
@@ -342,9 +342,9 @@ export default function Searching() {
                   <Paragraph ellipsis={{ rows: 2 }}>{book.description}</Paragraph>
                   <div>
                     {book.status === "available" ? (
-                      <Tag color="success">Available</Tag>
+                      <Tag color="success">Có sẵn</Tag>
                     ) : (
-                      <Tag color="error">Borrowed</Tag>
+                      <Tag color="error">Đã mượn</Tag>
                     )}
                   </div>
                 </div>
@@ -371,7 +371,7 @@ export default function Searching() {
           }}
         >
           <Search
-            placeholder="Search by title, author, or keyword..."
+            placeholder="Tìm kiếm theo tên sách, tác giả hoặc từ khóa..."
             size="large"
             value={searchTerm}
             onChange={handleSearchChange}
@@ -385,9 +385,9 @@ export default function Searching() {
             style={{ 
               padding: "20px",
               overflowY: "auto",
-              height: "calc(100vh - 64px - 64px)", // Subtract header and nav height
+              height: "calc(100vh - 64px - 64px)",
               position: "sticky",
-              top: 64, // Height of the nav
+              top: 64,
               left: 0,
               background: "white"
             }}
@@ -401,30 +401,30 @@ export default function Searching() {
               }}
             >
               <Title level={4} style={{ margin: 0 }}>
-                <FilterOutlined /> Filters
+                <FilterOutlined /> Bộ lọc
               </Title>
-              <Button type="link" onClick={resetFilters}>Reset All</Button>
+              <Button type="link" onClick={resetFilters}>Đặt lại tất cả</Button>
             </div>
             
             <Divider style={{ margin: "12px 0" }} />
             
             <Collapse defaultActiveKey={['1', '2', '3', '4', '5']} ghost>
-              <Panel header={<Title level={5} style={{ margin: 0 }}><HeartOutlined /> My Interested Books</Title>} key="5">
+              <Panel header={<Title level={5} style={{ margin: 0 }}><HeartOutlined /> Sách quan tâm</Title>} key="5">
                 <Checkbox
                   checked={filters.interested}
                   onChange={handleInterestedFilterChange}
                   disabled={!currentUser}
                 >
-                  Show only interested books
+                  Chỉ hiện sách đã quan tâm
                 </Checkbox>
                 {!currentUser && (
                   <div style={{ marginTop: 8, color: '#999' }}>
-                    <Text type="secondary">Please login to use this filter</Text>
+                    <Text type="secondary">Vui lòng đăng nhập để sử dụng bộ lọc này</Text>
                   </div>
                 )}
               </Panel>
               
-              <Panel header={<Title level={5} style={{ margin: 0 }}><TagsOutlined /> Categories</Title>} key="1">
+              <Panel header={<Title level={5} style={{ margin: 0 }}><TagsOutlined /> Thể loại</Title>} key="1">
                 <Checkbox.Group
                   style={{ width: "100%" }}
                   value={filters.categories}
@@ -440,7 +440,7 @@ export default function Searching() {
                 </Checkbox.Group>
               </Panel>
               
-              <Panel header={<Title level={5} style={{ margin: 0 }}><TagsOutlined /> Types</Title>} key="2">
+              <Panel header={<Title level={5} style={{ margin: 0 }}><TagsOutlined /> Loại sách</Title>} key="2">
                 <Checkbox.Group
                   style={{ width: "100%" }}
                   value={filters.types}
@@ -456,7 +456,7 @@ export default function Searching() {
                 </Checkbox.Group>
               </Panel>
               
-              <Panel header={<Title level={5} style={{ margin: 0 }}><BookOutlined /> Publication Year</Title>} key="3">
+              <Panel header={<Title level={5} style={{ margin: 0 }}><BookOutlined /> Năm xuất bản</Title>} key="3">
                 <Checkbox.Group
                   style={{ width: "100%" }}
                   value={filters.years}
@@ -472,14 +472,14 @@ export default function Searching() {
                 </Checkbox.Group>
               </Panel>
               
-              <Panel header={<Title level={5} style={{ margin: 0 }}>Availability</Title>} key="4">
+              <Panel header={<Title level={5} style={{ margin: 0 }}>Tình trạng</Title>} key="4">
                 <Radio.Group
                   value={filters.availability}
                   onChange={handleAvailabilityChange}
                 >
                   <Space direction="vertical">
-                    <Radio value="all">All</Radio>
-                    <Radio value="available">Available</Radio>
+                    <Radio value="all">Tất cả</Radio>
+                    <Radio value="available">Có sẵn</Radio>
                   </Space>
                 </Radio.Group>
               </Panel>
@@ -488,13 +488,13 @@ export default function Searching() {
           
           <Content style={{ 
             padding: "20px", 
-            minHeight: "calc(100vh - 64px - 64px)", // Subtract header and nav height
+            minHeight: "calc(100vh - 64px - 64px)",
             background: "#f5f5f5"
           }}>
             {loading ? (
               <div style={{ textAlign: "center", padding: "100px 0" }}>
                 <Spin size="large" />
-                <div style={{ marginTop: 20 }}>Loading books...</div>
+                <div style={{ marginTop: 20 }}>Đang tải sách...</div>
               </div>
             ) : (
               <>
@@ -511,8 +511,8 @@ export default function Searching() {
                 >
                   <div>
                     <Text>
-                      Showing {paginatedBooks.length > 0 ? (currentPage - 1) * pageSize + 1 : 0}-
-                      {Math.min(currentPage * pageSize, filteredBooks.length)} of {filteredBooks.length} results
+                      Hiển thị {paginatedBooks.length > 0 ? (currentPage - 1) * pageSize + 1 : 0}-
+                      {Math.min(currentPage * pageSize, filteredBooks.length)} trong tổng số {filteredBooks.length} kết quả
                     </Text>
                   </div>
                   <Space>
@@ -520,21 +520,21 @@ export default function Searching() {
                       value={sortBy}
                       onChange={handleSortChange}
                       style={{ width: 180 }}
-                      placeholder="Sort by"
+                      placeholder="Sắp xếp theo"
                     >
-                      <Option value="relevance">Relevance</Option>
-                      <Option value="title_asc">Title (A-Z)</Option>
-                      <Option value="title_desc">Title (Z-A)</Option>
-                      <Option value="author_asc">Author (A-Z)</Option>
-                      <Option value="author_desc">Author (Z-A)</Option>
-                      <Option value="year_asc">Year (Oldest)</Option>
-                      <Option value="year_desc">Year (Newest)</Option>
+                      <Option value="relevance">Liên quan</Option>
+                      <Option value="title_asc">Tên sách (A-Z)</Option>
+                      <Option value="title_desc">Tên sách (Z-A)</Option>
+                      <Option value="author_asc">Tác giả (A-Z)</Option>
+                      <Option value="author_desc">Tác giả (Z-A)</Option>
+                      <Option value="year_asc">Năm (Cũ nhất)</Option>
+                      <Option value="year_desc">Năm (Mới nhất)</Option>
                     </Select>
                     <Button 
                       icon={viewMode === "grid" ? <UnorderedListOutlined /> : <AppstoreOutlined />} 
                       onClick={toggleViewMode}
                     >
-                      {viewMode === "grid" ? "List View" : "Grid View"}
+                      {viewMode === "grid" ? "Chế độ danh sách" : "Chế độ lưới"}
                     </Button>
                   </Space>
                 </div>
@@ -559,8 +559,8 @@ export default function Searching() {
                   <Empty
                     description={
                       <div>
-                        <p>No books found matching your search criteria.</p>
-                        <p>Try adjusting your filters or search term.</p>
+                        <p>Không tìm thấy sách phù hợp với tiêu chí tìm kiếm.</p>
+                        <p>Vui lòng điều chỉnh bộ lọc hoặc từ khóa tìm kiếm.</p>
                       </div>
                     }
                   />

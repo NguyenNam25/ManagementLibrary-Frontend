@@ -9,6 +9,7 @@ import {
   Tag,
   Space,
   Input,
+  Typography,
 } from "antd";
 import { Link, useNavigate } from "react-router-dom";
 import {
@@ -27,6 +28,7 @@ import userApi from "../../api/user";
 import roleApi from "../../api/role";
 
 const { Content } = Layout;
+const { Title, Text } = Typography;
 
 export default function ManagerList() {
   const navigate = useNavigate();
@@ -39,7 +41,7 @@ export default function ManagerList() {
   // Define columns for the member list table
   const memberColumns = [
     {
-      title: "Name",
+      title: "Họ và tên",
       dataIndex: "fullName",
       key: "fullName",
       render: (text) => (
@@ -61,7 +63,7 @@ export default function ManagerList() {
       ),
     },
     {
-      title: "Phone",
+      title: "Số điện thoại",
       dataIndex: "phoneNumber",
       key: "phoneNumber",
       render: (text) => (
@@ -73,7 +75,7 @@ export default function ManagerList() {
     },
 
     {
-      title: "Role",
+      title: "Vai trò",
       dataIndex: "role",
       key: "role",
       render: (role) => {
@@ -85,11 +87,11 @@ export default function ManagerList() {
         } else if (role === "Reader") {
           color = "purple";
         }
-        return <Tag color={color}>{role?.toUpperCase() || "UNASSIGNED"}</Tag>;
+        return <Tag color={color}>{role?.toUpperCase() === 'MANAGER' ? "Quản Lý" : "Admin"}</Tag>;
       },
     },
     {
-      title: "Status",
+      title: "Trạng thái",
       dataIndex: "status",
       key: "status",
       render: (status) => {
@@ -99,16 +101,16 @@ export default function ManagerList() {
         } else if (status === "unverified") {
           color = "orange";
         }
-        return <Tag color={color}>{status?.toUpperCase() || "ACTIVE"}</Tag>;
+        return <Tag color={color}>{status?.toUpperCase() === "ACTIVE"?"Hoạt động":"Không hoạt động"}</Tag>;
       },
     },
     {
-      title: "Detail",
+      title: "Chi tiết",
       dataIndex: "detail",
       key: "detail",
     },
     {
-      title: "Actions",
+      title: "Hành động",
       dataIndex: "UD",
       key: "actions",
     },
@@ -202,10 +204,10 @@ export default function ManagerList() {
         icon={<EditOutlined />}
         onClick={() => handleUpdate(id)}
       >
-        Edit
+        Sửa
       </Button>
       <Button danger icon={<DeleteOutlined />} onClick={() => handleDelete(id)}>
-        Delete
+        Xóa
       </Button>
     </Space>
   );
@@ -223,24 +225,24 @@ export default function ManagerList() {
   const handleDelete = async (id) => {
     try {
       Modal.confirm({
-        title: "Delete Member",
+        title: "Xóa người dùng",
         content:
-          "Are you sure you want to delete this member? This action cannot be undone.",
-        okText: "Delete",
+          "Bạn có chắc chắn muốn xóa người dùng này? Hành động này không thể hoàn tác.",
+        okText: "Xóa",
         okType: "danger",
         onOk: async () => {
           try {
             await userApi.deleteUser(id);
-            message.success("User deleted successfully");
+            message.success("Đã xóa người dùng thành công");
             fetchUsers();
           } catch (error) {
-            message.error("Failed to delete user");
+            message.error("Không thể xóa người dùng");
             console.error("Error deleting user:", error);
           }
         },
       });
     } catch (error) {
-      message.error("Failed to delete user");
+      message.error("Không thể xóa người dùng");
       console.error("Error deleting user:", error);
     }
   };
@@ -249,31 +251,19 @@ export default function ManagerList() {
     <Layout style={{ minHeight: "100vh", width: "100vw" }}>
       <SideNav />
       <Layout style={{ background: "#f0f4f7", width: "100%" }}>
-        <HeaderComponent />
+        <HeaderComponent title="Quản lý người dùng"/>
         <Content
           style={{
             margin: 0,
             padding: "24px",
-            minHeight: "calc(100vh - 64px)",
             width: "100%",
           }}
         >
-          <Breadcrumb style={{ marginBottom: "16px" }}>
-            <Breadcrumb.Item>
-              <Link to="/home">Dashboard</Link>
-            </Breadcrumb.Item>
-            <Breadcrumb.Item>Member Management</Breadcrumb.Item>
-            <Breadcrumb.Item>Member List</Breadcrumb.Item>
-          </Breadcrumb>
-
-          <div style={{ marginBottom: 16 }}>
-            <Input
-              placeholder="Search by name, email, or phone..."
-              prefix={<SearchOutlined />}
-              onChange={(e) => handleSearch(e.target.value)}
-              style={{ width: 300 }}
-              allowClear
-            />
+          <div style={{ marginBottom: "24px" }}>
+            <Title level={2} style={{ margin: 0 }}>
+              Danh sách nhân viên
+            </Title>
+            <Text type="secondary">Danh sách nhân viên</Text>
           </div>
 
           <Table
@@ -293,15 +283,22 @@ export default function ManagerList() {
                   alignItems: "center",
                 }}
               >
-                <span style={{ fontSize: "18px", fontWeight: "500" }}>
-                  Member List
-                </span>
+                <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
+
+                  <Input
+                    placeholder="Tìm kiếm theo tên, email hoặc số điện thoại..."
+                    prefix={<SearchOutlined />}
+                    onChange={(e) => handleSearch(e.target.value)}
+                    style={{ width: 300 }}
+                    allowClear
+                  />
+                </div>
                 <Button
                   type="primary"
-                  onClick={() => navigate("/member/account-create")}
+                  onClick={() => navigate("/manager/account-create")}
                   icon={<UserOutlined />}
                 >
-                  Create New Member
+                  Tạo tài khoản quản lý
                 </Button>
               </div>
             )}

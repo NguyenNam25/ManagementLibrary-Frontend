@@ -45,7 +45,7 @@ export default function Rules() {
       const response = await userApi.getUserById("6832d36a8ed2b6384fa7d2b2");
       setRules(response.data.rules);
     } catch (error) {
-      message.error("Failed to fetch rules");
+      message.error("Lấy quy định thất bại");
     }
   };
 
@@ -60,7 +60,7 @@ export default function Rules() {
       const response = await userApi.getUserById("6832d36a8ed2b6384fa7d2b2");
       setServices(response.data.services);
     } catch (error) {
-      message.error("Failed to fetch services");
+      message.error("Lấy dịch vụ thất bại");
     }
   };  
 
@@ -108,18 +108,18 @@ export default function Rules() {
         );
         const res = await userApi.getUserById("6832d36a8ed2b6384fa7d2b2");
         setRules(res.data.rules);
-        message.success("Rule updated successfully");
+        message.success("Quy định đã được cập nhật thành công");
       } else {
         await userApi.addRule("6832d36a8ed2b6384fa7d2b2", values);
         const res = await userApi.getUserById("6832d36a8ed2b6384fa7d2b2");
         setRules(res.data.rules);
-        message.success("Rule added successfully");
+        message.success("Quy định đã được thêm thành công");
       }
       setIsRuleModalVisible(false);
       form.resetFields();
       setEditingRule(null);
     } catch (error) {
-      message.error("Failed to save rule");
+      message.error("Cập nhật quy định thất bại");
     }
   };
 
@@ -133,18 +133,18 @@ export default function Rules() {
         );
         const res = await userApi.getUserById("6832d36a8ed2b6384fa7d2b2");
         setServices(res.data.services);
-        message.success("Service updated successfully");
+        message.success("Dịch vụ đã được cập nhật thành công");
       } else {
         await userApi.addService("6832d36a8ed2b6384fa7d2b2", values);
         const res = await userApi.getUserById("6832d36a8ed2b6384fa7d2b2");
         setServices(res.data.services);
-        message.success("Service added successfully");
+        message.success("Dịch vụ đã được thêm thành công");
       }
       setIsServiceModalVisible(false);
       form.resetFields();
       setEditingService(null);
     } catch (error) {
-      message.error("Failed to save service");
+      message.error("Cập nhật dịch vụ thất bại");
     }
   };
 
@@ -153,10 +153,10 @@ export default function Rules() {
       await userApi.deleteRuleById("6832d36a8ed2b6384fa7d2b2", id);
       const res = await userApi.getUserById("6832d36a8ed2b6384fa7d2b2");
       setRules(res.data.rules);
-      message.success("Rule deleted successfully");
+      message.success("Quy định đã được xóa thành công");
     } catch (error) {
       console.error(error);
-      message.error(error?.response?.data?.message || "Failed to delete rule");
+      message.error(error?.response?.data?.message || "Xóa quy định thất bại");
     }
   };
 
@@ -165,10 +165,10 @@ export default function Rules() {
       await userApi.deleteServiceById("6832d36a8ed2b6384fa7d2b2", id);
       const res = await userApi.getUserById("6832d36a8ed2b6384fa7d2b2");
       setServices(res.data.services);
-      message.success("Service deleted successfully");
+      message.success("Dịch vụ đã được xóa thành công");
     } catch (error) {
       console.error(error);
-      message.error(error?.response?.data?.message || "Failed to delete service");
+      message.error(error?.response?.data?.message || "Xóa dịch vụ thất bại");
     }
   };
 
@@ -176,7 +176,7 @@ export default function Rules() {
     <Layout style={{ minHeight: "100vh", width: "100vw" }}>
       <SideNav />
       <Layout style={{ background: "#f0f4f7", width: "100%" }}>
-        <HeaderComponent />
+        <HeaderComponent title="Quản lý thông tin thư viện" />
         <Content
           style={{
             margin: 0,
@@ -187,10 +187,10 @@ export default function Rules() {
         >
           <div style={{ marginBottom: "24px" }}>
             <Title level={2} style={{ margin: 0 }}>
-              Library Rules
+              Quy định thư viện
             </Title>
             <Text type="secondary">
-              Manage and view library rules and regulations
+              Quản lý và xem quy định của thư viện
             </Text>
           </div>
 
@@ -210,14 +210,14 @@ export default function Rules() {
               }}
             >
               <Title level={4} style={{ margin: 0 }}>
-                Rules List
+                Danh sách quy định
               </Title>
               <Button
                 type="primary"
                 icon={<PlusOutlined />}
                 onClick={() => showModalRule()}
               >
-                Add New Rule
+                Thêm quy định mới
               </Button>
             </div>
 
@@ -281,14 +281,14 @@ export default function Rules() {
               }}
             >
               <Title level={4} style={{ margin: 0 }}>
-                Services List
+                Danh sách dịch vụ
               </Title>
               <Button
                 type="primary"
                 icon={<PlusOutlined />}
                 onClick={() => showModalService()}
               >
-                Add New Service
+                Thêm dịch vụ mới
               </Button>
             </div>
 
@@ -336,7 +336,7 @@ export default function Rules() {
           </Card>
 
           <Modal
-            title={editingRule ? "Edit Rule" : "Add New Rule"}
+            title={editingRule ? "Chỉnh sửa quy định" : "Thêm quy định mới"}
             open={isRuleModalVisible}
             onCancel={() => {
               setIsRuleModalVisible(false);
@@ -348,24 +348,24 @@ export default function Rules() {
             <Form form={form} layout="vertical" onFinish={handleSubmitRule}>
               <Form.Item
                 name="name"
-                label="Rule Name"
+                label="Tên quy định"
                 rules={[
-                  { required: true, message: "Please input the rule name!" },
+                  { required: true, message: "Vui lòng nhập tên quy định!" },
                 ]}
               >
-                <Input placeholder="Enter rule name" />
+                <Input placeholder="Nhập tên quy định" />
               </Form.Item>
 
               <Form.Item
                 name="detail"
-                label="Rule Details"
+                label="Chi tiết quy định"
                 rules={[
-                  { required: true, message: "Please input the rule details!" },
+                  { required: true, message: "Vui lòng nhập chi tiết quy định!" },
                 ]}
               >
                 <TextArea
                   rows={4}
-                  placeholder="Enter rule details"
+                  placeholder="Nhập chi tiết quy định"
                   style={{ resize: "none" }}
                 />
               </Form.Item>
@@ -379,10 +379,10 @@ export default function Rules() {
                       setEditingRule(null);
                     }}
                   >
-                    Cancel
+                    Hủy
                   </Button>
                   <Button type="primary" htmlType="submit">
-                    {editingRule ? "Update" : "Add"}
+                    {editingRule ? "Cập nhật" : "Thêm"}
                   </Button>
                 </Space>
               </Form.Item>
@@ -390,7 +390,7 @@ export default function Rules() {
           </Modal>
 
           <Modal
-            title={editingService ? "Edit Service" : "Add New Service"}
+            title={editingService ? "Chỉnh sửa dịch vụ" : "Thêm dịch vụ mới"}
             open={isServiceModalVisible}
             onCancel={() => {
               setIsServiceModalVisible(false);
@@ -402,24 +402,24 @@ export default function Rules() {
             <Form form={form} layout="vertical" onFinish={handleSubmitService}>
               <Form.Item
                 name="name"
-                label="Service Name"
+                label="Tên dịch vụ"
                 rules={[
-                  { required: true, message: "Please input the service name!" },
+                  { required: true, message: "Vui lòng nhập tên dịch vụ!" },
                 ]}
               >
-                <Input placeholder="Enter service name" />
+                <Input placeholder="Nhập tên dịch vụ" />
               </Form.Item>
 
               <Form.Item
                 name="detail"
-                label="Service Details"
+                label="Chi tiết dịch vụ"
                 rules={[
-                  { required: true, message: "Please input the service details!" },
+                  { required: true, message: "Vui lòng nhập chi tiết dịch vụ!" },
                 ]}
               >
                 <TextArea
                   rows={4}
-                  placeholder="Enter service details"
+                  placeholder="Nhập chi tiết dịch vụ"
                   style={{ resize: "none" }}
                 />
               </Form.Item>
@@ -433,10 +433,10 @@ export default function Rules() {
                       setEditingService(null);
                     }}
                   >
-                    Cancel
+                    Hủy
                   </Button>
                   <Button type="primary" htmlType="submit">
-                    {editingService ? "Update" : "Add"}
+                    {editingService ? "Cập nhật" : "Thêm"}
                   </Button>
                 </Space>
               </Form.Item>

@@ -118,7 +118,7 @@ export default function MajorManage() {
     <Layout style={{ minHeight: "100vh", width: "100vw" }}>
       <SideNav />
       <Layout style={{ background: "#f0f4f7", width: "100%" }}>
-        <HeaderComponent />
+        <HeaderComponent title="Quản lý sách" />
         <Content
           style={{
             margin: 0,
@@ -129,10 +129,10 @@ export default function MajorManage() {
         >
           <div style={{ marginBottom: "24px" }}>
             <Title level={2} style={{ margin: 0 }}>
-              Major Management
+              Quản lý danh mục
             </Title>
             <Text type="secondary">
-              Manage and view library categories and types
+              Quản lý loại và thể loại sách trong thư viện
             </Text>
           </div>
 

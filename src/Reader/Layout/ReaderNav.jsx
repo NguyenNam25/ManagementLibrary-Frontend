@@ -40,7 +40,7 @@ export default function ReaderNav() {
   const userMenuItems = [
     {
       key: "1",
-      label: "My Account",
+      label: "Tài khoản của tôi",
       icon: <UserOutlined />,
       onClick: () => navigate("/reader/account"),
     },
@@ -49,7 +49,7 @@ export default function ReaderNav() {
     },
     {
       key: "2",
-      label: "Logout",
+      label: "Đăng xuất",
       icon: <LogoutOutlined />,
       onClick: handleLogout,
     },
@@ -78,11 +78,11 @@ export default function ReaderNav() {
               icon={<LoginOutlined />}
               style={{ marginRight: "10px" }}
             >
-              Login
+              Đăng nhập
             </Button>
           </Link>
           <Link to="/reader/signup">
-            <Button icon={<UserOutlined />}>Sign Up</Button>
+            <Button icon={<UserOutlined />}>Đăng ký</Button>
           </Link>
         </>
       );
@@ -106,7 +106,7 @@ export default function ReaderNav() {
           }}
         >
           <div style={{ display: "flex", alignItems: "center" }}>
-            <h1 style={{ margin: "0 20px 0 0", fontSize: "24px" }}>Library</h1>
+            <h1 style={{ margin: "0 20px 0 0", fontSize: "24px" }}>Thư viện</h1>
             <Menu
               mode="horizontal"
               items={NavMenuItems}

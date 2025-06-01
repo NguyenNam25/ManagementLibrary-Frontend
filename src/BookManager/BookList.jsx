@@ -1,13 +1,19 @@
 import React, { useEffect, useState } from "react";
-import { Breadcrumb, Layout, Button, Table, message, Modal, Input } from "antd";
+import { Breadcrumb, Layout, Button, Table, message, Modal, Input, Typography } from "antd";
 import { Link, useNavigate } from "react-router-dom";
-import { EditOutlined, DeleteOutlined, EyeOutlined, SearchOutlined } from "@ant-design/icons";
+import {
+  EditOutlined,
+  DeleteOutlined,
+  EyeOutlined,
+  SearchOutlined,
+} from "@ant-design/icons";
 import SideNav from "../Layout/SideNav.jsx";
 import HeaderComponent from "../Layout/Header.jsx";
 import columns from "./columns.jsx";
 import bookApi from "../../api/book/index.js";
 import majorApi from "../../api/major/index.js";
 import BookDetailPopUp from "./BookDetailPopUp.jsx";
+const { Title, Text } = Typography; 
 
 export default function BookList() {
   const { Header, Content, Footer } = Layout;
@@ -25,8 +31,8 @@ export default function BookList() {
         icon={<EditOutlined />}
         onClick={() => handleUpdate(id)}
       ></Button>
-      <Button 
-        type="primary" 
+      <Button
+        type="primary"
         icon={<DeleteOutlined />}
         onClick={() => handleDelete(id)}
       ></Button>
@@ -43,20 +49,20 @@ export default function BookList() {
       }}
     ></Button>
   );
-  
+
   const handleUpdate = (id) => {
     navigate(`/book-list/${id}/update`, {
       state: { id },
     });
-  }
+  };
 
   const handleDelete = async (id) => {
     try {
       await bookApi.deleteBook(id);
-      message.success('Book deleted successfully');
+      message.success("Book deleted successfully");
       fetchBooks();
     } catch (error) {
-      message.error('Failed to delete book');
+      message.error("Failed to delete book");
       console.error("Error deleting book:", error);
     }
   };
@@ -65,13 +71,13 @@ export default function BookList() {
     try {
       setLoading(true);
       const response = await bookApi.getAllBooks();
-      
+
       const booksWithDetails = await Promise.all(
         response.data.map(async (book) => {
           try {
             const [typeResponse, categoryResponse] = await Promise.all([
               majorApi.getTypeById(book.type),
-              majorApi.getCategoryById(book.category)
+              majorApi.getCategoryById(book.category),
             ]);
 
             return {
@@ -80,22 +86,25 @@ export default function BookList() {
               detail: buttonDetail({
                 ...book,
                 type: typeResponse.data.name,
-                category: categoryResponse.data.name
-              })
+                category: categoryResponse.data.name,
+              }),
             };
           } catch (error) {
-            console.error(`Error fetching details for book ${book._id}:`, error);
+            console.error(
+              `Error fetching details for book ${book._id}:`,
+              error
+            );
             return {
               ...book,
               UD: buttonUD(book._id),
-              detail: buttonDetail(book)
+              detail: buttonDetail(book),
             };
           }
         })
       );
       setBooks(booksWithDetails);
     } catch (error) {
-      message.error('Failed to fetch books');
+      message.error("Failed to fetch books");
       console.error("Error fetching books:", error);
     } finally {
       setLoading(false);
@@ -110,7 +119,7 @@ export default function BookList() {
     setSearchText(value);
   };
 
-  const filteredBooks = books.filter(book => {
+  const filteredBooks = books.filter((book) => {
     const searchLower = searchText.toLowerCase();
     return (
       book.id?.toLowerCase().includes(searchLower) ||
@@ -122,35 +131,44 @@ export default function BookList() {
   });
 
   return (
-    <Layout style={{ height: "100vh" }}>
+    <Layout style={{ minHeight: "100vh" }}>
       <SideNav />
       <Layout style={{ background: "#f0f4f7" }}>
-        <HeaderComponent />
+        <HeaderComponent title="Quản lý sách" />
         <Content style={{ margin: "0 16px" }}>
+          <div style={{ marginBottom: "24px" }}>
+            <Title level={2} style={{ margin: 0 }}>
+              Danh sách sách
+            </Title>
+            <Text type="secondary">Danh sách các sách trong thư viện</Text>
+          </div>
           <Table
             columns={columns}
             dataSource={filteredBooks}
             rowKey="_id"
             loading={loading}
-            pagination={{ pageSize: 4 }}
+            pagination={{ pageSize: 5 }}
             title={() => (
-              <div style={{
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-              }}>
-                <span className="text-xl">Danh sách sách</span>
-                <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
-                  <Input
-                    placeholder="Search books..."
-                    prefix={<SearchOutlined />}
-                    onChange={(e) => handleSearch(e.target.value)}
-                    style={{ width: 300 }}
-                    allowClear
-                  />
-                  <Button 
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                }}
+              ><Input
+              placeholder="Tìm kiếm sách ..."
+              prefix={<SearchOutlined />}
+              onChange={(e) => handleSearch(e.target.value)}
+              style={{ width: 300 }}
+              allowClear
+            />
+                <div
+                  style={{ display: "flex", alignItems: "center", gap: "16px" }}
+                >
+                  
+                  <Button
                     type="primary"
-                    onClick={() => navigate('/book-list/add')}
+                    onClick={() => navigate("/book-list/add")}
                   >
                     + Thêm sách
                   </Button>

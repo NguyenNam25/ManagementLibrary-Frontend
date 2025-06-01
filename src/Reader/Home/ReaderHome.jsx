@@ -57,7 +57,7 @@ export default function ReaderHome() {
       const response = await bookApi.getPopularBooks();
       setPopularBooks(response.data);
     } catch (error) {
-      console.error('Error fetching popular books:', error);
+      console.error('Lỗi khi tải sách phổ biến:', error);
     }
   };
 
@@ -70,7 +70,7 @@ export default function ReaderHome() {
       const response = await bookApi.getAllBooks();
       setBooks(response.data);
     } catch (error) {
-      console.error('Error fetching books:', error);
+      console.error('Lỗi khi tải sách:', error);
     }
   };
 
@@ -83,7 +83,7 @@ export default function ReaderHome() {
       const response = await bookApi.getLatestBooks();
       setLatestBooks(response.data);
     } catch (error) {
-      console.error('Error fetching latest books:', error); 
+      console.error('Lỗi khi tải sách mới nhất:', error); 
     }
   };
 
@@ -152,7 +152,7 @@ export default function ReaderHome() {
                       </Title>
                       <Link to={`/reader/book/${book.id}`}>
                         <Button size="large" type="primary">
-                          View Details
+                          Xem chi tiết
                         </Button>
                       </Link>
                     </div>
@@ -172,11 +172,11 @@ export default function ReaderHome() {
                 }}
               >
                 <Title level={2}>
-                  <ClockCircleOutlined /> New Arrivals
+                  <ClockCircleOutlined /> Sách mới
                 </Title>
                 <Link to="/reader/search">
                   <Button type="link">
-                    View All <RightOutlined />
+                    Xem tất cả <RightOutlined />
                   </Button>
                 </Link>
               </div>
@@ -224,11 +224,11 @@ export default function ReaderHome() {
                 }}
               >
                 <Title level={2}>
-                  <FireOutlined /> Popular Books
+                  <FireOutlined /> Sách phổ biến
                 </Title>
                 <Link to="/reader/search">
                   <Button type="link">
-                    View All <RightOutlined />
+                    Xem tất cả <RightOutlined />
                   </Button>
                 </Link>
               </div>
@@ -275,13 +275,10 @@ export default function ReaderHome() {
         <Row gutter={[32, 24]}>
           <Col xs={24} sm={12} md={8}>
             <Title level={4} style={{ color: "white", marginBottom: "20px" }}>
-              About Library
+              Về Thư viện
             </Title>
             <Paragraph style={{ color: "rgba(255, 255, 255, 0.65)" }}>
-              Our library provides access to a vast collection of books,
-              journals, and digital resources. We are committed to fostering
-              learning, creativity, and community engagement through our
-              services.
+              Thư viện của chúng tôi cung cấp quyền truy cập vào bộ sưu tập sách, tạp chí và tài nguyên số phong phú. Chúng tôi cam kết thúc đẩy việc học tập, sáng tạo và gắn kết cộng đồng thông qua các dịch vụ của mình.
             </Paragraph>
             <Space size="large" style={{ marginTop: "20px" }}>
               <Button
@@ -324,14 +321,14 @@ export default function ReaderHome() {
           </Col>
           <Col xs={24} sm={12} md={8}>
             <Title level={4} style={{ color: "white", marginBottom: "20px" }}>
-              Opening Hours
+              Giờ mở cửa
             </Title>
             <List
               itemLayout="horizontal"
               dataSource={[
-                { day: "Monday - Friday", hours: "9:00 AM - 9:00 PM" },
-                { day: "Saturday", hours: "10:00 AM - 6:00 PM" },
-                { day: "Sunday", hours: "12:00 PM - 5:00 PM" },
+                { day: "Thứ Hai - Thứ Sáu", hours: "9:00 - 21:00" },
+                { day: "Thứ Bảy", hours: "10:00 - 18:00" },
+                { day: "Chủ Nhật", hours: "12:00 - 17:00" },
               ]}
               renderItem={(item) => (
                 <List.Item style={{ border: "none", padding: "8px 0" }}>
@@ -354,14 +351,14 @@ export default function ReaderHome() {
           </Col>
           <Col xs={24} sm={12} md={8}>
             <Title level={4} style={{ color: "white", marginBottom: "20px" }}>
-              Contact Information
+              Thông tin liên hệ
             </Title>
             <List
               itemLayout="horizontal"
               dataSource={[
                 {
                   icon: <EnvironmentOutlined />,
-                  content: "123 Library Street, Academic City, 10001",
+                  content: "123 Đường Thư viện, Thành phố Học thuật, 10001",
                 },
                 {
                   icon: <PhoneOutlined />,
@@ -395,8 +392,7 @@ export default function ReaderHome() {
         />
         <div style={{ textAlign: "center" }}>
           <Text style={{ color: "rgba(255, 255, 255, 0.45)" }}>
-            © {new Date().getFullYear()} Library Reader Management System. All
-            rights reserved.
+            © {new Date().getFullYear()} Hệ thống Quản lý Thư viện. Bảo lưu mọi quyền.
           </Text>
         </div>
       </Footer>

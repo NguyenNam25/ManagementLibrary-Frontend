@@ -14,7 +14,7 @@ const BookCover = ({
 
   const handleInterested = async () => {
     if (!currentUser) {
-      message.warning('Please login to add books to your interested list');
+      message.warning('Vui lòng đăng nhập để thêm sách vào danh sách quan tâm');
       return;
     }
 
@@ -22,22 +22,22 @@ const BookCover = ({
       setLoading(true);
       if (isInterested) {
         await userApi.deleteUserInterestedBook(currentUser._id, book._id);
-        message.success('Book removed from interested list');
+        message.success('Đã xóa sách khỏi danh sách quan tâm');
       } else {
         await userApi.updateUserInterestedBook(currentUser._id, { bookId: book._id });
-        message.success('Book added to interested list');
+        message.success('Đã thêm sách vào danh sách quan tâm');
       }
       setIsInterested(!isInterested);
     } catch (error) {
       console.error('Error updating interested book:', error);
-      message.error('Failed to update interested book list');
+      message.error('Không thể cập nhật danh sách sách quan tâm');
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div style={{ position: "sticky", top: 24 }}>
+    <div style={{ top: 24 }}>
       <Card 
         cover={
           <img 
@@ -57,11 +57,11 @@ const BookCover = ({
         <div style={{ textAlign: "center" }}>
           {book.status === "available" ? (
             <Tag color="success" style={{ margin: "8px 0", padding: "4px 8px", fontSize: 14 }}>
-              Available
+              Có sẵn
             </Tag>
           ) : (
             <Tag color="error" style={{ margin: "8px 0", padding: "4px 8px", fontSize: 14 }}>
-              Borrowed
+              Đã mượn
             </Tag>
           )}
         </div>
@@ -74,7 +74,7 @@ const BookCover = ({
             onClick={onBorrow}
             disabled={book.status !== "available" || book.quantity <= 0}
           >
-            {book.status === "available" ? "Borrow Book" : "Join Waitlist"}
+            {book.status === "available" ? "Mượn sách" : "Đăng ký chờ"}
           </Button>
           <Button 
             type={isInterested ? "primary" : "default"}
@@ -84,7 +84,7 @@ const BookCover = ({
             onClick={handleInterested}
             loading={loading}
           >
-            {isInterested ? "Remove from Interested" : "Add to Interested"}
+            {isInterested ? "Xóa khỏi danh sách quan tâm" : "Thêm vào danh sách quan tâm"}
           </Button>
         </Space>
       </Card>

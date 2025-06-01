@@ -52,8 +52,8 @@ export default function Login() {
         localStorage.setItem('token', response.data.token);
 
         notification.success({
-          message: "Login Successful",
-          description: `Welcome back, ${userInfo.name}!`,
+          message: "Đăng nhập thành công",
+          description: `Chào mừng trở lại, ${userInfo.name}!`,
         });
         navigate("/reader/home");
       } else {
@@ -64,9 +64,9 @@ export default function Login() {
       
       if (error.response) {
         if (error.response.status === 401) {
-          setLoginError("User is not active. Please wait for the library to activate.");
+          setLoginError("Tài khoản chưa được kích hoạt. Vui lòng đợi thư viện kích hoạt.");
         } else {
-          setLoginError("Failed to login. Please try again later.");
+          setLoginError("Đăng nhập thất bại. Vui lòng thử lại sau.");
         }
       }
     } finally {
@@ -80,9 +80,9 @@ export default function Login() {
       <Content style={{ padding: "50px 50px", backgroundColor: "#f5f5f5", minHeight: "calc(100vh - 64px)" }}>
         <div style={{ maxWidth: 400, margin: "0 auto" }}>
           <div style={{ textAlign: "center", marginBottom: 24 }}>
-            <Title level={2}>Login to Your Account</Title>
+            <Title level={2}>Đăng nhập vào tài khoản</Title>
             <Text type="secondary">
-              Enter your credentials to access your library account
+              Nhập thông tin đăng nhập để truy cập tài khoản thư viện của bạn
             </Text>
           </div>
 
@@ -106,30 +106,30 @@ export default function Login() {
             >
               <Form.Item
                 name="username"
-                label="Email/Username"
+                label="Email"
                 rules={[
-                  { required: true, message: "Please enter your email or username" },
-                  { type: "email", message: "Please enter a valid email address" }
+                  { required: true, message: "Vui lòng nhập email hoặc tên đăng nhập" },
+                  { type: "email", message: "Vui lòng nhập địa chỉ email hợp lệ" }
                 ]}
               >
                 <Input 
                   prefix={<UserOutlined className="site-form-item-icon" />} 
-                  placeholder="Email or Username" 
+                  placeholder="Email hoặc tên đăng nhập" 
                   size="large"
                 />
               </Form.Item>
 
               <Form.Item
                 name="password"
-                label="Password"
+                label="Mật khẩu"
                 rules={[
-                  { required: true, message: "Please enter your password" },
-                  { min: 6, message: "Password must be at least 6 characters" }
+                  { required: true, message: "Vui lòng nhập mật khẩu" },
+                  { min: 6, message: "Mật khẩu phải có ít nhất 6 ký tự" }
                 ]}
               >
                 <Input.Password
                   prefix={<LockOutlined className="site-form-item-icon" />}
-                  placeholder="Password"
+                  placeholder="Mật khẩu"
                   size="large"
                 />
               </Form.Item>
@@ -137,9 +137,9 @@ export default function Login() {
               <Form.Item>
                 <div style={{ display: "flex", justifyContent: "space-between" }}>
                   <Form.Item name="remember" valuePropName="checked" noStyle>
-                    <Checkbox>Remember me</Checkbox>
+                    <Checkbox>Ghi nhớ đăng nhập</Checkbox>
                   </Form.Item>
-                  <Link to="/reader/forgot-password">Forgot password?</Link>
+                  <Link to="/reader/forgot-password">Quên mật khẩu?</Link>
                 </div>
               </Form.Item>
 
@@ -152,13 +152,13 @@ export default function Login() {
                   icon={<LoginOutlined />}
                   loading={loading}
                 >
-                  Log In
+                  Đăng nhập
                 </Button>
               </Form.Item>
               
               <div style={{ textAlign: "center", marginTop: 16 }}>
-                <Text type="secondary">Don't have an account?</Text>{" "}
-                <Link to="/reader/signup">Sign up</Link>
+                <Text type="secondary">Chưa có tài khoản?</Text>{" "}
+                <Link to="/reader/signup">Đăng ký</Link>
               </div>
             </Form>
           </Card>
@@ -166,11 +166,11 @@ export default function Login() {
           <div style={{ textAlign: "center", marginTop: 16 }}>
             <Space>
               <Link to="/reader/home">
-                <HomeOutlined /> Back to Home
+                <HomeOutlined /> Về trang chủ
               </Link>
               <Divider type="vertical" />
               <Link to="/reader/service">
-                Help & Support
+                Trợ giúp & Hỗ trợ
               </Link>
             </Space>
           </div>

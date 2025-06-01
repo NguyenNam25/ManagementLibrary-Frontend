@@ -51,7 +51,7 @@ export default function BookDetailPopUp({
                 </div>
                 <div className="bg-gray-50 p-3 rounded-lg">
                   <p className="text-gray-500 text-sm">Ngôn ngữ</p>
-                  <p className="font-medium">{selectedBook.language}</p>
+                  <p className="font-medium">{selectedBook.language === "vi" ? "Tiếng Việt" : "Tiếng Anh"}</p>
                 </div>
                 <div className="bg-gray-50 p-3 rounded-lg">
                   <p className="text-gray-500 text-sm">Số lượng</p>

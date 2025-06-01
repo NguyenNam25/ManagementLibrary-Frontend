@@ -27,24 +27,24 @@ function getItem(label, key, icon, children) {
 }
 
 const items = [
-  getItem("Dashboard", "/home", <DashboardOutlined />),
-  getItem("Book", "1", <BookOutlined />, [
-    getItem("Add Book", "/book-list/add", <FileAddOutlined />),
-    getItem("Major Manage", "/major-manage", <BookOutlined />),
-    getItem("Book List", "/book-list", <ProfileOutlined />),
+  getItem("Trang chủ", "/home", <DashboardOutlined />),
+  getItem("Quản lý sách", "1", <BookOutlined />, [
+    getItem("Thêm sách", "/book-list/add", <FileAddOutlined />),
+    getItem("Quản lý chuyên ngành", "/major-manage", <BookOutlined />),
+    getItem("Danh sách sách", "/book-list", <ProfileOutlined />),
   ]),
-  getItem("Rules and service", "/rules", <InfoCircleOutlined />),
-  getItem("Borrows and Returns", "9", <ReadOutlined />, [
-    getItem("Waiting List", "/waiting-borrow-list", <ClockCircleOutlined />),
-    getItem("Borrow List", "/borrow-ticket", <ScheduleOutlined />),
+  getItem("Quy định và dịch vụ", "/rules", <InfoCircleOutlined />),
+  getItem("Mượn và trả sách", "9", <ReadOutlined />, [
+    getItem("Danh sách chờ", "/waiting-borrow-list", <ClockCircleOutlined />),
+    getItem("Danh sách mượn", "/borrow-ticket", <ScheduleOutlined />),
   ]),
-  getItem("Member", "8", <TeamOutlined />, [
-    getItem("Pending Requests", "/waiting-member", <ClockCircleOutlined />),
-    getItem("Create Account", "/manager/account-create", <UserAddOutlined />),
-    getItem("Manager List", "/manager-list", <SolutionOutlined />),
-    getItem("Reader List", "/reader-list", <SolutionOutlined />),
+  getItem("Quản lý thành viên", "8", <TeamOutlined />, [
+    getItem("Yêu cầu chờ", "/waiting-member", <ClockCircleOutlined />),
+    getItem("Tạo tài khoản", "/manager/account-create", <UserAddOutlined />),
+    getItem("Danh sách quản lý", "/manager-list", <SolutionOutlined />),
+    getItem("Danh sách thành viên", "/reader-list", <SolutionOutlined />),
   ]),
-  getItem("Library information", "/library-info", <BankOutlined />),
+  getItem("Thông tin thư viện", "/library-info", <BankOutlined />),
 ];
 export default function SideNav() {
   const { Sider } = Layout;

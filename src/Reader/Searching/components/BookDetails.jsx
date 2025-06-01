@@ -15,12 +15,12 @@ const BookDetails = ({
       <Title level={2}>{book.name}</Title>
       <div style={{ marginBottom: 16 }}>
         <Space>
-          <Text strong><UserOutlined /> Author:</Text>
+          <Text strong><UserOutlined /> Tác giả:</Text>
           <Text>{book.author}</Text>
         </Space>
         
         <Space style={{ marginLeft: 24 }}>
-          <Text strong><CalendarOutlined /> Year:</Text>
+          <Text strong><CalendarOutlined /> Năm:</Text>
           <Text>{book.yearOfPublication}</Text>
         </Space>
       </div>
@@ -50,22 +50,22 @@ const BookDetails = ({
         {book.description}
       </Paragraph>
 
-      <Divider orientation="left">Book Details</Divider>
+      <Divider orientation="left">Chi tiết sách</Divider>
       
       <Descriptions bordered column={{ xxl: 3, xl: 3, lg: 3, md: 2, sm: 1, xs: 1 }}>
-        <Descriptions.Item label="Publisher">{book.publisherName}</Descriptions.Item>
-        <Descriptions.Item label="Year">{book.yearOfPublication}</Descriptions.Item>
-        <Descriptions.Item label="Language">{book.language}</Descriptions.Item>
-        <Descriptions.Item label="Category">{category?.name}</Descriptions.Item>
-        <Descriptions.Item label="Type">{type?.name}</Descriptions.Item>
-        <Descriptions.Item label="Status">
+        <Descriptions.Item label="Nhà xuất bản">{book.publisherName}</Descriptions.Item>
+        <Descriptions.Item label="Năm xuất bản">{book.yearOfPublication}</Descriptions.Item>
+        <Descriptions.Item label="Ngôn ngữ">{book.language}</Descriptions.Item>
+        <Descriptions.Item label="Thể loại">{category?.name}</Descriptions.Item>
+        <Descriptions.Item label="Loại sách">{type?.name}</Descriptions.Item>
+        <Descriptions.Item label="Tình trạng">
           <Tag color={book.status === "available" ? "success" : "error"}>
-            {book.status === "available" ? "Available" : "Borrowed"}
+            {book.status === "available" ? "Có sẵn" : "Đã mượn"}
           </Tag>
         </Descriptions.Item>
       </Descriptions>
 
-      <Divider orientation="left">Description</Divider>
+      <Divider orientation="left">Mô tả</Divider>
       
       <Paragraph style={{ fontSize: 16, lineHeight: 1.8, whiteSpace: "pre-line" }}>
         {book.description}

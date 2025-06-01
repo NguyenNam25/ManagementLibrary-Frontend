@@ -304,12 +304,12 @@ export default function BorrowRequest() {
         </div>
 
         <Modal
-          title="Confirm Borrow Request"
+          title="Xác nhận yêu cầu mượn sách"
           open={isModalVisible}
           onOk={handleModalOk}
           onCancel={handleModalCancel}
-          okText="Confirm"
-          cancelText="Cancel"
+          okText="Xác nhận"
+          cancelText="Hủy"
         >
           <Form
             form={form}
@@ -321,24 +321,24 @@ export default function BorrowRequest() {
           >
             <Form.Item
               name="borrowDate"
-              label="Borrow Date"
-              rules={[{ required: true, message: "Please select borrow date" }]}
+              label="Ngày mượn"
+              rules={[{ required: true, message: "Vui lòng chọn ngày mượn" }]}
             >
               <DatePicker style={{ width: "100%" }} />
             </Form.Item>
 
             <Form.Item
               name="allowedDays"
-              label="Allowed Days"
+              label="Số ngày mượn"
               rules={[
-                { required: true, message: "Please enter allowed days" },
+                { required: true, message: "Vui lòng nhập số ngày cho phép" },
               ]}
             >
               <InputNumber min={1} max={30} style={{ width: "100%" }} />
             </Form.Item>
 
             <div style={{ marginTop: 16 }}>
-              <h4>Selected Books:</h4>
+              <h4>Sách đã chọn:</h4>
               <ul>
                 {selectedBooks && selectedBooks.books && selectedBooks.books.map((book) => (
                   <li key={book._id}>{book.name} - {book.author}</li>
@@ -373,12 +373,12 @@ export default function BorrowRequest() {
         </Breadcrumb>
 
         <Title level={2} style={{ marginBottom: 24 }}>
-          My Borrow Requests
+          Yêu cầu mượn sách của tôi
         </Title>
 
         <Paragraph style={{ marginBottom: 24 }}>
-          Manage your pending borrow requests and view books you've borrowed.
-          You can confirm book pickup or cancel requests here.
+          Quản lý các yêu cầu mượn sách đang chờ và xem sách bạn đã mượn.
+          Bạn có thể xác nhận nhận sách hoặc hủy yêu cầu tại đây.
         </Paragraph>
 
         {renderContent()}

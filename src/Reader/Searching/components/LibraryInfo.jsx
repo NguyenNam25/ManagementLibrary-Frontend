@@ -5,13 +5,13 @@ const { Text } = Typography;
 
 const LibraryInfo = ({ book }) => {
   return (
-    <Card title="Library Information" style={{ marginBottom: 16 }}>
+    <Card title="Thông tin thư viện" style={{ marginBottom: 16 }}>
       <div>
-        <Text>Total Copies: {book.quantity}</Text>
+        <Text>Tổng số bản sao: {book.quantity}</Text>
         <br />
-        <Text>Available: {book.status === "available" ? book.quantity : 0}</Text>
+        <Text>Có sẵn: {book.status === "available" ? book.quantity : 0}</Text>
         <br />
-        <Text>Borrowed: {book.status === "borrowed" ? book.quantity : 0}</Text>
+        <Text>Đang mượn: {book.status === "borrowed" ? book.quantity : 0}</Text>
       </div>
     </Card>
   );

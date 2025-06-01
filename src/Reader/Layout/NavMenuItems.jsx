@@ -5,21 +5,21 @@ export const NavMenuItems = [
   {
     key: "home",
     icon: <HomeOutlined />,
-    label: <Link to="/reader/home">Home</Link>,
+    label: <Link to="/reader/home">Trang chủ</Link>,
   },
   {
     key: "search",
     icon: <SearchOutlined />,
-    label: <Link to="/reader/search">Search</Link>,
+    label: <Link to="/reader/search">Tìm kiếm</Link>,
   },
   {
     key: "borrow",
     icon: <BookOutlined />,
-    label: <Link to="/reader/borrow">Borrow Requests</Link>,
+    label: <Link to="/reader/borrow">Yêu cầu mượn</Link>,
   },
   {
     key: "service",
     icon: <ReadOutlined />,
-    label: <Link to="/reader/service">Service</Link>,
+    label: <Link to="/reader/service">Dịch vụ</Link>,
   },
 ];

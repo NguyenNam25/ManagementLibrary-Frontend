@@ -10,6 +10,7 @@ import {
   Col,
   Card,
   message,
+  Typography,
 } from "antd";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import SideNav from "../Layout/SideNav";
@@ -18,6 +19,8 @@ import majorApi from "../../api/major/index.js";
 import bookApi from "../../api/book/index.js";
 import ImageDragger from "./ImageDragger";
 import axios from "axios";
+
+const { Title, Text } = Typography;
 
 export default function UpdateBook() {
   const [form] = Form.useForm();
@@ -77,31 +80,35 @@ export default function UpdateBook() {
       setUploading(true);
       // Create FormData object to handle file upload
       const formData = new FormData();
-      
+
       // Append all form fields to FormData
-      Object.keys(values).forEach(key => {
+      Object.keys(values).forEach((key) => {
         console.log(key, values[key]);
-        if (key === 'image' && values[key]) {
-          formData.append('image', values[key]);
+        if (key === "image" && values[key]) {
+          formData.append("image", values[key]);
         } else {
           formData.append(key, values[key]);
         }
       });
 
       // console.log(formData.get("image"));
-      const response = await axios.put(`http://localhost:3000/books/${book._id}`, formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-        withCredentials: true,
-      });
+      const response = await axios.put(
+        `http://localhost:3000/books/${book._id}`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+          withCredentials: true,
+        }
+      );
       if (response.status === 201) {
-        message.success("Thêm sách thành công");
+        message.success("Cập nhật sách thành công");
         form.resetFields();
         navigate("/book-list");
       }
     } catch (error) {
-      message.error("Thêm sách thất bại");
+      message.error("Cập nhật sách thất bại");
       console.error("Error creating book:", error);
     } finally {
       setUploading(false);
@@ -111,23 +118,27 @@ export default function UpdateBook() {
   const { Content } = Layout;
 
   return (
-    <Layout style={{ minHeight: "100vh", width: "100vw" }}>
+    <Layout style={{ minHeight: "100vh" }}>
       <SideNav />
       <Layout style={{ background: "#f0f4f7", width: "100%" }}>
-        <HeaderComponent />
+        <HeaderComponent title="Quản lý sách" />
         <Content
           style={{
             margin: 0,
             padding: "24px",
-            minHeight: "calc(100vh - 64px)",
             width: "100%",
           }}
         >
+          <div style={{ marginBottom: "24px" }}>
+            <Title level={2} style={{ margin: 0 }}>
+              Cập nhật sách
+            </Title>
+            <Text type="secondary">Cập nhật thông tin sách</Text>
+          </div>
           <Card
             title="Cập nhật sách"
             bordered={false}
             style={{
-              height: "100%",
               width: "100%",
             }}
           >
@@ -136,13 +147,12 @@ export default function UpdateBook() {
               layout="vertical"
               onFinish={onFinish}
               style={{
-                height: "100%",
                 width: "100%",
                 maxWidth: "100%",
               }}
             >
-              <Row gutter={24} style={{ height: "100%" }}>
-                <Col span={12} style={{ height: "100%" }}>
+              <Row gutter={24} style={{}}>
+                <Col span={12} style={{}}>
                   <Form.Item
                     label="Ảnh bìa sách"
                     name="image"
@@ -152,42 +162,13 @@ export default function UpdateBook() {
                         message: "Vui lòng tải lên ảnh bìa sách",
                       },
                     ]}
-                    style={{ height: "100%" }}
+                    style={{}}
                   >
                     <ImageDragger />
                   </Form.Item>
                 </Col>
-                <Col span={12} style={{ height: "100%" }}>
-                  <Space
-                    direction="vertical"
-                    style={{ width: "100%", height: "100%" }}
-                  >
-                    <Row gutter={16}>
-                      <Col span={12}>
-                        <Form.Item label="Mã sách">
-                          <Input value={book?.id || ""} readOnly />
-                        </Form.Item>
-                      </Col>
-                      <Col span={12}>
-                        <Form.Item
-                          label="Loại"
-                          name="type"
-                          rules={[
-                            { required: true, message: "Vui lòng chọn loại" },
-                          ]}
-                        >
-                          <Select
-                            placeholder="Chọn loại"
-                            onChange={(value) => {
-                              console.log("Loại được chọn:", value);
-                            }}
-                          >
-                            {selectType}
-                          </Select>
-                        </Form.Item>
-                      </Col>
-                    </Row>
-
+                <Col span={12} style={{}}>
+                  <Space direction="vertical" style={{ width: "100%" }}>
                     <Form.Item
                       label="Tiêu đề"
                       name="name"
@@ -222,7 +203,25 @@ export default function UpdateBook() {
                     </Form.Item>
 
                     <Row gutter={16}>
-                      <Col span={12}>
+                    <Col span={8}>
+                        <Form.Item
+                          label="Loại"
+                          name="type"
+                          rules={[
+                            { required: true, message: "Vui lòng chọn loại" },
+                          ]}
+                        >
+                          <Select
+                            placeholder="Chọn loại"
+                            onChange={(value) => {
+                              console.log("Loại được chọn:", value);
+                            }}
+                          >
+                            {selectType}
+                          </Select>
+                        </Form.Item>
+                      </Col>
+                      <Col span={8}>
                         <Form.Item
                           label="Thể loại"
                           name="category"
@@ -243,7 +242,7 @@ export default function UpdateBook() {
                           </Select>
                         </Form.Item>
                       </Col>
-                      <Col span={12}>
+                      <Col span={8}>
                         <Form.Item
                           label="Ngôn ngữ"
                           name="language"
@@ -314,9 +313,19 @@ export default function UpdateBook() {
                       </Col>
                     </Row>
                   </Space>
+                  <Form.Item
+                    label="Mô tả"
+                    name="description"
+                  >
+                    <Input.TextArea
+                      placeholder="Nhập mô tả sách"
+                      autoSize={{ minRows: 3, maxRows: 6 }}
+                      showCount
+                      maxLength={500}
+                    />
+                  </Form.Item>
                 </Col>
               </Row>
-
               <Form.Item style={{ marginTop: 24, textAlign: "right" }}>
                 <Button type="primary" htmlType="submit" size="large">
                   Cập nhật

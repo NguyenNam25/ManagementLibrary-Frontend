@@ -3,7 +3,6 @@ import Home from "../Home/Home";
 import BookList from "../BookManager/BookList";
 import AddBook from "../BookManager/AddBook";
 import UpdateBook from "../BookManager/UpdateBook";
-import DeleteBook from "../BookManager/DeleteBook";
 import UpdateMember from "../MemberManager/UpdateMember";
 import Rules from "../ServicesNRules/Rules";
 import BTList from "../CheckOut/BTList";
@@ -25,7 +24,6 @@ const ManagerRoute = [
   <Route path="/book-list" element={<BookList />} />,
   <Route path="/book-list/add" element={<AddBook />} />,
   <Route path="/book-list/:id/update" element={<UpdateBook />} />,
-  <Route path="/book-list/:id/delete" element={<DeleteBook />} />,
   <Route path="/manager-list" element={<ManagerList />} />,
   <Route path="/waiting-member" element={<WaitingMember />} />,
   <Route path="/manager/:id/update" element={<UpdateMember />} />,

@@ -33,7 +33,7 @@ export default function Login() {
     <div className="h-screen flex flex-col items-center justify-center bg-[url('./images/Login/login-bg.jpg')] bg-cover bg-center">
       <div className="border-none w-[29.375rem] py-15 px-[4.375rem] h-auto t-10 rounded-lg shadow-[0_4px_10px_rgba(0,0,0,0.3)] bg-white">
         <div className="mb-8">
-          <h1 className="text-4xl text-center">Library</h1>
+          <h1 className="text-4xl text-center">Quản lý thư viện</h1>
         </div>
         <Form 
           onFinish={onFinish} 
@@ -56,7 +56,7 @@ export default function Login() {
             />
           </Form.Item>
           <Form.Item 
-            label="Password" 
+            label="Mật khẩu" 
             name="password" 
             className="font-semibold"
             rules={[
@@ -80,7 +80,7 @@ export default function Login() {
                 }}
                 className="block text-sm text-gray-500 hover:text-gray-700"
               >
-                Forgot password?
+                Quên mật khẩu?
               </a>
             </Flex>
           </Form.Item>
@@ -93,27 +93,12 @@ export default function Login() {
               className="mt-7"
               loading={loading}
             >
-              Log in
+              Đăng nhập
             </Button>
           </Form.Item>
         </Form>
       </div>
-      <div className="mt-6"> 
-        <p className="text-white">
-          Don't have an account?{' '}
-          <a 
-            href="#" 
-            className="hover:text-blue-400 hover:underline" 
-            onClick={(e) => {
-              e.preventDefault();
-              navigate("/register");
-            }}
-          >
-            Signup
-          </a>{' '}
-          here!
-        </p>
-      </div>
+      
     </div>
   );
 }

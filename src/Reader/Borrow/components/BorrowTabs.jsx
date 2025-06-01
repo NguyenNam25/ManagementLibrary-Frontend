@@ -29,7 +29,7 @@ const BorrowTabs = ({
       <Tabs.TabPane 
         tab={
           <span>
-            <ClockCircleOutlined /> Pending Requests
+            <ClockCircleOutlined /> Yêu cầu đang chờ
             {pendingRequests.length > 0 && (
               <Tag color="warning" style={{ marginLeft: 8 }}>
                 {pendingRequests.length}
@@ -52,7 +52,7 @@ const BorrowTabs = ({
       <Tabs.TabPane 
         tab={
           <span>
-            <BookOutlined /> Borrowed Books
+            <BookOutlined /> Sách đang mượn
             {borrowedRequests.length > 0 && (
               <Tag color="processing" style={{ marginLeft: 8 }}>
                 {borrowedRequests.length}
@@ -75,7 +75,7 @@ const BorrowTabs = ({
       <Tabs.TabPane 
         tab={
           <span>
-            <HistoryOutlined /> Returned Books
+            <HistoryOutlined /> Sách đã trả
             {returnedRequests.length > 0 && (
               <Tag color="success" style={{ marginLeft: 8 }}>
                 {returnedRequests.length}

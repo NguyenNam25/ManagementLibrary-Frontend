@@ -44,153 +44,153 @@ export default function ServiceRule() {
 
   // Library Hours Data
   const libraryHours = [
-    { day: "Monday - Friday", hours: "9:00 AM - 9:00 PM" },
-    { day: "Saturday", hours: "10:00 AM - 6:00 PM" },
-    { day: "Sunday", hours: "12:00 PM - 5:00 PM" },
-    { day: "Public Holidays", hours: "Closed" }
+    { day: "Thứ Hai - Thứ Sáu", hours: "9:00 - 21:00" },
+    { day: "Thứ Bảy", hours: "10:00 - 18:00" },
+    { day: "Chủ Nhật", hours: "12:00 - 17:00" },
+    { day: "Ngày lễ", hours: "Đóng cửa" }
   ];
 
   // Special Hours Data
   const specialHours = [
-    { period: "Summer Break (June 1 - August 31)", hours: "10:00 AM - 7:00 PM" },
-    { period: "Winter Break (December 20 - January 5)", hours: "11:00 AM - 5:00 PM" },
-    { period: "Exam Weeks", hours: "8:00 AM - 11:00 PM" }
+    { period: "Nghỉ hè (1/6 - 31/8)", hours: "10:00 - 19:00" },
+    { period: "Nghỉ đông (20/12 - 5/1)", hours: "11:00 - 17:00" },
+    { period: "Tuần thi", hours: "8:00 - 23:00" }
   ];
 
   // Borrowing Rules Data
   const borrowingRules = [
     {
-      itemType: "Books",
-      loanPeriod: "14 days",
-      limit: "5 items",
-      renewals: "2 times (if not reserved)",
-      fineRate: "$0.25 per day"
+      itemType: "Sách",
+      loanPeriod: "14 ngày",
+      limit: "5 cuốn",
+      renewals: "2 lần (nếu không có người đặt trước)",
+      fineRate: "0.25$ mỗi ngày"
     },
     {
-      itemType: "Reference Books",
-      loanPeriod: "Library use only",
-      limit: "Not for loan",
-      renewals: "N/A",
-      fineRate: "N/A"
+      itemType: "Sách tham khảo",
+      loanPeriod: "Chỉ sử dụng tại thư viện",
+      limit: "Không cho mượn",
+      renewals: "Không áp dụng",
+      fineRate: "Không áp dụng"
     },
     {
-      itemType: "Journals/Magazines",
-      loanPeriod: "7 days",
-      limit: "3 items",
-      renewals: "1 time",
-      fineRate: "$0.50 per day"
+      itemType: "Tạp chí/Tạp san",
+      loanPeriod: "7 ngày",
+      limit: "3 cuốn",
+      renewals: "1 lần",
+      fineRate: "0.50$ mỗi ngày"
     },
     {
-      itemType: "DVDs/Media",
-      loanPeriod: "3 days",
-      limit: "2 items",
-      renewals: "None",
-      fineRate: "$1.00 per day"
+      itemType: "DVD/Phương tiện",
+      loanPeriod: "3 ngày",
+      limit: "2 cuốn",
+      renewals: "Không cho phép",
+      fineRate: "1.00$ mỗi ngày"
     }
   ];
 
   // Borrowing Steps
   const borrowingSteps = [
     {
-      title: "Find Item",
-      description: "Search for items using the catalog or browse the shelves."
+      title: "Tìm sách",
+      description: "Tìm kiếm sách bằng danh mục hoặc duyệt qua kệ sách."
     },
     {
-      title: "Check Availability",
-      description: "Ensure the item is available for borrowing."
+      title: "Kiểm tra tính khả dụng",
+      description: "Đảm bảo sách có sẵn để mượn."
     },
     {
-      title: "Take to Service Desk",
-      description: "Bring the item to the service desk or use the self-checkout kiosk."
+      title: "Đến quầy dịch vụ",
+      description: "Mang sách đến quầy dịch vụ hoặc sử dụng máy tự phục vụ."
     },
     {
-      title: "Present Library Card",
-      description: "Show your library card or use your app."
+      title: "Trình thẻ thư viện",
+      description: "Xuất trình thẻ thư viện hoặc sử dụng ứng dụng."
     },
     {
-      title: "Confirm Loan",
-      description: "Receive confirmation of the due date."
+      title: "Xác nhận mượn",
+      description: "Nhận xác nhận ngày trả sách."
     }
   ];
 
   // Library Services
   const libraryServices = [
     {
-      title: "Computer Access",
+      title: "Truy cập máy tính",
       icon: <DesktopOutlined />,
-      description: "Free access to computers with internet and productivity software. 2-hour time limit per session."
+      description: "Truy cập miễn phí vào máy tính có internet và phần mềm văn phòng. Giới hạn 2 giờ mỗi phiên."
     },
     {
       title: "Wi-Fi",
       icon: <WifiOutlined />,
-      description: "Free Wi-Fi throughout the library. Connect to 'Library_Public' network."
+      description: "Wi-Fi miễn phí trong toàn bộ thư viện. Kết nối với mạng 'Library_Public'."
     },
     {
-      title: "Printing & Copying",
+      title: "In ấn & Sao chép",
       icon: <PrinterOutlined />,
-      description: "Black & white: $0.10/page. Color: $0.50/page. Scan to email is free."
+      description: "Đen trắng: 0.10$/trang. Màu: 0.50$/trang. Quét gửi email miễn phí."
     },
     {
-      title: "Study Rooms",
+      title: "Phòng học nhóm",
       icon: <TeamOutlined />,
-      description: "Group study rooms available by reservation. Up to 3 hours per day."
+      description: "Phòng học nhóm có sẵn theo đặt trước. Tối đa 3 giờ mỗi ngày."
     },
     {
-      title: "Reference Assistance",
+      title: "Hỗ trợ tham khảo",
       icon: <InfoCircleOutlined />,
-      description: "Librarians available to help with research and finding materials."
+      description: "Thủ thư sẵn sàng hỗ trợ nghiên cứu và tìm tài liệu."
     }
   ];
 
   // Conduct Rules
   const conductRules = [
-    "Maintain a quiet environment in designated areas",
-    "No food or drinks near computers or book collections",
-    "Cell phones should be silenced",
-    "Respect other library users and staff",
-    "Do not damage or mark library materials",
-    "Children under 12 must be supervised by an adult",
-    "No removal of library materials without proper checkout",
-    "Follow all posted rules regarding computer use",
-    "No sleeping in the library",
-    "No solicitation or distribution of materials without permission"
+    "Giữ yên tĩnh trong khu vực được chỉ định",
+    "Không ăn uống gần máy tính hoặc kệ sách",
+    "Điện thoại di động nên để im lặng",
+    "Tôn trọng người dùng thư viện khác và nhân viên",
+    "Không làm hư hỏng hoặc đánh dấu tài liệu thư viện",
+    "Trẻ em dưới 12 tuổi phải được giám sát bởi người lớn",
+    "Không mang tài liệu thư viện ra ngoài mà không mượn đúng cách",
+    "Tuân theo tất cả quy định về sử dụng máy tính",
+    "Không ngủ trong thư viện",
+    "Không quảng cáo hoặc phát tán tài liệu mà không được phép"
   ];
 
   // Fines and Fees
   const finesAndFees = [
-    { item: "Overdue Books", fee: "$0.25 per day (max $10 per item)" },
-    { item: "Overdue DVDs/Media", fee: "$1.00 per day (max $20 per item)" },
-    { item: "Lost or Damaged Items", fee: "Replacement cost + $5 processing fee" },
-    { item: "Replacement Library Card", fee: "$2.00" },
-    { item: "Printing (B&W)", fee: "$0.10 per page" },
-    { item: "Printing (Color)", fee: "$0.50 per page" },
-    { item: "Late Study Room Cancellation", fee: "$5.00" }
+    { item: "Sách quá hạn", fee: "0.25$ mỗi ngày (tối đa 10$ mỗi cuốn)" },
+    { item: "DVD/Phương tiện quá hạn", fee: "1.00$ mỗi ngày (tối đa 20$ mỗi cuốn)" },
+    { item: "Mất hoặc hư hỏng", fee: "Chi phí thay thế + 5$ phí xử lý" },
+    { item: "Thẻ thư viện thay thế", fee: "2.00$" },
+    { item: "In đen trắng", fee: "0.10$ mỗi trang" },
+    { item: "In màu", fee: "0.50$ mỗi trang" },
+    { item: "Hủy phòng học muộn", fee: "5.00$" }
   ];
 
   // Table columns for borrowing rules
   const borrowingColumns = [
     {
-      title: "Item Type",
+      title: "Loại tài liệu",
       dataIndex: "itemType",
       key: "itemType",
     },
     {
-      title: "Loan Period",
+      title: "Thời hạn mượn",
       dataIndex: "loanPeriod",
       key: "loanPeriod",
     },
     {
-      title: "Item Limit",
+      title: "Giới hạn",
       dataIndex: "limit",
       key: "limit",
     },
     {
-      title: "Renewals",
+      title: "Gia hạn",
       dataIndex: "renewals",
       key: "renewals",
     },
     {
-      title: "Late Fees",
+      title: "Phí trễ hạn",
       dataIndex: "fineRate",
       key: "fineRate",
     }
@@ -199,34 +199,34 @@ export default function ServiceRule() {
   // Rules Data
   const rulesData = [
     {
-      title: "Borrowing Rules",
+      title: "Quy định mượn sách",
       icon: <BookOutlined />,
-      description: "Books can be borrowed for 14 days, with a limit of 5 items. Reference books are for library use only. Journals can be borrowed for 7 days, and DVDs for 3 days. Late fees apply for overdue items."
+      description: "Sách có thể được mượn trong 14 ngày, giới hạn 5 cuốn. Sách tham khảo chỉ sử dụng tại thư viện. Tạp chí có thể mượn trong 7 ngày, và DVD trong 3 ngày. Áp dụng phí trễ hạn cho sách quá hạn."
     },
     {
-      title: "Fines and Fees",
+      title: "Phí và lệ phí",
       icon: <WarningOutlined />,
-      description: "Overdue books: $0.25 per day. DVDs: $1.00 per day. Lost items: replacement cost + $5 fee. Library privileges are suspended if fines exceed $10.00."
+      description: "Sách quá hạn: 0.25$ mỗi ngày. DVD: 1.00$ mỗi ngày. Mất sách: chi phí thay thế + 5$ phí. Quyền sử dụng thư viện sẽ bị tạm đình chỉ nếu phí vượt quá 10.00$."
     },
     {
-      title: "Borrowing Process",
+      title: "Quy trình mượn sách",
       icon: <FileDoneOutlined />,
-      description: "Find your item, check availability, bring it to the service desk, present your library card, and receive confirmation of the due date. You can renew items up to 2 times if not reserved."
+      description: "Tìm sách, kiểm tra tính khả dụng, mang đến quầy dịch vụ, trình thẻ thư viện và nhận xác nhận ngày trả. Bạn có thể gia hạn sách tối đa 2 lần nếu không có người đặt trước."
     },
     {
-      title: "Library Conduct",
+      title: "Quy tắc thư viện",
       icon: <InfoCircleOutlined />,
-      description: "Maintain a quiet environment, no food near computers, silence cell phones, respect others, and do not damage materials. Children under 12 must be supervised."
+      description: "Giữ yên tĩnh, không ăn uống gần máy tính, im lặng điện thoại, tôn trọng người khác và không làm hư hỏng tài liệu. Trẻ em dưới 12 tuổi phải được giám sát."
     },
     {
-      title: "Digital Access",
+      title: "Truy cập kỹ thuật số",
       icon: <DesktopOutlined />,
-      description: "Access e-books, audiobooks, and digital resources using your library card. Free Wi-Fi and computer access available with a 2-hour time limit per session."
+      description: "Truy cập sách điện tử, sách nói và tài nguyên kỹ thuật số bằng thẻ thư viện. Wi-Fi miễn phí và truy cập máy tính có sẵn với giới hạn 2 giờ mỗi phiên."
     },
     {
-      title: "Study Spaces",
+      title: "Không gian học tập",
       icon: <TeamOutlined />,
-      description: "Group study rooms available by reservation for up to 3 hours per day. Quiet study areas are designated throughout the library."
+      description: "Phòng học nhóm có sẵn theo đặt trước tối đa 3 giờ mỗi ngày. Khu vực học tập yên tĩnh được chỉ định trong toàn bộ thư viện."
     }
   ];
 
@@ -237,7 +237,7 @@ export default function ServiceRule() {
       </div>
       <Content style={{ padding: "24px", backgroundColor: "#f5f5f5", minHeight: "calc(100vh - 64px)" }}>
         <Title level={2} style={{ textAlign: "center", marginBottom: 24 }}>
-          Library Services & Rules
+          Dịch vụ & Quy định thư viện
         </Title>
 
         <Tabs
@@ -248,12 +248,12 @@ export default function ServiceRule() {
           style={{ marginBottom: 32 }}
         >
           <TabPane 
-            tab={<span><ClockCircleOutlined /> Hours & Location</span>} 
+            tab={<span><ClockCircleOutlined /> Giờ mở cửa & Vị trí</span>} 
             key="1"
           >
             <Row gutter={[24, 24]}>
               <Col xs={24} md={12}>
-                <Card title="Regular Library Hours" bordered={false}>
+                <Card title="Giờ mở cửa thông thường" bordered={false}>
                   <List
                     itemLayout="horizontal"
                     dataSource={libraryHours}
@@ -268,7 +268,7 @@ export default function ServiceRule() {
                     )}
                   />
                   
-                  <Divider orientation="left">Special Hours</Divider>
+                  <Divider orientation="left">Giờ đặc biệt</Divider>
                   
                   <List
                     itemLayout="horizontal"
@@ -284,8 +284,8 @@ export default function ServiceRule() {
                   />
 
                   <Alert
-                    message="Holiday Closures"
-                    description="The library is closed on all federal holidays. Special hours may apply before and after holidays."
+                    message="Ngày nghỉ lễ"
+                    description="Thư viện đóng cửa vào tất cả các ngày lễ liên bang. Giờ mở cửa đặc biệt có thể áp dụng trước và sau ngày lễ."
                     type="info"
                     showIcon
                     style={{ marginTop: 16 }}
@@ -294,20 +294,20 @@ export default function ServiceRule() {
               </Col>
 
               <Col xs={24} md={12}>
-                <Card title="Location & Contact Information" bordered={false}>
+                <Card title="Vị trí & Thông tin liên hệ" bordered={false}>
                   <Paragraph>
                     <Space>
                       <EnvironmentOutlined />
-                      <Text strong>Address:</Text>
+                      <Text strong>Địa chỉ:</Text>
                     </Space>
                     <div style={{ marginLeft: 24, marginBottom: 16 }}>
-                      123 Library Street,<br />
-                      Academic City, 10001
+                      123 Đường Thư viện,<br />
+                      Thành phố Học thuật, 10001
                     </div>
                     
                     <Space>
                       <PhoneOutlined />
-                      <Text strong>Phone:</Text>
+                      <Text strong>Điện thoại:</Text>
                     </Space>
                     <div style={{ marginLeft: 24, marginBottom: 16 }}>
                       (123) 456-7890
@@ -323,8 +323,8 @@ export default function ServiceRule() {
                   </Paragraph>
 
                   <Alert
-                    message="Accessibility"
-                    description="Our library is fully accessible for individuals with disabilities. Ramps, elevators, and accessible restrooms are available."
+                    message="Khả năng tiếp cận"
+                    description="Thư viện của chúng tôi hoàn toàn có thể tiếp cận cho người khuyết tật. Có sẵn đường dốc, thang máy và nhà vệ sinh dành cho người khuyết tật."
                     type="success"
                     showIcon
                     style={{ marginTop: 16 }}
@@ -335,7 +335,7 @@ export default function ServiceRule() {
           </TabPane>
 
           <TabPane 
-            tab={<span><BookOutlined /> Rules</span>} 
+            tab={<span><BookOutlined /> Quy định</span>} 
             key="2"
           >
             <Row gutter={[24, 24]}>
@@ -359,7 +359,7 @@ export default function ServiceRule() {
           </TabPane>
 
           <TabPane 
-            tab={<span><FileDoneOutlined /> Available Services</span>} 
+            tab={<span><FileDoneOutlined /> Dịch vụ có sẵn</span>} 
             key="3"
           >
             <Row gutter={[24, 24]}>
@@ -381,41 +381,41 @@ export default function ServiceRule() {
               ))}
             </Row>
 
-            <Divider orientation="left" style={{ marginTop: 24 }}>Additional Services</Divider>
+            <Divider orientation="left" style={{ marginTop: 24 }}>Dịch vụ bổ sung</Divider>
 
             <Collapse defaultActiveKey={['1']} style={{ marginBottom: 24 }}>
-              <Panel header="Interlibrary Loans" key="1">
+              <Panel header="Mượn liên thư viện" key="1">
                 <Paragraph>
-                  Items not available in our collection may be requested through our Interlibrary Loan service.
-                  Requests typically take 1-2 weeks to fulfill. A $3 processing fee applies to each request.
+                  Tài liệu không có trong bộ sưu tập của chúng tôi có thể được yêu cầu thông qua dịch vụ Mượn liên thư viện.
+                  Yêu cầu thường mất 1-2 tuần để thực hiện. Phí xử lý 3$ áp dụng cho mỗi yêu cầu.
                 </Paragraph>
               </Panel>
-              <Panel header="Research Assistance" key="2">
+              <Panel header="Hỗ trợ nghiên cứu" key="2">
                 <Paragraph>
-                  Librarians are available to help with research needs. Schedule a one-on-one appointment or
-                  visit the reference desk during staffed hours. We can assist with academic research, database access,
-                  citation formatting, and more.
+                  Thủ thư sẵn sàng hỗ trợ nhu cầu nghiên cứu. Đặt lịch hẹn một-một hoặc
+                  đến quầy tham khảo trong giờ làm việc. Chúng tôi có thể hỗ trợ nghiên cứu học thuật, truy cập cơ sở dữ liệu,
+                  định dạng trích dẫn và nhiều hơn nữa.
                 </Paragraph>
               </Panel>
-              <Panel header="Library Events & Programs" key="3">
+              <Panel header="Sự kiện & Chương trình thư viện" key="3">
                 <Paragraph>
-                  The library hosts various events including author talks, book clubs, workshops, and
-                  educational programs. Check the events calendar on our website or ask at the information desk for
-                  upcoming events.
+                  Thư viện tổ chức nhiều sự kiện bao gồm nói chuyện với tác giả, câu lạc bộ sách, hội thảo và
+                  chương trình giáo dục. Kiểm tra lịch sự kiện trên trang web của chúng tôi hoặc hỏi tại quầy thông tin về
+                  các sự kiện sắp tới.
                 </Paragraph>
               </Panel>
-              <Panel header="Digital Resources" key="4">
+              <Panel header="Tài nguyên kỹ thuật số" key="4">
                 <Paragraph>
-                  Library card holders have access to various online resources including e-books, audiobooks,
-                  digital magazines, research databases, and learning platforms. These can be accessed from home
-                  using your library card number and PIN.
+                  Người dùng thẻ thư viện có quyền truy cập vào nhiều tài nguyên trực tuyến bao gồm sách điện tử, sách nói,
+                  tạp chí kỹ thuật số, cơ sở dữ liệu nghiên cứu và nền tảng học tập. Có thể truy cập từ nhà
+                  bằng số thẻ thư viện và mã PIN của bạn.
                 </Paragraph>
               </Panel>
             </Collapse>
 
             <Alert
-              message="Service Requests"
-              description="For specialized services or assistance not listed here, please contact the library staff at the information desk or call (123) 456-7890."
+              message="Yêu cầu dịch vụ"
+              description="Đối với dịch vụ chuyên biệt hoặc hỗ trợ không được liệt kê ở đây, vui lòng liên hệ nhân viên thư viện tại quầy thông tin hoặc gọi (123) 456-7890."
               type="info"
               showIcon
             />

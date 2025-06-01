@@ -2,134 +2,318 @@ import React, { useState, useEffect } from "react";
 import { Layout, Card, Col, Row, Space, Tag, Typography, Spin } from "antd";
 import { useNavigate } from "react-router-dom";
 import {
-  MoreOutlined,
   RiseOutlined,
   FallOutlined,
-  StockOutlined,
-  UserOutlined,
-  BookOutlined,
   ReadOutlined,
-  MessageOutlined,
 } from "@ant-design/icons";
 import SideNav from "../Layout/SideNav";
 import HeaderComponent from "../Layout/Header";
 import MyPieChart from "./PieChart";
 import ColumnChart from "./ColumnChart";
-import MyLineChart from "./LineChart";
-import RadialChart from "./RadialBarChart";
 import userApi from "../../api/user";
 import borrowTicketApi from "../../api/borrowticket";
 import roleApi from "../../api/role";
-
+import majorApi from "../../api/major";
 const { Title, Text } = Typography;
 
 export default function Home() {
   const { Content } = Layout;
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
-  const [stats, setStats] = useState({
-    totalUsersRegisteredThisMonth: 0,
-    totalUsersRegisteredLastMonth: 0,
-    totalBorrowsThisMonth: 0,
-    totalBorrowsLastMonth: 0,
-    userGrowth: 0,
-    borrowGrowth: 0,
-    totalUsersRegistered: 0,
-  });
   const [bookCategoryStats, setBookCategoryStats] = useState([]);
   const [bookBorrowStats, setBookBorrowStats] = useState([]);
+  const [bookBorrowStatsMonthly, setBookBorrowStatsMonthly] = useState([]);
+  const [registeredUserStats, setRegisteredUserStats] = useState([]);
+  const [blockUserStats, setBlockUserStats] = useState([]);
 
-  useEffect(() => {
-    fetchDashboardData();
-  }, []);
-
-  const fetchDashboardData = async () => {
-    setLoading(true);
+  const fetchBookBorrowStatsMonthly = async () => {
     try {
-      const [userRes, borrowRes, roleRes] = await Promise.all([
-        userApi.getAllUsers(),
-        borrowTicketApi.getAllBorrowTickets(),
-        roleApi.getAllRoles(),
-      ]);
+      setLoading(true);
+      const response = await borrowTicketApi.getAllBorrowTickets();
+      const borrows = response.data;
+      // Create an array of months with their borrow counts
+      const monthNames = [
+        "January",
+        "February",
+        "March",
+        "April",
+        "May",
+        "June",
+        "July",
+        "August",
+        "September",
+        "October",
+        "November",
+        "December",
+      ];
 
-      const users = userRes.data;
-      const borrows = borrowRes.data;
-      const roles = roleRes.data;
+      const currentYear = new Date().getFullYear();
+      const monthlyStats = monthNames.map((month, index) => {
+        const monthBorrows = borrows.filter((borrow) => {
+          const borrowDate = new Date(borrow.createdAt);
+          return (
+            borrowDate.getMonth() === index &&
+            borrowDate.getFullYear() === currentYear
+          );
+        });
+
+        return {
+          name: month,
+          borrowCount: monthBorrows.length,
+        };
+      });
+
+      setBookBorrowStatsMonthly(monthlyStats);
+    } catch (error) {
+      console.error("Error fetching book borrow stats:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const fetchBookBorrowStats = async () => {
+    try {
+      setLoading(true);
+      const response = await borrowTicketApi.getAllBorrowTickets();
+      const borrows = response.data;
 
       const now = new Date();
-      const thisMonth = now.getMonth();
+      const thisMonth = now.getMonth() + 1;
       const thisYear = now.getFullYear();
-      const lastMonth = thisMonth === 0 ? 11 : thisMonth - 1;
-      const lastMonthYear = thisMonth === 0 ? thisYear - 1 : thisYear;
+      const lastMonth = thisMonth === 1 ? 12 : thisMonth - 1;
+      const lastMonthYear = thisMonth === 1 ? thisYear - 1 : thisYear;
 
       const isSameMonth = (date, month, year) => {
         const d = new Date(date);
         return d.getMonth() === month && d.getFullYear() === year;
       };
 
-      const readerRole = roles.find((role) => role.name === "reader");
-
-      // Nếu không có role "reader", bỏ qua
-      if (!readerRole) {
-        console.warn("No role with name 'reader' found");
-        return;
-      }
-
-      const readers = users.filter(
-        (user) => user.status === "active" && user.roleId === readerRole.id
+      // Get borrows for this month and last month
+      const thisMonthBorrows = borrows.filter((borrow) =>
+        isSameMonth(borrow.createdAt, thisMonth, thisYear)
       );
 
-      //reader
-      const totalUsersRegistered = readers.length;
-
-      const totalUsersRegisteredThisMonth = readers.filter((user) =>
-        isSameMonth(user.createdAt, thisMonth, thisYear)
-      ).length;
-
-      const totalUsersRegisteredLastMonth = readers.filter((user) =>
-        isSameMonth(user.createdAt, lastMonth, lastMonthYear)
-      ).length;
-
-      const userGrowth =
-        totalUsersRegisteredLastMonth === 0
-          ? 100
-          : ((totalUsersRegisteredThisMonth - totalUsersRegisteredLastMonth) /
-              totalUsersRegisteredLastMonth) *
-            100;
-
-      // Borrows
-      const totalBorrowsThisMonth = borrows.filter((borrow) =>
-        isSameMonth(borrow.createdAt, thisMonth, thisYear)
-      ).length;
-
-      const totalBorrowsLastMonth = borrows.filter((borrow) =>
+      const lastMonthBorrows = borrows.filter((borrow) =>
         isSameMonth(borrow.createdAt, lastMonth, lastMonthYear)
-      ).length;
+      );
 
-      const borrowGrowth =
-        totalBorrowsLastMonth === 0
-          ? 100
-          : ((totalBorrowsThisMonth - totalBorrowsLastMonth) /
-              totalBorrowsLastMonth) *
-            100;
+      // Create stats for both months
+      const monthlyStats = [
+        {
+          name: "This Month",
+          borrowCount: thisMonthBorrows.length,
+          month: thisMonth,
+          year: thisYear,
+        },
+        {
+          name: "Last Month",
+          borrowCount: lastMonthBorrows.length,
+          month: lastMonth,
+          year: lastMonthYear,
+        },
+      ];
 
-      setStats({
-        totalUsersRegisteredThisMonth,
-        totalUsersRegisteredLastMonth,
-        totalBorrowsThisMonth,
-        totalBorrowsLastMonth,
-        userGrowth: parseFloat(userGrowth.toFixed(2)),
-        borrowGrowth: parseFloat(borrowGrowth.toFixed(2)),
-        totalUsersRegistered: totalUsersRegistered,
-      });
+      setBookBorrowStats(monthlyStats);
     } catch (error) {
-      console.error("Error fetching dashboard data:", error);
+      console.error("Error fetching book borrow stats:", error);
     } finally {
       setLoading(false);
     }
   };
 
-  console.log(stats);
+  const fetchCatgoryPopularity = async () => {
+    try {
+      setLoading(true);
+      const response = await majorApi.getAllCategories();
+      setBookCategoryStats(response.data);
+    } catch (error) {
+      console.error("Error fetching category popularity:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const fetchRegisteredUserStats = async () => {
+    try {
+      setLoading(true);
+      const [userRes, roleRes] = await Promise.all([
+        userApi.getAllUsers(),
+        roleApi.getAllRoles(),
+      ]);
+
+      const users = userRes.data;
+      const roles = roleRes.data;
+
+      // Find reader role
+      const readerRole = roles.find((role) => role.name === "reader");
+      if (!readerRole) {
+        console.warn("No role with name 'reader' found");
+        return;
+      }
+
+      // Filter active readers
+      const readers = users.filter(
+        (user) => user.status === "active" && user.roleId === readerRole.id
+      );
+
+      const now = new Date();
+      const thisMonth = now.getMonth() + 1;
+      const thisYear = now.getFullYear();
+      const lastMonth = thisMonth === 1 ? 12 : thisMonth - 1;
+      const lastMonthYear = thisMonth === 1 ? thisYear - 1 : thisYear;
+
+      const isSameMonth = (date, month, year) => {
+        const d = new Date(date);
+        return d.getMonth() === month && d.getFullYear() === year;
+      };
+
+      // Get registrations for this month and last month
+      const thisMonthRegistrations = readers.filter((user) =>
+        isSameMonth(user.createdAt, thisMonth, thisYear)
+      );
+
+      const lastMonthRegistrations = readers.filter((user) =>
+        isSameMonth(user.createdAt, lastMonth, lastMonthYear)
+      );
+
+      // Create stats for both months
+      const monthlyStats = [
+        {
+          name: "This Month",
+          registrationCount: thisMonthRegistrations.length,
+          month: thisMonth,
+          year: thisYear,
+        },
+        {
+          name: "Last Month",
+          registrationCount: lastMonthRegistrations.length,
+          month: lastMonth,
+          year: lastMonthYear,
+        },
+      ];
+
+      setRegisteredUserStats(monthlyStats);
+    } catch (error) {
+      console.error("Error fetching registered user stats:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const fetchBlockUserStats = async () => {
+    try {
+      const [userRes, roleRes] = await Promise.all([
+        userApi.getAllUsers(),
+        roleApi.getAllRoles(),
+      ]);
+
+      const users = userRes.data;
+      const roles = roleRes.data;
+
+      // Find reader role
+      const readerRole = roles.find((role) => role.name === "reader");
+      if (!readerRole) {
+        console.warn("No role with name 'reader' found");
+        return;
+      }
+
+      // Filter blocked readers
+      const blockedReaders = users.filter(
+        (user) => user.status === "blocked" && user.roleId === readerRole.id
+      );
+
+      const now = new Date();
+      const thisMonth = now.getMonth() + 1;
+      const thisYear = now.getFullYear();
+      const lastMonth = thisMonth === 1 ? 12 : thisMonth - 1;
+      const lastMonthYear = thisMonth === 1 ? thisYear - 1 : thisYear;
+
+      const isSameMonth = (date, month, year) => {
+        const d = new Date(date);
+        return d.getMonth() + 1 === month && d.getFullYear() === year;
+      };
+
+      // Get blocked users for this month and last month
+      const thisMonthBlocked = blockedReaders.filter((user) =>
+        isSameMonth(user.updatedAt, thisMonth, thisYear)
+      );
+
+      const lastMonthBlocked = blockedReaders.filter((user) =>
+        isSameMonth(user.updatedAt, lastMonth, lastMonthYear)
+      );
+
+      // Create stats for both months
+      const monthlyStats = [
+        {
+          name: "This Month",
+          blockCount: thisMonthBlocked.length,
+          month: thisMonth,
+          year: thisYear,
+        },
+        {
+          name: "Last Month",
+          blockCount: lastMonthBlocked.length,
+          month: lastMonth,
+          year: lastMonthYear,
+        },
+      ];
+
+      setBlockUserStats(monthlyStats);
+    } catch (error) {
+      console.error("Error fetching blocked user stats:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchCatgoryPopularity();
+    fetchBookBorrowStats();
+    fetchBookBorrowStatsMonthly();
+    fetchRegisteredUserStats();
+    fetchBlockUserStats();
+  }, []);
+
+  console.log(bookBorrowStats)
+  console.log(registeredUserStats)
+  console.log(blockUserStats)
+
+  const borrowGrowth =
+    !bookBorrowStats || bookBorrowStats.length < 2
+      ? 0
+      : bookBorrowStats[1]?.borrowCount === 0
+      ? bookBorrowStats[0]?.borrowCount === 0
+        ? 0
+        : 100
+      : ((bookBorrowStats[0]?.borrowCount - bookBorrowStats[1]?.borrowCount) /
+          bookBorrowStats[1]?.borrowCount) *
+        100;
+
+  const registeredUserGrowth =
+    !registeredUserStats || registeredUserStats.length < 2
+      ? 0
+      : registeredUserStats[1]?.registrationCount === 0
+      ? registeredUserStats[0]?.registrationCount === 0
+        ? 0
+        : 100
+      : ((registeredUserStats[0]?.registrationCount -
+          registeredUserStats[1]?.registrationCount) /
+          registeredUserStats[1]?.registrationCount) *
+        100;
+
+  const blockUserGrowth =
+    !blockUserStats || blockUserStats.length < 2
+      ? 0
+      : blockUserStats[1]?.blockCount === 0
+      ? blockUserStats[0]?.blockCount === 0
+        ? 0
+        : 100
+      : ((blockUserStats[0]?.blockCount - blockUserStats[1]?.blockCount) /
+          blockUserStats[1]?.blockCount) *
+        100;
+
+  console.log(borrowGrowth)
+  console.log(registeredUserGrowth)
 
   if (loading) {
     return (
@@ -159,7 +343,7 @@ export default function Home() {
     <Layout style={{ minHeight: "100vh", width: "100vw" }}>
       <SideNav />
       <Layout style={{ background: "#f0f4f7", width: "100%" }}>
-        <HeaderComponent />
+        <HeaderComponent title="Trang chủ" />
         <Content
           style={{
             margin: 0,
@@ -170,10 +354,10 @@ export default function Home() {
         >
           <div style={{ marginBottom: "24px" }}>
             <Title level={2} style={{ margin: 0 }}>
-              Dashboard
+              Thống kê số liệu
             </Title>
             <Text type="secondary">
-              Overview of your library management system
+              Tổng quan về hệ thống quản lý thư viện
             </Text>
           </div>
 
@@ -201,26 +385,60 @@ export default function Home() {
                   <Title level={4} style={{ color: "white", margin: 0 }}>
                     Số người đăng ký
                   </Title>
-                  <UserOutlined style={{ fontSize: "24px", color: "white" }} />
+                  <ReadOutlined style={{ fontSize: "24px", color: "white" }} />
                 </Space>
                 <Space
                   style={{
                     display: "flex",
                     justifyContent: "space-between",
                     width: "100%",
-                    alignItems: "flex-end",
+                    alignItems: "center",
+                    marginBottom: "16px",
                   }}
                 >
-                  <RadialChart value={stats.totalUsersRegistered} />
+                  <Tag
+                    color="white"
+                    style={{
+                      fontSize: "16px",
+                      fontWeight: "bold",
+                      padding: "5px 12px",
+                      borderRadius: "999px",
+                      color: registeredUserGrowth >= 0 ? "#52c41a" : "#ff4d4f",
+                    }}
+                  >
+                    {Math.abs(registeredUserGrowth)}%{" "}
+                    {registeredUserGrowth >= 0 ? (
+                      <RiseOutlined />
+                    ) : (
+                      <FallOutlined />
+                    )}
+                  </Tag>
                   <div style={{ textAlign: "right" }}>
                     <Title level={2} style={{ color: "white", margin: 0 }}>
-                      {stats.totalUsersRegistered}
+                      {registeredUserStats?.[0]?.registrationCount || 0}
                     </Title>
                     <Text style={{ color: "rgba(255, 255, 255, 0.8)" }}>
-                      This month
+                      Tháng này
                     </Text>
                   </div>
                 </Space>
+                <div
+                  style={{
+                    width: "100%",
+                    height: "4px",
+                    background: "rgba(255, 255, 255, 0.2)",
+                    borderRadius: "2px",
+                  }}
+                >
+                  <div
+                    style={{
+                      width: `${Math.abs(borrowGrowth)}%`,
+                      height: "100%",
+                      background: "white",
+                      borderRadius: "2px",
+                    }}
+                  ></div>
+                </div>
               </Card>
             </Col>
 
@@ -231,7 +449,7 @@ export default function Home() {
                   height: "100%",
                   borderRadius: "12px",
                   boxShadow: "0 4px 12px rgba(0, 0, 0, 0.05)",
-                  background: "linear-gradient(135deg, #52c41a 0%, #389e0d 100%)",
+                  background: "linear-gradient(135deg, #13c2c2 0%, #08979c 100%)",
                   color: "white",
                 }}
                 bodyStyle={{ padding: "20px" }}
@@ -265,11 +483,11 @@ export default function Home() {
                       fontWeight: "bold",
                       padding: "5px 12px",
                       borderRadius: "999px",
-                      color: "#52c41a",
+                      color: borrowGrowth >= 0 ? "#52c41a" : "#ff4d4f",
                     }}
                   >
-                    {stats.borrowGrowth}%{" "}
-                    {stats.borrowGrowth >= 0 ? (
+                    {Math.abs(borrowGrowth)}%{" "}
+                    {borrowGrowth >= 0 ? (
                       <RiseOutlined />
                     ) : (
                       <FallOutlined />
@@ -277,10 +495,10 @@ export default function Home() {
                   </Tag>
                   <div style={{ textAlign: "right" }}>
                     <Title level={2} style={{ color: "white", margin: 0 }}>
-                      {stats.totalBorrows}
+                      {bookBorrowStats?.[1]?.borrowCount || 0}
                     </Title>
                     <Text style={{ color: "rgba(255, 255, 255, 0.8)" }}>
-                      Since last month
+                      Tháng này
                     </Text>
                   </div>
                 </Space>
@@ -294,7 +512,7 @@ export default function Home() {
                 >
                   <div
                     style={{
-                      width: `${Math.abs(stats.borrowGrowth)}%`,
+                      width: `${Math.abs(borrowGrowth)}%`,
                       height: "100%",
                       background: "white",
                       borderRadius: "2px",
@@ -311,7 +529,7 @@ export default function Home() {
                   height: "100%",
                   borderRadius: "12px",
                   boxShadow: "0 4px 12px rgba(0, 0, 0, 0.05)",
-                  background: "linear-gradient(135deg, #1890ff 0%, #096dd9 100%)",
+                  background: "linear-gradient(135deg, #fa8c16 0%, #d46b08 100%)",
                   color: "white",
                 }}
                 bodyStyle={{ padding: "20px" }}
@@ -325,44 +543,80 @@ export default function Home() {
                   }}
                 >
                   <Title level={4} style={{ color: "white", margin: 0 }}>
-                    Số người đăng ký
+                    Số người vi phạm mượn trả
                   </Title>
-                  <UserOutlined style={{ fontSize: "24px", color: "white" }} />
+                  <ReadOutlined style={{ fontSize: "24px", color: "white" }} />
                 </Space>
                 <Space
                   style={{
                     display: "flex",
                     justifyContent: "space-between",
                     width: "100%",
-                    alignItems: "flex-end",
+                    alignItems: "center",
+                    marginBottom: "16px",
                   }}
                 >
-                  <RadialChart value={stats.userGrowth} />
+                  <Tag
+                    color="white"
+                    style={{
+                      fontSize: "16px",
+                      fontWeight: "bold",
+                      padding: "5px 12px",
+                      borderRadius: "999px",
+                      color: blockUserGrowth >= 0 ? "#52c41a" : "#ff4d4f",
+                    }}
+                  >
+                    {Math.abs(blockUserGrowth)}%{" "}
+                    {blockUserGrowth >= 0 ? (
+                      <RiseOutlined />
+                    ) : (
+                      <FallOutlined />
+                    )}
+                  </Tag>
                   <div style={{ textAlign: "right" }}>
                     <Title level={2} style={{ color: "white", margin: 0 }}>
-                      {stats.totalUsersRegistered}
+                      {blockUserStats?.[0]?.blockCount || 0}
                     </Title>
                     <Text style={{ color: "rgba(255, 255, 255, 0.8)" }}>
-                      This month
+                      Tháng này
                     </Text>
                   </div>
                 </Space>
+                <div
+                  style={{
+                    width: "100%",
+                    height: "4px",
+                    background: "rgba(255, 255, 255, 0.2)",
+                    borderRadius: "2px",
+                  }}
+                >
+                  <div
+                    style={{
+                      width: `${Math.abs(blockUserGrowth)}%`,
+                      height: "100%",
+                      background: "white",
+                      borderRadius: "2px",
+                    }}
+                  ></div>
+                </div>
               </Card>
             </Col>
           </Row>
-
           <Row gutter={[16, 16]} style={{ marginTop: "16px" }}>
-            
-
             <Col xs={24} lg={12}>
               <Card
                 style={{
                   borderRadius: "12px",
                   boxShadow: "0 4px 12px rgba(0, 0, 0, 0.05)",
+                  background: "white",
                 }}
-                title="So nguoi dang ky qua tung nam"
+                title={
+                  <div style={{ fontSize: "16px", fontWeight: "bold", color: "#1890ff" }}>
+                    Thể loại sách người mượn quan tâm
+                  </div>
+                }
               >
-                <ColumnChart data={bookBorrowStats} />
+                <MyPieChart data={bookCategoryStats} />
               </Card>
             </Col>
 
@@ -371,10 +625,15 @@ export default function Home() {
                 style={{
                   borderRadius: "12px",
                   boxShadow: "0 4px 12px rgba(0, 0, 0, 0.05)",
+                  background: "white",
                 }}
-                title="So luot muon qua tung nam"
+                title={
+                  <div style={{ fontSize: "16px", fontWeight: "bold", color: "#13c2c2" }}>
+                    Số lượt mượn qua từng tháng
+                  </div>
+                }
               >
-                <ColumnChart data={bookBorrowStats} />
+                <ColumnChart data={bookBorrowStatsMonthly} />
               </Card>
             </Col>
           </Row>

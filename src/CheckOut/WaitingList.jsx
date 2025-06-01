@@ -8,6 +8,7 @@ import {
   message,
   Space,
   Input,
+  Typography,
 } from "antd";
 import { Link, useNavigate } from "react-router-dom";
 import {
@@ -27,8 +28,10 @@ import UserPopUp from "./UserPopUp";
 import borrowTicketApi from "../../api/borrowticket";
 import userApi from "../../api/user";
 import bookApi from "../../api/book";
+import majorApi from "../../api/major";
 
 const { Content } = Layout;
+const { Title, Text } = Typography;
 
 export default function WaitingBorrowList() {
   const navigate = useNavigate();
@@ -198,7 +201,11 @@ export default function WaitingBorrowList() {
           await bookApi.updateBook(currentBook._id, {
             quantity: newQuantity,
             status: newStatus,
-            borrowCount: (currentBook.borrowCount) + 1
+            borrowCount: currentBook.borrowCount + 1,
+          });
+
+          await majorApi.updateCategory(currentBook.category, {
+            borrowCount: currentBook.borrowCount + 1,
           });
         } catch (error) {
           console.error(`Lỗi khi cập nhật sách: ${currentBook._id}`, error);
@@ -234,21 +241,18 @@ export default function WaitingBorrowList() {
   return (
     <Layout
       style={{
-        height: "100vh",
+        minHeight: "100vh",
       }}
     >
       <SideNav />
       <Layout style={{ background: "#f0f4f7" }}>
-        <HeaderComponent />
-        <Content style={{ margin: "0 16px" }}>
-          <div style={{ marginTop: 20, marginBottom: 16 }}>
-            <Input
-              placeholder="Search waiting tickets..."
-              prefix={<SearchOutlined />}
-              onChange={(e) => handleSearch(e.target.value)}
-              style={{ width: 300 }}
-              allowClear
-            />
+        <HeaderComponent title="Quản lý mượn trả" />
+        <Content style={{ margin: 0, padding: "24px", width: "100%" }}>
+          <div style={{ marginBottom: "24px" }}>
+            <Title level={2} style={{ margin: 0 }}>
+              Danh sách chờ duyệt
+            </Title>
+            <Text type="secondary">Danh sách phiếu mượn chờ duyệt</Text>
           </div>
           <Table
             columns={WaitingColumns}
@@ -264,7 +268,14 @@ export default function WaitingBorrowList() {
                   alignItems: "center",
                 }}
               >
-                <span className="text-xl">Waiting List</span>
+                <span className="text-xl">Danh sách chờ duyệt</span>
+                <Input
+                  placeholder="Tìm kiếm phiếu mượn..."
+                  prefix={<SearchOutlined />}
+                  onChange={(e) => handleSearch(e.target.value)}
+                  style={{ width: 300 }}
+                  allowClear
+                />
               </div>
             )}
           />

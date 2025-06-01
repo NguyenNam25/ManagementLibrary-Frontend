@@ -1,30 +1,30 @@
 export default [
     {
-        title: "Borrow Ticket ID",
+        title: "Mã phiếu mượn",
         dataIndex: "ticketId",
         key: "ticketId",
         width: "25%",
       },
       {
-        title: "Library Card Number",
+        title: "Mã thẻ thư viện",
         dataIndex: "cardNumber",
         key: "cardNumber",
         width: "25%",
       },
       {
-        title: "Details",
+        title: "Chi tiết",
         dataIndex: "detail",
         key: "detail",
         width: "10%",
       },
       {
-        title: "Status",
+        title: "Trạng thái",
         dataIndex: "status",
         key: "status",
         width: "20%",
       },
       {
-        title: "Actions",
+        title: "Thao tác",
         dataIndex: "actions",
         key: "actions",
         width: "20%"

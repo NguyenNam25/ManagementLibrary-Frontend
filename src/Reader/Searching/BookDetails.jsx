@@ -58,8 +58,8 @@ const BookDetailsPage = () => {
       } catch (error) {
         console.error("Error fetching book details:", error);
         notification.error({
-          message: "Error",
-          description: "Failed to fetch book details. Please try again later.",
+          message: "Lỗi",
+          description: "Không thể tải thông tin sách. Vui lòng thử lại sau.",
         });
       } finally {
         setLoading(false);
@@ -78,8 +78,8 @@ const BookDetailsPage = () => {
 
     if (hasPendingOrBorrowed) {
       notification.warning({
-        message: "Cannot Borrow",
-        description: "You already have pending or borrowed books. Please return them before borrowing more.",
+        message: "Không thể mượn",
+        description: "Bạn đã có sách đang mượn hoặc đang chờ xử lý. Vui lòng trả sách trước khi mượn thêm.",
       });
       return;
     }
@@ -116,9 +116,9 @@ const BookDetailsPage = () => {
         if (!alreadyAdded) {
           borrowData.books.push(book);
           localStorage.setItem("borrowData", JSON.stringify(borrowData));
-          message.success("Book added to borrow list");
+          message.success("Đã thêm sách vào danh sách mượn");
         } else {
-          message.error("Book already in borrow list");
+          message.error("Sách đã có trong danh sách mượn");
         }
       } else {
         // Create new borrow request if no data exists
@@ -128,7 +128,7 @@ const BookDetailsPage = () => {
           status: "pending",
         };
         localStorage.setItem("borrowData", JSON.stringify(borrowRequest));
-        message.success("Book added to borrow list");
+        message.success("Đã thêm sách vào danh sách mượn");
       }
       
       await new Promise((resolve) => setTimeout(resolve, 1500));
@@ -136,8 +136,8 @@ const BookDetailsPage = () => {
     } catch (error) {
       console.error("Error borrowing book:", error);
       notification.error({
-        message: "Error",
-        description: "Failed to borrow book. Please try again later.",
+        message: "Lỗi",
+        description: "Không thể mượn sách. Vui lòng thử lại sau.",
       });
     } finally {
       setConfirmLoading(false);
@@ -158,11 +158,11 @@ const BookDetailsPage = () => {
         borrowData.books.push(book);
         localStorage.setItem("borrowData", JSON.stringify(borrowData));
         console.log("Book added to borrowData");
-        message.success("Book added to borrow list");
+        message.success("Đã thêm sách vào danh sách mượn");
         setBorrowModalVisible(false);
       } else {
         console.log("Book already in borrowData");
-        message.error("Book already in borrow list");
+        message.error("Sách đã có trong danh sách mượn");
       }
     } else {
       const borrowRequest = {
@@ -172,7 +172,7 @@ const BookDetailsPage = () => {
       };
       localStorage.setItem("borrowData", JSON.stringify(borrowRequest));
       console.log("New borrowData created");
-      message.success("Book added to borrow list");
+      message.success("Đã thêm sách vào danh sách mượn");
       setBorrowModalVisible(false);
     }
   };
@@ -201,14 +201,14 @@ const BookDetailsPage = () => {
             {
               title: (
                 <Link to="/reader/home">
-                  <HomeOutlined /> Home
+                  <HomeOutlined /> Trang chủ
                 </Link>
               ),
             },
             {
               title: (
                 <Link to="/reader/search">
-                  <SearchOutlined /> Search
+                  <SearchOutlined /> Tìm kiếm
                 </Link>
               ),
             },

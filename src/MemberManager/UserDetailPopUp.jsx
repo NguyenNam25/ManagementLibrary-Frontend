@@ -32,15 +32,11 @@ export default function UserDetailPopUp({
                 </div>
                 <div className="bg-gray-50 p-3 rounded-lg">
                     <p className="text-gray-500 text-sm">Giới tính</p>
-                    <p className="font-medium">{selectedUser.gender}</p>
-                </div>
-                <div className="bg-gray-50 p-3 rounded-lg">
-                  <p className="text-gray-500 text-sm">Vai trò</p>
-                  <p className="font-medium">{selectedUser.role}</p>
+                    <p className="font-medium">{selectedUser.gender === 'male' ? "Nam" : "Nữ"}</p>
                 </div>
                 <div className="bg-gray-50 p-3 rounded-lg">
                     <p className="text-gray-500 text-sm">Ngày sinh</p>
-                    <p className="font-medium">{selectedUser.dateOfBirth}</p>
+                    <p className="font-medium">{new Date(selectedUser.dateOfBirth).toLocaleDateString('vi-VN')}</p>
                 </div>
                 <div className="bg-gray-50 p-3 rounded-lg">
                   <p className="text-gray-500 text-sm">Email</p>
@@ -49,6 +45,10 @@ export default function UserDetailPopUp({
                 <div className="bg-gray-50 p-3 rounded-lg">
                   <p className="text-gray-500 text-sm">Số điện thoại</p>
                   <p className="font-medium">{selectedUser.phoneNumber}</p>
+                </div>
+                <div className="bg-gray-50 p-3 rounded-lg">
+                  <p className="text-gray-500 text-sm">Địa chỉ</p>
+                  <p className="font-medium">{selectedUser.address}</p>
                 </div>
               </div>
             </div>

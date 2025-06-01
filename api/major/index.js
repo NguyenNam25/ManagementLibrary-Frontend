@@ -81,7 +81,25 @@ const majorApi = {
       console.error("Error fetching popular categories:", error);
       throw error;
     }
-  }
+  },
+  updateCategory: async (id, data) => {
+    try {
+      const response = await axiosClient.put(`/majors/category/${id}`, data);
+      return response;
+    } catch (error) {
+      console.error(`Error updating category with id ${id}:`, error);
+      throw error;
+    }
+  },
+  updateType: async (id, data) => {
+    try {
+      const response = await axiosClient.put(`/majors/type/${id}`, data);
+      return response;
+    } catch (error) {
+      console.error(`Error updating type with id ${id}:`, error);
+      throw error;
+    }
+  } 
 };
 
 export default majorApi;

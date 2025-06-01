@@ -6,44 +6,44 @@ const { Option } = Select;
 
 export default [
     {
-        title: "Borrow Ticket ID",
+        title: "Mã phiếu mượn",
         dataIndex: "ticketId",
         key: "ticketId",
         width: "20%",
     },
     {
-        title: "Library Card Number",
+        title: "Thẻ thư viện",
         dataIndex: "cardNumber",
         key: "cardNumber",
         width: "20%",
     },
     {
-        title: "Details",
+        title: "Chi tiết",
         dataIndex: "detail",
         key: "detail",
         width: "10%",
     },
     {
-        title: "Status",
+        title: "Trạng thái",
         dataIndex: "status",
         key: "status",
         width: "15%",
         filters: [
-            { text: 'Borrowed', value: 'borrowed' },
-            { text: 'Returned', value: 'returned' },
-            { text: 'Expired', value: 'expired' },
+            { text: 'Đang mượn', value: 'borrowed' },
+            { text: 'Đã trả', value: 'returned' },
+            { text: 'Quá hạn', value: 'expired' },
         ],
         onFilter: (value, record) => record.status === value,
         render: (status) => {
             let color = 'blue';
-            let text = 'Borrowed';
+            let text = 'Đang mượn';
             
             if (status === 'returned') {
                 color = 'green';
-                text = 'Returned';
+                text = 'Đã trả';
             } else if (status === 'expired') {
                 color = 'red';
-                text = 'Expired';
+                text = 'Quá hạn';
             }
             
             return (
@@ -54,7 +54,7 @@ export default [
         }
     },
     {
-        title: "Actions",
+        title: "Hành động",
         dataIndex: "actions",
         key: "actions",
         width: "20%"

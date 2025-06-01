@@ -10,6 +10,7 @@ import {
   Col,
   Card,
   message,
+  Typography,
 } from "antd";
 import { useNavigate } from "react-router-dom";
 import SideNav from "../Layout/SideNav";
@@ -20,7 +21,7 @@ import ImageDragger from "./ImageDragger";
 import userApi from "../../api/user/index.js";
 import axiosClient from "../../api/axiosClient.js";
 import axios from "axios";
-
+const { Title, Text } = Typography;
 export default function AddBook() {
   const [form] = Form.useForm();
   const navigate = useNavigate();
@@ -99,23 +100,27 @@ export default function AddBook() {
   const { Content } = Layout;
 
   return (
-    <Layout style={{ minHeight: "100vh", width: "100vw" }}>
+    <Layout style={{ minHeight: "100vh" }}>
       <SideNav />
-      <Layout style={{ background: "#f0f4f7", width: "100%" }}>
-        <HeaderComponent />
+      <Layout style={{ background: "#f0f4f7", flex: 1 }}>
+        <HeaderComponent title="Quản lý sách" />
         <Content
           style={{
             margin: 0,
             padding: "24px",
-            minHeight: "calc(100vh - 64px)",
             width: "100%",
           }}
         >
+          <div style={{ marginBottom: "24px" }}>
+            <Title level={2} style={{ margin: 0 }}>
+              Thêm sách mới
+            </Title>
+            <Text type="secondary">Thêm sách mới vào thư viện</Text>
+          </div>
           <Card
             title="Thêm sách mới"
             bordered={false}
             style={{
-              height: "100%",
               width: "100%",
             }}
           >
@@ -124,13 +129,12 @@ export default function AddBook() {
               layout="vertical"
               onFinish={onFinish}
               style={{
-                height: "100%",
                 width: "100%",
                 maxWidth: "100%",
               }}
             >
-              <Row gutter={24} style={{ height: "100%" }}>
-                <Col span={12} style={{ height: "100%" }}>
+              <Row gutter={24} style={{}}>
+                <Col span={12} style={{}}>
                   <Form.Item
                     label="Ảnh bìa sách"
                     name="image"
@@ -140,15 +144,15 @@ export default function AddBook() {
                         message: "Vui lòng tải lên ảnh bìa sách",
                       },
                     ]}
-                    style={{ height: "100%" }}
+                    style={{}}
                   >
                     <ImageDragger />
                   </Form.Item>
                 </Col>
-                <Col span={12} style={{ height: "100%" }}>
+                <Col span={12} style={{}}>
                   <Space
                     direction="vertical"
-                    style={{ width: "100%", height: "100%" }}
+                    style={{ width: "100%"}}
                   >
                     <Row gutter={16}>
                       
@@ -294,6 +298,19 @@ export default function AddBook() {
                         </Form.Item>
                       </Col>
                     </Row>
+
+                    <Form.Item
+                      label="Mô tả"
+                      name="description"
+
+                    >
+                      <Input.TextArea 
+                        placeholder="Nhập mô tả sách" 
+                        autoSize={{ minRows: 3, maxRows: 6 }}
+                        showCount
+                        maxLength={500}
+                      />
+                    </Form.Item>
                   </Space>
                 </Col>
               </Row>

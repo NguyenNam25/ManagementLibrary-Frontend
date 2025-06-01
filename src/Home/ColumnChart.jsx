@@ -29,7 +29,7 @@ const data = [
 export default function ColumnChart() {
   return (
     <div className="w-full h-96 flex justify-center">
-      <ResponsiveContainer width="100%" height={300}>
+      <ResponsiveContainer width={600} height={300}>
         <BarChart
           data={data}
           margin={{ top: 20, right: 25, left: 0, bottom: 5 }}

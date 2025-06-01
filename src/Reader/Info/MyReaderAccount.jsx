@@ -98,7 +98,7 @@ export default function MyReaderAccount() {
       </div>
       <Content style={{ padding: "24px", backgroundColor: "#f5f5f5", minHeight: "calc(100vh - 64px)" }}>
         <Title level={2} style={{ textAlign: "center", marginBottom: 24 }}>
-          My Reader Account
+          Tài khoản người đọc
         </Title>
 
         <Row gutter={[24, 24]}>
@@ -108,7 +108,7 @@ export default function MyReaderAccount() {
               title={
                 <Space>
                   <UserOutlined />
-                  <span>Personal Information</span>
+                  <span>Thông tin cá nhân</span>
                 </Space>
               }
               extra={
@@ -118,7 +118,7 @@ export default function MyReaderAccount() {
                     icon={<EditOutlined />} 
                     onClick={() => setEditingProfile(true)}
                   >
-                    Edit
+                    Chỉnh sửa
                   </Button>
                 ) : null
               }
@@ -126,7 +126,7 @@ export default function MyReaderAccount() {
             >
               {!editingProfile ? (
                 <Descriptions layout="vertical" column={{ xs: 1, sm: 2 }}>
-                  <Descriptions.Item label="Name">
+                  <Descriptions.Item label="Họ và tên">
                     <Space>
                       <UserOutlined />
                       {currentUser?.fullName}
@@ -138,19 +138,19 @@ export default function MyReaderAccount() {
                       {currentUser?.email}
                     </Space>
                   </Descriptions.Item>
-                  <Descriptions.Item label="Phone">
+                  <Descriptions.Item label="Số điện thoại">
                     <Space>
                       <PhoneOutlined />
                       {currentUser?.phoneNumber}
                     </Space>
                   </Descriptions.Item>
-                  <Descriptions.Item label="Address">
+                  <Descriptions.Item label="Địa chỉ">
                     <Space>
                       <HomeOutlined />
                       {currentUser?.address}
                     </Space>
                   </Descriptions.Item>
-                  <Descriptions.Item label="Date of Birth" span={2}>
+                  <Descriptions.Item label="Ngày sinh" span={2}>
                     {new Date(currentUser?.dateOfBirth).toLocaleDateString()}
                   </Descriptions.Item>
                 </Descriptions>
@@ -162,8 +162,8 @@ export default function MyReaderAccount() {
                 >
                   <Form.Item
                     name="name"
-                    label="Name"
-                    rules={[{ required: true, message: "Please enter your name" }]}
+                    label="Họ và tên"
+                    rules={[{ required: true, message: "Vui lòng nhập họ và tên" }]}
                   >
                     <Input prefix={<UserOutlined />} />
                   </Form.Item>
@@ -171,36 +171,36 @@ export default function MyReaderAccount() {
                     name="email"
                     label="Email"
                     rules={[
-                      { required: true, message: "Please enter your email" },
-                      { type: "email", message: "Please enter a valid email" }
+                      { required: true, message: "Vui lòng nhập email" },
+                      { type: "email", message: "Vui lòng nhập email hợp lệ" }
                     ]}
                   >
                     <Input prefix={<MailOutlined />} />
                   </Form.Item>
                   <Form.Item
                     name="phone"
-                    label="Phone"
-                    rules={[{ required: true, message: "Please enter your phone number" }]}
+                    label="Số điện thoại"
+                    rules={[{ required: true, message: "Vui lòng nhập số điện thoại" }]}
                   >
                     <Input prefix={<PhoneOutlined />} />
                   </Form.Item>
                   <Form.Item
                     name="address"
-                    label="Address"
-                    rules={[{ required: true, message: "Please enter your address" }]}
+                    label="Địa chỉ"
+                    rules={[{ required: true, message: "Vui lòng nhập địa chỉ" }]}
                   >
                     <Input.TextArea prefix={<HomeOutlined />} autoSize={{ minRows: 2, maxRows: 4 }} />
                   </Form.Item>
                   <Form.Item>
                     <Space>
                       <Button type="primary" icon={<SaveOutlined />} htmlType="submit">
-                        Save Changes
+                        Lưu thay đổi
                       </Button>
                       <Button 
                         icon={<CloseOutlined />} 
                         onClick={() => setEditingProfile(false)}
                       >
-                        Cancel
+                        Hủy
                       </Button>
                     </Space>
                   </Form.Item>
@@ -212,7 +212,7 @@ export default function MyReaderAccount() {
               title={
                 <Space>
                   <LockOutlined />
-                  <span>Change Password</span>
+                  <span>Đổi mật khẩu</span>
                 </Space>
               }
               style={{ marginTop: 24 }}
@@ -221,13 +221,13 @@ export default function MyReaderAccount() {
               {!changingPassword ? (
                 <div>
                   <Paragraph>
-                    For security reasons, we recommend changing your password regularly.
+                    Vì lý do bảo mật, chúng tôi khuyến nghị thay đổi mật khẩu thường xuyên.
                   </Paragraph>
                   <Button 
                     type="primary" 
                     onClick={() => setChangingPassword(true)}
                   >
-                    Change Password
+                    Đổi mật khẩu
                   </Button>
                 </div>
               ) : (
@@ -238,33 +238,33 @@ export default function MyReaderAccount() {
                 >
                   <Form.Item
                     name="currentPassword"
-                    label="Current Password"
-                    rules={[{ required: true, message: "Please enter your current password" }]}
+                    label="Mật khẩu hiện tại"
+                    rules={[{ required: true, message: "Vui lòng nhập mật khẩu hiện tại" }]}
                   >
                     <Input.Password prefix={<LockOutlined />} />
                   </Form.Item>
                   <Form.Item
                     name="newPassword"
-                    label="New Password"
+                    label="Mật khẩu mới"
                     rules={[
-                      { required: true, message: "Please enter a new password" },
-                      { min: 8, message: "Password must be at least 8 characters" }
+                      { required: true, message: "Vui lòng nhập mật khẩu mới" },
+                      { min: 8, message: "Mật khẩu phải có ít nhất 8 ký tự" }
                     ]}
                   >
                     <Input.Password prefix={<LockOutlined />} />
                   </Form.Item>
                   <Form.Item
                     name="confirmPassword"
-                    label="Confirm New Password"
+                    label="Xác nhận mật khẩu mới"
                     dependencies={['newPassword']}
                     rules={[
-                      { required: true, message: "Please confirm your new password" },
+                      { required: true, message: "Vui lòng xác nhận mật khẩu mới" },
                       ({ getFieldValue }) => ({
                         validator(_, value) {
                           if (!value || getFieldValue('newPassword') === value) {
                             return Promise.resolve();
                           }
-                          return Promise.reject(new Error('The two passwords do not match'));
+                          return Promise.reject(new Error('Hai mật khẩu không khớp'));
                         },
                       }),
                     ]}
@@ -274,10 +274,10 @@ export default function MyReaderAccount() {
                   <Form.Item>
                     <Space>
                       <Button type="primary" htmlType="submit">
-                        Update Password
+                        Cập nhật mật khẩu
                       </Button>
                       <Button onClick={() => setChangingPassword(false)}>
-                        Cancel
+                        Hủy
                       </Button>
                     </Space>
                   </Form.Item>
@@ -292,7 +292,7 @@ export default function MyReaderAccount() {
               title={
                 <Space>
                   <IdcardOutlined />
-                  <span>Library Card</span>
+                  <span>Thẻ thư viện</span>
                 </Space>
               }
               bordered={false}
@@ -324,7 +324,7 @@ export default function MyReaderAccount() {
                 <Row gutter={[16, 8]}>
                   <Col span={24}>
                     <Text style={{ color: "white", display: "block" }}>
-                      Card Number:
+                      Số thẻ:
                     </Text>
                     <Title level={5} style={{ color: "white", margin: "4px 0" }}>
                       {currentUser?.libraryCard?.cardNumber}
@@ -332,7 +332,7 @@ export default function MyReaderAccount() {
                   </Col>
                   <Col span={12}>
                     <Text style={{ color: "white", display: "block" }}>
-                      Status:
+                      Trạng thái:
                     </Text>
                     <Text strong style={{ color: "white" }}>
                       {currentUser?.status}
@@ -340,7 +340,7 @@ export default function MyReaderAccount() {
                   </Col>
                   <Col span={12}>
                     <Text style={{ color: "white", display: "block" }}>
-                      Expires:
+                      Hết hạn:
                     </Text>
                     <Text strong style={{ color: "white" }}>
                       {userData.cardExpiry}
@@ -350,16 +350,16 @@ export default function MyReaderAccount() {
               </div>
 
               <Alert
-                message="Card Usage"
-                description="Present your library card when borrowing items. You can also use the digital card displayed above."
+                message="Sử dụng thẻ"
+                description="Xuất trình thẻ thư viện khi mượn sách. Bạn cũng có thể sử dụng thẻ kỹ thuật số hiển thị ở trên."
                 type="info"
                 showIcon
                 style={{ marginBottom: 16 }}
               />
 
               <Alert
-                message="Lost or Damaged Card?"
-                description="If your card is lost or damaged, please visit the library in person for a replacement."
+                message="Mất hoặc hư hỏng thẻ?"
+                description="Nếu thẻ của bạn bị mất hoặc hư hỏng, vui lòng đến thư viện để được cấp thẻ mới."
                 type="warning"
                 showIcon
               />

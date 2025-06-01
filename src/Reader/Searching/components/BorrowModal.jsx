@@ -18,7 +18,7 @@ const BorrowModal = ({
       title={
         <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
           <ReadOutlined style={{ color: "#1890ff" }} />
-          <span>Confirm Book Borrowing</span>
+          <span>Xác nhận mượn sách</span>
         </div>
       }
       open={visible}
@@ -27,20 +27,20 @@ const BorrowModal = ({
       width={500}
       footer={[
         <Button key="cancel" onClick={onCancel}>
-          Cancel
+          Hủy
         </Button>,
         <Button key="borrowMore" type="primary" onClick={onBorrowMore}>
-          Borrow More
+          Mượn thêm
         </Button>,
         <Button key="ok" type="primary" loading={confirmLoading} onClick={onOk}>
-          Confirm Borrow
+          Xác nhận mượn
         </Button>,
       ]}
     >
       <div style={{ padding: "16px 0" }}>
         <div style={{ marginBottom: 16 }}>
           <Text strong style={{ fontSize: 16 }}>
-            Book Information:
+            Thông tin sách:
           </Text>
           <div
             style={{
@@ -51,25 +51,25 @@ const BorrowModal = ({
             }}
           >
             <p style={{ margin: 0 }}>
-              <strong>Title:</strong> {book.name}
+              <strong>Tên sách:</strong> {book.name}
             </p>
             <p style={{ margin: "4px 0" }}>
-              <strong>Author:</strong> {book.author}
+              <strong>Tác giả:</strong> {book.author}
             </p>
             <p style={{ margin: 0 }}>
-              <strong>Category:</strong> {category?.name}
+              <strong>Thể loại:</strong> {category?.name}
             </p>
           </div>
         </div>
 
         <div style={{ marginBottom: 16 }}>
           <Text strong style={{ fontSize: 16 }}>
-            Borrowing Rules:
+            Quy định mượn sách:
           </Text>
           <ul style={{ marginTop: 8, paddingLeft: 20 }}>
-            <li>Late return fee: $1 per day</li>
-            <li>Maximum 3 books at a time</li>
-            <li>Books must be returned in good condition</li>
+            <li>Phí trả muộn: 1$ mỗi ngày</li>
+            <li>Tối đa 3 cuốn sách cùng lúc</li>
+            <li>Sách phải được trả trong tình trạng tốt</li>
           </ul>
         </div>
 

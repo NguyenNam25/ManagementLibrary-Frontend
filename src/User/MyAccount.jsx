@@ -16,6 +16,8 @@ import {
   Tag,
   Upload,
   message,
+  Select,
+  DatePicker,
 } from "antd";
 import {
   UserOutlined,
@@ -35,6 +37,7 @@ import SideNav from "../Layout/SideNav";
 import HeaderComponent from "../Layout/Header";
 import userApi from "../../api/user";
 import roleApi from "../../api/role";
+import dayjs from "dayjs";
 
 const { Content } = Layout;
 const { Title, Text, Paragraph } = Typography;
@@ -56,13 +59,13 @@ export default function MyAccount() {
       const userWithDetails = {
         ...user,
         role: roleResponse.data,
-        dateOfBirth: new Date(user.dateOfBirth).toLocaleDateString("en-GB"), // Chuyển đổi ngày sinh thành dạng YYYY-MM-DD
+        dateOfBirth: dayjs(user.dateOfBirth), // Convert to dayjs object
       };
 
-      setStaffData(userWithDetails); // Đặt vào state dạng object
+      setStaffData(userWithDetails);
     } catch (error) {
       console.error("Error fetching current user:", error);
-      message.error("Failed to fetch current user");
+      message.error("Không thể tải thông tin người dùng");
     }
   };
 
@@ -76,31 +79,44 @@ export default function MyAccount() {
 
   // Initialize form with user data
   React.useEffect(() => {
-    profileForm.setFieldsValue({
-      fullName: staffData?.fullName,
-      gender: staffData?.gender,
-      dateOfBirth: staffData?.dateOfBirth,
-      email: staffData?.email,
-      phoneNumber: staffData?.phoneNumber,
-      address: staffData?.address,
-    });
+    if (staffData) {
+      profileForm.setFieldsValue({
+        fullName: staffData.fullName,
+        gender: staffData.gender,
+        dateOfBirth: staffData.dateOfBirth,
+        email: staffData.email,
+        phoneNumber: staffData.phoneNumber,
+        address: staffData.address,
+      });
+    }
   }, [staffData, profileForm]);
 
   // Handle profile form submission
   const handleProfileSubmit = async (values) => {
-    await userApi.updateUser(staffData?._id, values);
-    setStaffData({ ...staffData, ...values });
-    setEditingProfile(false);
-    // In a real app, you would make an API call here
+    try {
+      const formattedValues = {
+        ...values,
+        dateOfBirth: values.dateOfBirth.format('YYYY-MM-DD'),
+      };
+      await userApi.updateUser(staffData?._id, formattedValues);
+      setStaffData({ ...staffData, ...values });
+      setEditingProfile(false);
+      message.success("Cập nhật thông tin thành công");
+    } catch (error) {
+      message.error("Không thể cập nhật thông tin");
+    }
   };
 
   // Handle password change submission
   const handlePasswordSubmit = async (values) => {
-    // In a real app, you would make an API call here
-    await userApi.updateUser(staffData?.id, values);
-
-    setChangingPassword(false);
-    passwordForm.resetFields();
+    try {
+      await userApi.updateUser(staffData?._id, values);
+      setChangingPassword(false);
+      passwordForm.resetFields();
+      message.success("Cập nhật mật khẩu thành công");
+    } catch (error) {
+      message.error("Không thể cập nhật mật khẩu");
+    }
   };
 
   return (
@@ -118,10 +134,10 @@ export default function MyAccount() {
         >
           <div style={{ marginBottom: "24px" }}>
             <Title level={2} style={{ margin: 0 }}>
-              Staff Account Management
+              Quản lý tài khoản
             </Title>
             <Text type="secondary">
-              Manage your personal information and security settings
+              Quản lý thông tin cá nhân và cài đặt bảo mật
             </Text>
           </div>
 
@@ -132,7 +148,7 @@ export default function MyAccount() {
                 title={
                   <Space>
                     <UserOutlined />
-                    <span>Staff Information</span>
+                    <span>Thông tin cá nhân</span>
                   </Space>
                 }
                 extra={
@@ -142,7 +158,7 @@ export default function MyAccount() {
                       icon={<EditOutlined />}
                       onClick={() => setEditingProfile(true)}
                     >
-                      Edit
+                      Chỉnh sửa
                     </Button>
                   ) : null
                 }
@@ -174,12 +190,12 @@ export default function MyAccount() {
                         beforeUpload={(file) => {
                           const isImage = file.type.startsWith('image/');
                           if (!isImage) {
-                            message.error('You can only upload image files!');
+                            message.error('Chỉ có thể tải lên file hình ảnh!');
                             return Upload.LIST_IGNORE;
                           }
                           const isLt5M = file.size / 1024 / 1024 < 5;
                           if (!isLt5M) {
-                            message.error('File must be smaller than 5MB!');
+                            message.error('File phải nhỏ hơn 5MB!');
                             return Upload.LIST_IGNORE;
                           }
                           return true;
@@ -187,12 +203,12 @@ export default function MyAccount() {
                         onChange={(info) => {
                           const { status, response } = info.file;
                           if (status === 'uploading') {
-                            message.loading('Uploading profile picture...');
+                            message.loading('Đang tải lên ảnh đại diện...');
                           } else if (status === 'done') {
-                            message.success('Profile picture updated successfully');
-                            fetchCurrentUser(); // Refresh user data
+                            message.success('Cập nhật ảnh đại diện thành công');
+                            fetchCurrentUser();
                           } else if (status === 'error') {
-                            message.error(response?.message || 'Failed to update profile picture');
+                            message.error(response?.message || 'Không thể cập nhật ảnh đại diện');
                           }
                         }}
                         showUploadList={false}
@@ -219,22 +235,22 @@ export default function MyAccount() {
                 </div>
                 {!editingProfile ? (
                   <Descriptions layout="vertical" column={{ xs: 1, sm: 2 }}>
-                    <Descriptions.Item label="Name">
+                    <Descriptions.Item label="Họ và tên">
                       <Space>
                         <UserOutlined />
                         {staffData?.fullName}
                       </Space>
                     </Descriptions.Item>
-                    <Descriptions.Item label="Gender">
+                    <Descriptions.Item label="Giới tính">
                       <Space>
                         <MailOutlined />
                         {staffData?.gender}
                       </Space>
                     </Descriptions.Item>
-                    <Descriptions.Item label="Date of Birth">
+                    <Descriptions.Item label="Ngày sinh">
                       <Space>
                         <CalendarOutlined />
-                        {staffData?.dateOfBirth}
+                        {new Date(staffData?.dateOfBirth).toLocaleDateString('en-GB')}
                       </Space>
                     </Descriptions.Item>
                     <Descriptions.Item label="Email">
@@ -243,28 +259,28 @@ export default function MyAccount() {
                         {staffData?.email}
                       </Space>
                     </Descriptions.Item>
-                    <Descriptions.Item label="Phone">
+                    <Descriptions.Item label="Số điện thoại">
                       <Space>
                         <PhoneOutlined />
                         {staffData?.phoneNumber}
                       </Space>
                     </Descriptions.Item>
-                    <Descriptions.Item label="Address">
+                    <Descriptions.Item label="Địa chỉ">
                       <Space>
                         <EnvironmentOutlined />
                         {staffData?.address}
                       </Space>
                     </Descriptions.Item>
-                    <Descriptions.Item label="Position">
+                    <Descriptions.Item label="Vai trò">
                       <Space>
                         <IdcardOutlined />
                         {staffData?.role?.name}
                       </Space>
                     </Descriptions.Item>
-                    <Descriptions.Item label="Staff ID">
+                    <Descriptions.Item label="Mã nhân viên">
                       <Badge status="success" text={staffData?.staffId} />
                     </Descriptions.Item>
-                    <Descriptions.Item label="Position">
+                    <Descriptions.Item label="Ngày tạo">
                       <Space>
                         <IdcardOutlined />
                         {new Date(staffData?.createdAt).toLocaleDateString("en-GB")}
@@ -279,43 +295,43 @@ export default function MyAccount() {
                   >
                     <Form.Item
                       name="fullName"
-                      label="Name"
+                      label="Họ và tên"
                       rules={[
-                        { required: true, message: "Please enter your name" },
+                        { required: true, message: "Vui lòng nhập họ và tên" },
                       ]}
                     >
                       <Input prefix={<UserOutlined />} />
                     </Form.Item>
                     <Form.Item
                       name="gender"
-                      label="Gender"
+                      label="Giới tính"
                       rules={[
-                        { required: true, message: "Please enter your gender" },
-                        {
-                          type: "gender",
-                          message: "Please enter a valid gender",
-                        },
+                        { required: true, message: "Vui lòng chọn giới tính" },
                       ]}
                     >
-                      <Input prefix={<MailOutlined />} />
+                      <Select placeholder="Chọn giới tính">
+                        <Select.Option value="male">Nam</Select.Option>
+                        <Select.Option value="female">Nữ</Select.Option>
+                        <Select.Option value="other">Khác</Select.Option>
+                      </Select>
                     </Form.Item>
                     <Form.Item
                       name="dateOfBirth"
-                      label="Date of Birth"
+                      label="Ngày sinh"
                       rules={[
-                        { required: true, message: "Please enter your date of birth" },
+                        { required: true, message: "Vui lòng chọn ngày sinh" },
                       ]}
                     >
-                      <Input prefix={<CalendarOutlined />} />
+                      <DatePicker style={{ width: '100%' }} />
                     </Form.Item>
                     <Form.Item
                       name="email"
                       label="Email"
                       rules={[
-                        { required: true, message: "Please enter your email" },
+                        { required: true, message: "Vui lòng nhập email" },
                         {
                           type: "email",
-                          message: "Please enter a valid email",
+                          message: "Email không hợp lệ",
                         },
                       ]}
                     >
@@ -323,11 +339,11 @@ export default function MyAccount() {
                     </Form.Item>
                     <Form.Item
                       name="phoneNumber"
-                      label="Phone"
+                      label="Số điện thoại"
                       rules={[
                         {
                           required: true,
-                          message: "Please enter your phone number",
+                          message: "Vui lòng nhập số điện thoại",
                         },
                       ]}
                     >
@@ -335,11 +351,11 @@ export default function MyAccount() {
                     </Form.Item>
                     <Form.Item
                       name="address"
-                      label="Address"
+                      label="Địa chỉ"
                       rules={[
                         {
                           required: true,
-                          message: "Please enter your address",
+                          message: "Vui lòng nhập địa chỉ",
                         },
                       ]}
                     >
@@ -352,13 +368,13 @@ export default function MyAccount() {
                           icon={<SaveOutlined />}
                           htmlType="submit"
                         >
-                          Save Changes
+                          Lưu thay đổi
                         </Button>
                         <Button
                           icon={<CloseOutlined />}
                           onClick={() => setEditingProfile(false)}
                         >
-                          Cancel
+                          Hủy
                         </Button>
                       </Space>
                     </Form.Item>
@@ -370,7 +386,7 @@ export default function MyAccount() {
                 title={
                   <Space>
                     <TeamOutlined />
-                    <span>System Access & Permissions</span>
+                    <span>Quyền truy cập hệ thống</span>
                   </Space>
                 }
                 style={{
@@ -381,7 +397,7 @@ export default function MyAccount() {
                 bordered={false}
               >
                 <Paragraph>
-                  You currently have the following system permissions:
+                  Bạn hiện có các quyền hệ thống sau:
                 </Paragraph>
                 <div style={{ marginBottom: 16 }}>
                   {staffData?.role?.permissions.map((perm) => (
@@ -392,8 +408,8 @@ export default function MyAccount() {
                 </div>
                 {staffData?.role?.name !== "admin" && (
                   <Alert
-                    message="Permission Changes"
-                    description="To request changes to your system permissions, please contact the system administrator."
+                    message="Thay đổi quyền"
+                    description="Để yêu cầu thay đổi quyền hệ thống, vui lòng liên hệ với quản trị viên."
                     type="info"
                     showIcon
                   />
@@ -404,7 +420,7 @@ export default function MyAccount() {
                 title={
                   <Space>
                     <LockOutlined />
-                    <span>Change Password</span>
+                    <span>Đổi mật khẩu</span>
                   </Space>
                 }
                 style={{
@@ -417,14 +433,13 @@ export default function MyAccount() {
                 {!changingPassword ? (
                   <div>
                     <Paragraph>
-                      For security reasons, we recommend changing your password
-                      regularly. Staff passwords must be changed every 90 days.
+                      Vì lý do bảo mật, chúng tôi khuyến nghị thay đổi mật khẩu thường xuyên. Mật khẩu nhân viên phải được thay đổi sau mỗi 90 ngày.
                     </Paragraph>
                     <Button
                       type="primary"
                       onClick={() => setChangingPassword(true)}
                     >
-                      Change Password
+                      Đổi mật khẩu
                     </Button>
                   </div>
                 ) : (
@@ -435,11 +450,11 @@ export default function MyAccount() {
                   >
                     <Form.Item
                       name="currentPassword"
-                      label="Current Password"
+                      label="Mật khẩu hiện tại"
                       rules={[
                         {
                           required: true,
-                          message: "Please enter your current password",
+                          message: "Vui lòng nhập mật khẩu hiện tại",
                         },
                       ]}
                     >
@@ -447,22 +462,19 @@ export default function MyAccount() {
                     </Form.Item>
                     <Form.Item
                       name="newPassword"
-                      label="New Password"
+                      label="Mật khẩu mới"
                       rules={[
                         {
                           required: true,
-                          message: "Please enter a new password",
+                          message: "Vui lòng nhập mật khẩu mới",
                         },
                         {
                           min: 10,
-                          message:
-                            "Staff passwords must be at least 10 characters",
+                          message: "Mật khẩu phải có ít nhất 10 ký tự",
                         },
                         {
-                          pattern:
-                            /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{10,}$/,
-                          message:
-                            "Password must contain uppercase, lowercase, number and special character",
+                          pattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{10,}$/,
+                          message: "Mật khẩu phải chứa chữ hoa, chữ thường, số và ký tự đặc biệt",
                         },
                       ]}
                     >
@@ -470,24 +482,19 @@ export default function MyAccount() {
                     </Form.Item>
                     <Form.Item
                       name="confirmPassword"
-                      label="Confirm New Password"
+                      label="Xác nhận mật khẩu mới"
                       dependencies={["newPassword"]}
                       rules={[
                         {
                           required: true,
-                          message: "Please confirm your new password",
+                          message: "Vui lòng xác nhận mật khẩu mới",
                         },
                         ({ getFieldValue }) => ({
                           validator(_, value) {
-                            if (
-                              !value ||
-                              getFieldValue("newPassword") === value
-                            ) {
+                            if (!value || getFieldValue("newPassword") === value) {
                               return Promise.resolve();
                             }
-                            return Promise.reject(
-                              new Error("The two passwords do not match")
-                            );
+                            return Promise.reject(new Error("Mật khẩu không khớp"));
                           },
                         }),
                       ]}
@@ -497,10 +504,10 @@ export default function MyAccount() {
                     <Form.Item>
                       <Space>
                         <Button type="primary" htmlType="submit">
-                          Update Password
+                          Cập nhật mật khẩu
                         </Button>
                         <Button onClick={() => setChangingPassword(false)}>
-                          Cancel
+                          Hủy
                         </Button>
                       </Space>
                     </Form.Item>
@@ -515,7 +522,7 @@ export default function MyAccount() {
                 title={
                   <Space>
                     <IdcardOutlined />
-                    <span>Staff Profile</span>
+                    <span>Hồ sơ nhân viên</span>
                   </Space>
                 }
                 style={{
@@ -538,30 +545,30 @@ export default function MyAccount() {
                   <br />
                   <Badge
                     status="success"
-                    text="Active"
+                    text="Hoạt động"
                     style={{ marginTop: 8 }}
                   />
                 </div>
 
                 <Row gutter={[16, 16]} style={{ marginBottom: 24 }}>
                   <Col span={24}>
-                    <Card size="small" title="Staff ID" bordered>
+                    <Card size="small" title="Mã nhân viên" bordered>
                       <Text strong>{staffData?.staffId}</Text>
                     </Card>
                   </Col>
                 </Row>
 
                 <Alert
-                  message="Security Notice"
-                  description="Remember to keep your credentials secure and never share your password with anyone. Lock your workstation when not in use."
+                  message="Thông báo bảo mật"
+                  description="Hãy nhớ giữ thông tin đăng nhập an toàn và không chia sẻ mật khẩu với bất kỳ ai. Khóa máy tính khi không sử dụng."
                   type="warning"
                   showIcon
                   style={{ marginBottom: 16 }}
                 />
 
                 <Alert
-                  message="Need Help?"
-                  description="For account-related issues, contact IT support at support@librarysystem.com or ext. 4567."
+                  message="Cần hỗ trợ?"
+                  description="Đối với các vấn đề liên quan đến tài khoản, liên hệ bộ phận IT tại support@librarysystem.com hoặc số máy nhánh 4567."
                   type="info"
                   showIcon
                 />

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Breadcrumb, Layout, Button, Table, Modal, message, Input } from "antd";
+import { Breadcrumb, Layout, Button, Table, Modal, message, Input, Typography } from "antd";
 import { Link, useNavigate } from "react-router-dom";
 import {
   EditOutlined,
@@ -9,6 +9,7 @@ import {
   ArrowLeftOutlined,
   SearchOutlined,
   CheckCircleOutlined,
+  BlockOutlined,
 } from "@ant-design/icons";
 import SideNav from "../Layout/SideNav";
 import HeaderComponent from "../Layout/Header";
@@ -20,6 +21,7 @@ import UserPopUp from "./UserPopUp";
 import bookApi from "../../api/book/index.js";
 
 const { Content } = Layout;
+const { Title, Text } = Typography;
 
 export default function BTList() {
   const navigate = useNavigate();
@@ -197,6 +199,35 @@ export default function BTList() {
     }
   };
 
+  const handleBlock = async (borrowTicket) => {
+    try {
+      // Get user information using library card number
+      const userResponse = await userApi.getUserByLibraryCard(borrowTicket.cardNumber);
+      if (!userResponse.data) {
+        message.error("Không tìm thấy thông tin người dùng");
+        return;
+      }
+
+      // Update user status to blocked
+      await userApi.updateUser(userResponse.data._id, {
+        status: "blocked"
+      });
+
+      // Update borrow ticket status to returned
+      const returnDate = new Date().toISOString();
+      await borrowTicketApi.updateBorrowTicket(borrowTicket._id, { 
+        status: "expired",
+        returnDate: returnDate
+      });
+
+      message.success("Đã chặn người dùng thành công");
+      fetchBorrowTickets(); // Refresh the list
+    } catch (error) {
+      message.error("Không thể chặn người dùng");
+      console.error("Error blocking user:", error);
+    }
+  };
+
   const handleDelete = async (id) => {
     try {
       await borrowTicketApi.deleteBorrowTicket(id);
@@ -211,21 +242,18 @@ export default function BTList() {
   return (
     <Layout
       style={{
-        height: "100vh",
+        minHeight: "100vh",
       }}
     >
       <SideNav />
       <Layout style={{ background: "#f0f4f7" }}>
-        <HeaderComponent />
-        <Content style={{ margin: "0 16px" }}>
-          <div style={{ marginTop: 20, marginBottom: 16 }}>
-            <Input
-              placeholder="Search borrow tickets..."
-              prefix={<SearchOutlined />}
-              onChange={(e) => handleSearch(e.target.value)}
-              style={{ width: 300 }}
-              allowClear
-            />
+        <HeaderComponent title="Quản lý mượn trả"/>
+        <Content style={{ margin: 0, padding: "24px", width: "100%" }}>
+          <div style={{ marginBottom: "24px" }}>
+            <Title level={2} style={{ margin: 0 }}>
+              Danh sách mượn trả
+            </Title>
+            <Text type="secondary">Danh sách phiếu mượn trả</Text>
           </div>
           <Table
             columns={BTColumns.map(col => {
@@ -240,10 +268,10 @@ export default function BTList() {
                           icon={<DeleteOutlined />}
                           onClick={() => handleDelete(record._id)}
                         >
-                          Delete
+                          Xóa
                         </Button>
                       );
-                    } else if (record.status === 'borrowed' || record.status === 'expired') {
+                    } else if (record.status === 'borrowed') {
                       return (
                         <Button
                           type="primary"
@@ -251,7 +279,18 @@ export default function BTList() {
                           onClick={() => handleReturn(record)}
                           style={{ backgroundColor: '#52c41a', borderColor: '#52c41a' }}
                         >
-                          Return
+                          Trả sách
+                        </Button>
+                      );
+                    } else if (record.status === 'expired') {
+                      return (
+                        <Button
+                          type="primary"
+                          icon={<BlockOutlined />}
+                          onClick={() => handleBlock(record)}
+                          style={{ backgroundColor: '#ff4d4f', borderColor: '#ff4d4f' }}
+                        >
+                          Chặn
                         </Button>
                       );
                     }
@@ -265,6 +304,7 @@ export default function BTList() {
             loading={loading}
             rowKey="_id"
             style={{ marginTop: 20 }}
+            pagination={{ pageSize: 6 }}
             title={() => (
               <div
                 style={{
@@ -273,7 +313,14 @@ export default function BTList() {
                   alignItems: "center",
                 }}
               >
-                <span className="text-xl">Borrow List</span>
+                <span className="text-xl">Danh sách mượn trả</span>
+                <Input
+                  placeholder="Tìm kiếm phiếu mượn..."
+                  prefix={<SearchOutlined />}
+                  onChange={(e) => handleSearch(e.target.value)}
+                  style={{ width: 300 }}
+                  allowClear
+                />
               </div>
             )}
           />

@@ -9,6 +9,7 @@ import {
   Tag,
   Space,
   Input,
+  Typography,
 } from "antd";
 import { Link, useNavigate } from "react-router-dom";
 import {
@@ -27,6 +28,7 @@ import userApi from "../../api/user";
 import roleApi from "../../api/role";
 
 const { Content } = Layout;
+const { Title, Text } = Typography;
 
 const generateLibraryCardNumber = (length = 12) => {
   const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -52,7 +54,7 @@ export default function WaitingMember() {
   // Define the columns for waiting members
   const waitingMemberColumns = [
     {
-      title: "Name",
+      title: "Họ và tên",
       dataIndex: "fullName",
       key: "fullName",
       render: (text) => <span>{text}</span>,
@@ -69,7 +71,7 @@ export default function WaitingMember() {
       ),
     },
     {
-      title: "Phone",
+      title: "Số điện thoại",
       dataIndex: "phoneNumber",
       key: "phoneNumber",
       render: (text) => (
@@ -80,24 +82,24 @@ export default function WaitingMember() {
       ),
     },
     {
-      title: "Registration Date",
+      title: "Ngày đăng ký",
       dataIndex: "createdAt",
       key: "createdAt",
       render: (date) => new Date(date).toLocaleString(),
     },
     {
-      title: "Status",
+      title: "Trạng thái",
       dataIndex: "status",
       key: "status",
-      render: (status) => <Tag color="orange">PENDING</Tag>,
+      render: (status) => <Tag color="orange">Chờ duyệt</Tag>,
     },
     {
-      title: "Detail",
+      title: "Chi tiết",
       dataIndex: "detail",
       key: "detail",
     },
     {
-      title: "Actions",
+      title: "Hành động",
       dataIndex: "actions",
       key: "actions",
     },
@@ -150,7 +152,7 @@ export default function WaitingMember() {
     setSearchText(value);
   };
 
-  const filteredUsers = waitingUsers.filter(user => {
+  const filteredUsers = waitingUsers.filter((user) => {
     const searchLower = searchText.toLowerCase();
     return (
       user.fullName?.toLowerCase().includes(searchLower) ||
@@ -183,14 +185,14 @@ export default function WaitingMember() {
         onClick={() => handleApprove(id)}
         style={{ backgroundColor: "#52c41a", borderColor: "#52c41a" }}
       >
-        Approve
+        Duyệt
       </Button>
       <Button
         danger
         icon={<CloseCircleOutlined />}
         onClick={() => handleReject(id)}
       >
-        Reject
+        Từ chối
       </Button>
     </Space>
   );
@@ -203,22 +205,21 @@ export default function WaitingMember() {
   const handleApprove = async (id) => {
     try {
       const newLibraryCardNumber = generateLibraryCardNumber();
-      const response = await userApi.updateUser(
-        id,
-        { status: "active" },
-      );
+      const response = await userApi.updateUser(id, { status: "active" });
       const responseLibraryCard = await userApi.createLibraryCardForUser(id, {
         cardNumber: newLibraryCardNumber,
         registrationDate: new Date(),
-        expirationDate: new Date(new Date().setFullYear(new Date().getFullYear() + 1)),
+        expirationDate: new Date(
+          new Date().setFullYear(new Date().getFullYear() + 1)
+        ),
       });
 
       console.log(response);
       console.log(responseLibraryCard);
-      message.success("User approved successfully");
+      message.success("Đã duyệt yêu cầu đăng ký thành viên");
       fecthPendingUsers();
     } catch (error) {
-      message.error("Failed to approve user");
+      message.error("Không thể duyệt yêu cầu đăng ký thành viên");
       console.error("Error approving user:", error);
     }
   };
@@ -240,48 +241,36 @@ export default function WaitingMember() {
               prevUsers.filter((user) => user._id !== id)
             );
 
-            message.success("Membership request rejected");
+            message.success("Đã từ chối yêu cầu đăng ký thành viên");
           } catch (error) {
-            message.error("Failed to reject membership request");
+            message.error("Không thể từ chối yêu cầu đăng ký thành viên");
             console.error("Error rejecting membership request:", error);
           }
         },
       });
     } catch (error) {
-      message.error("Failed to reject user");
+      message.error("Không thể từ chối yêu cầu đăng ký thành viên");
       console.error("Error rejecting user:", error);
     }
   };
 
   return (
-    <Layout style={{ minHeight: "100vh", width: "100vw" }}>
+    <Layout style={{ minHeight: "100vh", width: "100%" }}>
       <SideNav />
       <Layout style={{ background: "#f0f4f7", width: "100%" }}>
-        <HeaderComponent />
+        <HeaderComponent title="Quản lý người dùng" />
         <Content
           style={{
             margin: 0,
             padding: "24px",
-            minHeight: "calc(100vh - 64px)",
             width: "100%",
           }}
         >
-          <Breadcrumb style={{ marginBottom: "16px" }}>
-            <Breadcrumb.Item>
-              <Link to="/dashboard">Dashboard</Link>
-            </Breadcrumb.Item>
-            <Breadcrumb.Item>Member Management</Breadcrumb.Item>
-            <Breadcrumb.Item>Waiting Members</Breadcrumb.Item>
-          </Breadcrumb>
-
-          <div style={{ marginBottom: 16 }}>
-            <Input
-              placeholder="Search by name, email, or phone..."
-              prefix={<SearchOutlined />}
-              onChange={(e) => handleSearch(e.target.value)}
-              style={{ width: 300 }}
-              allowClear
-            />
+          <div style={{ marginBottom: "24px" }}>
+            <Title level={2} style={{ margin: 0 }}>
+              Danh sách yêu cầu đăng ký
+            </Title>
+            <Text type="secondary">Danh sách yêu cầu đăng ký thành viên</Text>
           </div>
 
           <Table
@@ -290,7 +279,7 @@ export default function WaitingMember() {
             loading={loading}
             rowKey="_id"
             pagination={{
-              pageSize: 10,
+              pageSize: 6,
               showTotal: (total) => `Total ${total} pending members`,
             }}
             title={() => (
@@ -302,8 +291,15 @@ export default function WaitingMember() {
                 }}
               >
                 <span style={{ fontSize: "18px", fontWeight: "500" }}>
-                  Pending Membership Requests
+                  Danh sách yêu cầu đăng ký
                 </span>
+                <Input
+                  placeholder="Tìm kiếm theo tên, email hoặc số điện thoại..."
+                  prefix={<SearchOutlined />}
+                  onChange={(e) => handleSearch(e.target.value)}
+                  style={{ width: 300 }}
+                  allowClear
+                />
               </div>
             )}
           />

@@ -83,6 +83,21 @@ export default function UserUpdate() {
   });
   // console.log(roles);
 
+  const occupations = [
+    { value: "student", label: "Sinh viên" },
+    { value: "teacher", label: "Giáo viên/Giảng viên" },
+    { value: "researcher", label: "Nhà nghiên cứu" },
+    { value: "general", label: "Công chúng" },
+  ];
+
+  const selectOccupation = occupations.map((occupation) => {
+    return (
+      <Select.Option value={occupation.value} key={occupation.value}>
+        {occupation.label}
+      </Select.Option>
+    );
+  });
+
   const onFinish = async (values) => {
     try {
       // Format the data according to the server's expectations
@@ -99,7 +114,7 @@ export default function UserUpdate() {
       if (response.status === 201) {
         message.success("Cập nhật user thành công");
         form.resetFields();
-        navigate('/member-list');
+        navigate('/reader-list');
       }
     } catch (error) {
       if (error.response?.data?.message) {
@@ -189,17 +204,17 @@ export default function UserUpdate() {
                     <Row gutter={16}>
                       <Col span={12}>
                         <Form.Item
-                          label="Vai trò"
-                          name="role"
+                          label="Nghề nghiệp"
+                          name="occupation"
                           rules={[
                             {
                               required: true,
-                              message: "Vui lòng chọn vai trò",
+                              message: "Vui lòng nhập nghề nghiệp",
                             },
                           ]}
                         >
-                          <Select placeholder="Chọn vai trò">
-                            {selectRole}
+                          <Select placeholder="Chọn nghề nghiệp">
+                            {selectOccupation}
                           </Select>
                         </Form.Item>
                       </Col>
@@ -322,7 +337,7 @@ export default function UserUpdate() {
                           name="password"
                           rules={[
                             {
-                              required: true,
+                              // required: true,
                               message: "Vui lòng nhập mật khẩu",
                             },
                           ]}

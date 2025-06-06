@@ -11,7 +11,8 @@ import {
   TeamOutlined,
   IdcardOutlined,
   ClockCircleOutlined,
-  SearchOutlined
+  SearchOutlined,
+  CheckCircleOutlined
 } from "@ant-design/icons";
 import SideNav from "../Layout/SideNav";
 import HeaderComponent from "../Layout/Header";
@@ -128,7 +129,7 @@ export default function ReaderList() {
                   role: roleData.name,
                 }),
                 cardNumber: user.libraryCard?.cardNumber,
-                UD: getActionButtons(user._id),
+                UD: getActionButtons(user),
               };
             } catch (error) {
               console.error(
@@ -141,7 +142,7 @@ export default function ReaderList() {
                 role: "Not Assigned",
                 cardNumber: "Not assigned",
                 detail: getDetailButton(user),
-                UD: getActionButtons(user._id),
+                UD: getActionButtons(user),
               };
             }
           }
@@ -172,22 +173,51 @@ export default function ReaderList() {
     />
   );
 
-  const getActionButtons = (id) => (
+  const getActionButtons = (user) => (
     <Space>
-      <Button
-        type="primary"
-        icon={<EditOutlined />}
-        onClick={() => handleUpdate(id)}
-      >
-        Sửa
-      </Button>
-      <Button
-        danger
-        icon={<DeleteOutlined />}
-        onClick={() => handleDelete(id)}
-      >
-        Xóa
-      </Button>
+      {user.status === 'active' && (
+        <>
+          <Button
+            type="primary"
+            icon={<EditOutlined />}
+            onClick={() => handleUpdate(user._id)}
+          >
+            Sửa
+          </Button>
+          <Button
+            danger
+            icon={<DeleteOutlined />}
+            onClick={() => handleDelete(user._id)}
+          >
+            Xóa
+          </Button>
+          <Button
+            type="primary"
+            icon={<ClockCircleOutlined />}
+            onClick={() => handleExtend(user._id)}
+          >
+            Gia hạn
+          </Button>
+        </>
+      )}
+      {user.status === 'expired' && (
+        <Button
+          type="primary"
+          icon={<ClockCircleOutlined />}
+          onClick={() => handleExtend(user._id)}
+        >
+          Gia hạn
+        </Button>
+      )}
+      {user.status === 'blocked' && (
+        <Button
+          type="primary"
+          icon={<CheckCircleOutlined />}
+          onClick={() => handleActivate(user._id)}
+        >
+          Kích hoạt
+        </Button>
+      )}
     </Space>
   );
 
@@ -220,6 +250,53 @@ export default function ReaderList() {
     } catch (error) {
       message.error("Không thể xóa thành viên");
       console.error("Error deleting user:", error);
+    }
+  };
+
+  const handleExtend = async (id) => {
+    try {
+      Modal.confirm({
+        title: 'Gia hạn thẻ thư viện',
+        content: 'Bạn có chắc chắn muốn gia hạn thẻ thư viện cho thành viên này?',
+        okText: 'Gia hạn',
+        okType: 'primary',
+        onOk: async () => {
+          try {
+            await userApi.updateLibraryCardExpiry(id, { expirationDate: new Date(new Date().setFullYear(new Date().getFullYear() + 1)) });
+            message.success("Thẻ thư viện đã được gia hạn thành công");
+            fetchUsers();
+          } catch (error) {
+            message.error("Không thể gia hạn thẻ thư viện");
+            console.error("Error extending user:", error);
+          }
+        }
+      });
+    } catch (error) {
+      console.error("Error extending user:", error);
+    }
+  };
+
+  const handleActivate = async (id) => {
+    try {
+      Modal.confirm({
+        title: 'Kích hoạt thành viên',
+        content: 'Bạn có chắc chắn muốn kích hoạt thành viên này?',
+        okText: 'Kích hoạt',
+        okType: 'primary',
+        onOk: async () => {
+          try {
+            await userApi.updateUser(id, { status: 'active' });
+            message.success("Thành viên đã được kích hoạt thành công");
+            fetchUsers();
+          } catch (error) {
+            message.error("Không thể kích hoạt thành viên");
+            console.error("Error activating user:", error);
+          }
+        }
+      });
+    } catch (error) {
+      message.error("Không thể kích hoạt thành viên");
+      console.error("Error activating user:", error);
     }
   };
 

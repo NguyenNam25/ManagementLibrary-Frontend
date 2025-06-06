@@ -96,6 +96,10 @@ const userApi = {
   deleteUserInterestedBook: async (id, bookId) => {
     const response = await axiosClient.delete(`/users/${id}/interested-books/${bookId}`);
     return response;
+  },
+  updateLibraryCardExpiry: async (id, data) => {
+    const response = await axiosClient.put(`/users/libraryCard/${id}`, data);
+    return response;
   }
 };
 

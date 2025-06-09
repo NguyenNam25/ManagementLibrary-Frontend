@@ -85,20 +85,18 @@ export default function AccountCreate() {
       // Always set status to active
       formData.append('status', 'active');
 
-      const response = await axios.post("http://localhost:3000/users/register", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-        withCredentials: true,
-      });
+      const response = await userApi.createUser(formData);
+      
       if (response.status === 201) {
         message.success("Thêm tài khoản thành công");
-        // form.resetFields();
-        // navigate("/manager-list");
+        form.resetFields();
+        navigate("/manager-list");
+      } else {
+        message.error(response.data?.message || "Thêm tài khoản thất bại");
       }
     } catch (error) {
-      message.error("Thêm tài khoản thất bại");
-      // console.error("Error creating account:", error);
+      console.error("Error creating account:", error);
+      message.error(error.response?.data?.message || "Thêm tài khoản thất bại. Vui lòng thử lại sau.");
     } finally {
       setUploading(false);
     }

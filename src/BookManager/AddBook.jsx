@@ -77,13 +77,9 @@ export default function AddBook() {
           formData.append(key, values[key]);
         }
       });
+  
+      const response = await bookApi.createBook(formData);
 
-      const response = await axios.post("http://localhost:3000/books", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-        withCredentials: true,
-      });
       if (response.status === 201) {
         message.success("Thêm sách thành công");
         form.resetFields();

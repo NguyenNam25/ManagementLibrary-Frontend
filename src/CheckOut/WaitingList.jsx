@@ -129,14 +129,14 @@ export default function WaitingBorrowList() {
         onClick={() => handleApprove(borrowTicket)}
         style={{ backgroundColor: "#52c41a", borderColor: "#52c41a" }}
       >
-        Approve
+        Xác nhận
       </Button>
       <Button
         danger
         icon={<CloseCircleOutlined />}
         onClick={() => handleReject(borrowTicket)}
       >
-        Reject
+        Từ chối
       </Button>
     </Space>
   );
@@ -231,10 +231,10 @@ export default function WaitingBorrowList() {
         borrowTicket._id
       );
       console.log(response);
-      message.success("Borrow ticket rejected successfully");
+      message.success("Xóa phiếu mượn thành công");
       fetchBorrowTickets(); // Refresh the list after rejection
     } catch (error) {
-      console.error("Error rejecting borrow ticket:", error);
+      console.error("Lỗi khi xóa phiếu mượn:", error);
     }
   };
 

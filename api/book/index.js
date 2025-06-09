@@ -22,11 +22,8 @@ const bookApi = {
   createBook: async (book) => {
     try {
       console.log(book);
-      const response = await axiosClient.post("/books", book, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
+      const response = await axiosClient.postFormData("/books", book);
+      
       return response;
     } catch (error) {
       console.error("Error creating book:", error);
@@ -35,11 +32,7 @@ const bookApi = {
   },
   updateBook: async (id, book) => {
     try {
-      const response = await axiosClient.put(`/books/${id}`, book, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
+      const response = await axiosClient.putFormData(`/books/${id}`, book);
       return response;
     } catch (error) {
       console.error(`Error updating book with id ${id}:`, error);

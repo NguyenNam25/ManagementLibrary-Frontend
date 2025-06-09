@@ -53,6 +53,8 @@ export default function SignUp() {
       console.log("file: ",info.file);
       setAvatarFile(info.file);
       // Create a preview URL for the image
+      const imageUrl = URL.createObjectURL(info.file);
+      setAvatarUrl(imageUrl);
     }
   };
 
@@ -106,7 +108,7 @@ export default function SignUp() {
             name="password"
             label="Mật khẩu"
             rules={[
-              { min: 8, message: "Mật khẩu phải có ít nhất 8 ký tự" },
+              { min: 6, message: "Mật khẩu phải có ít nhất 6 ký tự" },
               { 
                 message: "Mật khẩu phải chứa ít nhất một chữ hoa, một chữ thường, một số và một ký tự đặc biệt"
               }
@@ -328,22 +330,6 @@ export default function SignUp() {
             </Select>
           </Form.Item>
 
-          <Form.Item name="newsSubscription" valuePropName="checked">
-            <Checkbox>Đăng ký nhận bản tin và cập nhật từ thư viện</Checkbox>
-          </Form.Item>
-          
-          <Form.Item 
-            name="termsAgreement"
-            valuePropName="checked"
-            rules={[
-              { validator: (_, value) => value ? Promise.resolve() : Promise.reject(new Error('Bạn phải đồng ý với điều khoản và điều kiện')) }
-            ]}
-          >
-            <Checkbox>
-              Tôi đồng ý với <Link to="/reader/service">Điều khoản và Điều kiện</Link> và <Link to="/reader/service">Chính sách Bảo mật</Link>
-            </Checkbox>
-          </Form.Item>
-
           <Alert
             message="Lưu ý"
             description="Sau khi được phê duyệt, bạn sẽ nhận được thẻ thư viện có thể sử dụng để mượn sách và truy cập tất cả dịch vụ thư viện."
@@ -411,13 +397,8 @@ export default function SignUp() {
       });
       
       console.log("formData: ",formData.get('image'));
-      // const response = await userApi.createUser(formData);
-      const response = await axios.post("http://localhost:3000/users/register", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-        withCredentials: true,
-      });
+
+      const response = await userApi.createUser(formData);
 
       if (response.status === 201) {
         notification.success({
@@ -454,9 +435,9 @@ export default function SignUp() {
       <Content style={{ padding: "40px", backgroundColor: "#f5f5f5", minHeight: "calc(100vh - 64px)" }}>
         <div style={{ maxWidth: 600, margin: "0 auto" }}>
           <div style={{ textAlign: "center", marginBottom: 24 }}>
-            <Title level={2}>Sign Up</Title>
+            <Title level={2}>Đăng ký</Title>
             <Text type="secondary">
-              Create a new account to access the library system
+              Tạo tài khoản mới để truy cập hệ thống thư viện
             </Text>
           </div>
 
@@ -478,12 +459,12 @@ export default function SignUp() {
               <div style={{ marginTop: 24, display: 'flex', justifyContent: 'space-between' }}>
                 {currentStep > 0 && (
                   <Button onClick={prev}>
-                    Previous
+                    Trước
                   </Button>
                 )}
                 {currentStep < steps.length - 1 && (
                   <Button type="primary" onClick={next}>
-                    Next
+                    Tiếp
                   </Button>
                 )}
                 {currentStep === steps.length - 1 && (
@@ -494,7 +475,7 @@ export default function SignUp() {
                     loading={loading}
                     icon={<CheckCircleOutlined />}
                   >
-                    Create Account
+                    Tạo tài khoản
                   </Button>
                 )}
               </div>
@@ -503,11 +484,11 @@ export default function SignUp() {
 
           <div style={{ textAlign: "center", marginTop: 24 }}>
             <Space>
-              <Text type="secondary">Already have an account?</Text>
-              <Link to="/reader/login">Log in</Link>
+              <Text type="secondary">Đã có tài khoản?</Text>
+              <Link to="/reader/login">Đăng nhập</Link>
               <Divider type="vertical" />
               <Link to="/reader/home">
-                <HomeOutlined /> Back to Home
+                <HomeOutlined /> Quay về trang chủ
               </Link>
             </Space>
           </div>

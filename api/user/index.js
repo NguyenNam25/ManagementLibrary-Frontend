@@ -2,7 +2,7 @@ import axiosClient from "../axiosClient";
 
 const userApi = {
   createUser: async (data) => {
-    const response = await axiosClient.post("/users/register", data);
+    const response = await axiosClient.postFormData("/users/register", data);
     return response;
   },
   getAllUsers: async () => {
@@ -14,7 +14,7 @@ const userApi = {
     return response;
   },
   updateUser: async (id, data) => {
-    const response = await axiosClient.put(`/users/${id}`, data);
+    const response = await axiosClient.putFormData(`/users/${id}`, data);
     return response;
   },
   deleteUser: async (id) => {

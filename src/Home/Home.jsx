@@ -85,7 +85,7 @@ export default function Home() {
 
       const isSameMonth = (date, month, year) => {
         const d = new Date(date);
-        return d.getMonth() === month && d.getFullYear() === year;
+        return d.getMonth() === month - 1 && d.getFullYear() === year;
       };
 
       // Get borrows for this month and last month
@@ -164,7 +164,7 @@ export default function Home() {
 
       const isSameMonth = (date, month, year) => {
         const d = new Date(date);
-        return d.getMonth() === month && d.getFullYear() === year;
+        return d.getMonth() === month - 1 && d.getFullYear() === year;
       };
 
       // Get registrations for this month and last month
@@ -230,7 +230,7 @@ export default function Home() {
 
       const isSameMonth = (date, month, year) => {
         const d = new Date(date);
-        return d.getMonth() + 1 === month && d.getFullYear() === year;
+        return d.getMonth() === month - 1 && d.getFullYear() === year;
       };
 
       // Get blocked users for this month and last month
@@ -278,39 +278,20 @@ export default function Home() {
   console.log(registeredUserStats)
   console.log(blockUserStats)
 
-  const borrowGrowth =
-    !bookBorrowStats || bookBorrowStats.length < 2
-      ? 0
-      : bookBorrowStats[1]?.borrowCount === 0
-      ? bookBorrowStats[0]?.borrowCount === 0
-        ? 0
-        : 100
-      : ((bookBorrowStats[0]?.borrowCount - bookBorrowStats[1]?.borrowCount) /
-          bookBorrowStats[1]?.borrowCount) *
-        100;
-
-  const registeredUserGrowth =
-    !registeredUserStats || registeredUserStats.length < 2
-      ? 0
-      : registeredUserStats[1]?.registrationCount === 0
-      ? registeredUserStats[0]?.registrationCount === 0
-        ? 0
-        : 100
-      : ((registeredUserStats[0]?.registrationCount -
-          registeredUserStats[1]?.registrationCount) /
-          registeredUserStats[1]?.registrationCount) *
-        100;
-
-  const blockUserGrowth =
-    !blockUserStats || blockUserStats.length < 2
-      ? 0
-      : blockUserStats[1]?.blockCount === 0
-      ? blockUserStats[0]?.blockCount === 0
-        ? 0
-        : 100
-      : ((blockUserStats[0]?.blockCount - blockUserStats[1]?.blockCount) /
-          blockUserStats[1]?.blockCount) *
-        100;
+  const calculateGrowth = (stats, field) => {
+    if (!stats || stats.length < 2) return 0;
+  
+    const current = stats[0]?.[field] ?? 0;
+    const previous = stats[1]?.[field] ?? 0;
+  
+    if (previous === 0) return current === 0 ? 0 : 100;
+  
+    return (((current - previous) / previous) * 100).toFixed(2);
+  };
+  
+  const borrowGrowth = calculateGrowth(bookBorrowStats, "borrowCount");
+  const registeredUserGrowth = calculateGrowth(registeredUserStats, "registrationCount");
+  const blockUserGrowth = calculateGrowth(blockUserStats, "blockCount");
 
   console.log(borrowGrowth)
   console.log(registeredUserGrowth)

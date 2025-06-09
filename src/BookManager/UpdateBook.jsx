@@ -91,17 +91,8 @@ export default function UpdateBook() {
         }
       });
 
-      // console.log(formData.get("image"));
-      const response = await axios.put(
-        `http://localhost:3000/books/${book._id}`,
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-          withCredentials: true,
-        }
-      );
+      const response = await bookApi.updateBook(id, formData);
+
       if (response.status === 201) {
         message.success("Cập nhật sách thành công");
         form.resetFields();

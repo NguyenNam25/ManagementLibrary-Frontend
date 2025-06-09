@@ -100,16 +100,22 @@ export default function UserUpdate() {
 
   const onFinish = async (values) => {
     try {
-      // Format the data according to the server's expectations
-      const userData = {
-        ...values,
-        fullName: values.fullName.trim(),
-        phoneNumber: values.phoneNumber.trim(),
-        citizenId: values.citizenId.trim(),
-        dateOfBirth: values.dateOfBirth.format('YYYY-MM-DD'),
-      };
+      const formData = new FormData();
       
-      const response = await userApi.updateUser(state?.id,userData);
+      // Append all form fields to FormData
+      Object.keys(values).forEach(key => {
+        if (key === 'image' && values[key]) {
+          formData.append('image', values[key]);
+        } else {
+          formData.append(key, values[key]);
+        }
+      });
+      
+      // Always set status to active
+      formData.append('status', 'active');
+      // Format the data according to the server's expectations
+      
+      const response = await userApi.updateUser(state?.id,formData);
       
       if (response.status === 201) {
         message.success("Cập nhật user thành công");

@@ -1,8 +1,8 @@
 import axios from "axios";
 
 const instance = axios.create({
-  // baseURL: "https://managementlibrary-backend.onrender.com",
-  baseURL: "http://localhost:3000",
+  baseURL: "https://managementlibrary-backend.onrender.com",
+  // baseURL: "http://localhost:3000",
   headers: {
     "Content-Type": "application/json",
   },
@@ -23,8 +23,8 @@ const axiosClient = {
   post: (url, data, params = {}) => instance.post(url, data, { params }),
   postFormData: (url, data) => {
     const formInstance = axios.create({
-      // baseURL: "https://managementlibrary-backend.onrender.com",
-      baseURL: "http://localhost:3000",
+      baseURL: "https://managementlibrary-backend.onrender.com",
+      // baseURL: "http://localhost:3000",
       withCredentials: true,
       // Không set Content-Type, để browser tự động set với boundary
     });
@@ -43,7 +43,8 @@ const axiosClient = {
   put: (url, data, params = {}) => instance.put(url, data, { params }),
   putFormData: (url, data) => {
     const formInstance = axios.create({
-      baseURL: "http://localhost:3000",
+      baseURL: "https://managementlibrary-backend.onrender.com",
+      // baseURL: "http://localhost:3000",
       withCredentials: true,
     });
 
